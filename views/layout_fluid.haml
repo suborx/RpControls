@@ -1,0 +1,105 @@
+!!!
+%html{:lang => "sk"}
+  %head
+    %meta{:charset => "utf-8"}
+    %title RpControls
+    %meta{:content=>"",:name=>"description"}
+    %meta{:content=>"",:name=>"author"}
+    / Le HTML5 shim, forIE6-8 support of HTML elements
+    /[if lt IE 9]
+      <scriptsrc="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    /Le styles
+    %link{:href=>"/stylesheets/bootstrap.min.css",:rel=>"stylesheet"}
+      :css
+        body{
+          padding-top:60px;
+        }
+  %body
+    .topbar
+      .topbar-inner
+        .container-fluid
+          %a.brand{:href=>"#"} RpControl
+          %ul.nav
+            %li.active
+              %a{:href=>"#"}Home
+            %li
+              %a{:href=>"#about"}About
+            %li
+              %a{:href=>"#contact"}Contact
+          %p.pull-right
+            Loggedinas
+            %a{:href=>"#"}username
+  .container-fluid
+    .sidebar
+      .well
+        %h5 Sidebar
+        %ul
+          %li
+            %a{:href=>"#"}Link
+          %li
+            %a{:href=>"#"}Link
+          %li
+            %a{:href=>"#"}Link
+          %li
+            %a{:href=>"#"}Link
+        %h5 Sidebar
+        %ul
+          %li
+            %a{:href=>"#"}Link
+          %li
+            %a{:href=>"#"}Link
+          %li
+            %a{:href=>"#"}Link
+          %li
+            %a{:href=>"#"}Link
+          %li
+            %a{:href=>"#"}Link
+          %li
+            %a{:href=>"#"}Link
+        %h5 Sidebar
+        %ul
+          %li
+            %a{:href=>"#"}Link
+          %li
+            %a{:href=>"#"}Link
+    .content
+      /Mainherounitforaprimarymarketingmessageorcalltoaction
+      .hero-unit
+        = yield
+      /Examplerowofcolumns
+      .row
+        .span6
+          %h2 Heading
+          %p Etiam porta sem malesuada magna mollis euismod. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.
+          %p
+            %a.btn{:href=>"#"}Viewdetails»
+        .span5
+          %h2 Heading
+          %p Etiam porta sem malesuada magna mollis euismod. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.
+          %p
+            %a.btn{:href=>"#"}Viewdetails»
+        .span5
+          %h2 Heading
+          %p Etiam porta sem malesuada magna mollis euismod. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.
+          %p
+            %a.btn{:href=>"#"}Viewdetails»
+      %hr
+      /Examplerowofcolumns
+      .row
+        .span6
+          %h2 Heading
+          %p Etiam porta sem malesuada magna mollis euismod. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.
+          %p
+            %a.btn{:href=>"#"}Viewdetails»
+        .span5
+          %h2 Heading
+          %p Etiam porta sem malesuada magna mollis euismod. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.
+          %p
+            %a.btn{:href=>"#"}Viewdetails»
+        .span5
+          %h2 Heading
+          %p Etiam porta sem malesuada magna mollis euismod. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.
+          %p
+            %a.btn{:href=>"#"}Viewdetails»
+  %footer
+    %p ©Company2011}}}}
