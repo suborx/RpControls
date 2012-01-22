@@ -31,9 +31,15 @@ class User < ActiveRecord::Base
   belongs_to :branch
   before_save :encrypt_password
 
-  validates_presence_of :email, :password
+  validates_presence_of :email, :password, :first_name, :last_name, :phone, :branch_id
   validates_uniqueness_of :email
   validates_confirmation_of :password
+
+  delegate :name, :to => :branch, :prefix => true
+
+  def full_name
+    first_name + ' ' + last_name
+  end
 
   def self.authenticate(email,password)
     user = find_by_email(email)
@@ -71,6 +77,7 @@ class RpControl < Sinatra::Base
   end
 
   get '/' do
+    @title = current_user.is_admin? ? 'Nespárované hovory' : "Zoznam hovorov pre pobočku #{current_user.branch_name}"
     haml :'branches/index'
   end
 
