@@ -15,6 +15,7 @@ GEM
       multi_json (~> 1.0)
     archive-tar-minitar (0.5.2)
     arel (3.0.0)
+    bcrypt-ruby (3.0.1)
     builder (3.0.0)
     columnize (0.3.4)
     haml (3.1.3)
@@ -22,6 +23,7 @@ GEM
     linecache19 (0.5.12)
       ruby_core_source (>= 0.1.4)
     multi_json (1.0.4)
+    mysql (2.8.1)
     mysql2 (0.3.11)
     rack (1.4.0)
     rack-protection (1.2.0)
@@ -51,7 +53,9 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord
+  bcrypt-ruby
   haml
+  mysql
   mysql2
   ruby-debug19
   sinatra

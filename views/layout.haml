@@ -17,22 +17,24 @@
         .container
           %a.brand{:href => "#"} Rp-Control
           %ul.nav
-            %li.active
-              %a{:href => "#"} Home
+            - if current_user.is_admin?
+              %li.active
+                %a{:href => "#"} Kontrolóri
             %li
-              %a{:href => "#about"} About
+              %a{:href => "#"} Hovory
             %li
-              %a{:href => "#contact"} Contact
-          %form.pull-right{:action => ""}
-            %input.input-small{:placeholder => "Username", :type => "text"}
-            %input.input-small{:placeholder => "Password", :type => "password"}
-            %button.btn{:type => "submit"} Sign in
+              %a{:href => "#about"} Kontakty
+            %li
+              %a{:href => "/new/user"} Registrácia
+          %p.pull-right
+            %form.pull-right{:action => "/logout", :method => 'POST'}
+              %input{:type => "hidden", :value => 'DELETE', :name => '_method'}
+              %button.btn.danger{:type => "submit"} Odhlásiť
     .container
       .content
-        .page-header
-          %h1
-            Page name
-            %small Supporting text or tagline
+        - if @title
+          .page-header
+            %h1= @title
         .row
           .span10
             =yield
