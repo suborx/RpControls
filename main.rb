@@ -1,63 +1,6 @@
 # -*- encoding : utf-8 -*-
 require 'sinatra/activerecord'
 
-ActiveRecord::Base.configurations = {
-  'local_db' => {
-     'adapter' => 'mysql2',
-     'host' => 'localhost',
-     'username' => 'root',
-     'password' => '',
-     'database' => 'rpcontrol'
-   },
-
-  'remote_db' => {
-     'adapter' => 'mysql2',
-     'host' => '195.210.28.182',
-     'username' => 'wordpress',
-     'password' => 'AA@#zz235~#blazka',
-    'database' => 'honeybee_production'
-  }
- }
-
-class Branch < ActiveRecord::Base
-  establish_connection 'local_db'
-  validates_presence_of :name
-  has_many :users
-end
-
-class User < ActiveRecord::Base
-  attr_accessor :password
-  establish_connection 'local_db'
-  belongs_to :branch
-  before_save :encrypt_password
-
-  validates_presence_of :email, :password, :first_name, :last_name, :phone, :branch_id
-  validates_uniqueness_of :email
-  validates_confirmation_of :password
-
-  delegate :name, :to => :branch, :prefix => true
-
-  def full_name
-    first_name + ' ' + last_name
-  end
-
-  def self.authenticate(email,password)
-    user = find_by_email(email)
-    if user && user.password_hash == BCrypt::Engine.hash_secret(password, user.password_salt)
-      user
-    else
-      nil
-    end
-  end
-
-  def encrypt_password
-    if password.present?
-      self.password_salt = BCrypt::Engine.generate_salt
-      self.password_hash = BCrypt::Engine.hash_secret(password, password_salt)
-    end
-  end
-end
-
 class RpControl < Sinatra::Base
 
   configure do
@@ -74,11 +17,14 @@ class RpControl < Sinatra::Base
     def current_user
       @current_user ||= User.find(session[:user_id]) if session[:user_id]
     end
+
+    def is_current_path?(path)
+      request.path == path ? 'active' : ''
+    end
   end
 
   get '/' do
-    @title = current_user.is_admin? ? 'Nespárované hovory' : "Zoznam hovorov pre pobočku #{current_user.branch_name}"
-    haml :'branches/index'
+    redirect to current_user.is_admin? ? '/users' : '/contacts'
   end
 
   get '/login' do
@@ -96,6 +42,29 @@ class RpControl < Sinatra::Base
     redirect to '/'
   end
 
+  put '/users/activation' do
+    user = User.find(params[:user_id])
+    if current_user.is_admin? && user && params[:active] == 'true'
+      user.activate!
+    elsif current_user.is_admin? && user && params[:active] == 'false'
+      user.deactivate!
+    else
+      nil
+    end
+    redirect to '/users'
+  end
+
+##### USER RESOURCE #####
+
+  get '/users' do
+    @users = User.all
+    haml :'users/index'
+  end
+
+  get '/user/:id' do
+    @user = User.find(:id)
+  end
+
   get '/new/user' do
     @title = 'Registrácia kontrolóra'
     haml :'users/new'
@@ -103,11 +72,67 @@ class RpControl < Sinatra::Base
 
   post '/users' do
     @user = User.new(params[:user])
-    if @user.save
-      redirect to '/'
-    else
-      redirect to '/new/user'
-    end
+    redirect to @user.save ? '/' : '/new/user'
   end
 
+  get '/edit/user/:id' do
+    @user = User.find(:id)
+  end
+
+  put '/users' do
+    @user = User.find(:id)
+    @user.update_attributes(params[:user])
+  end
+
+##### CONTROLS RESOURCE #####
+
+  get '/controls' do
+  end
+
+  get '/control/:id' do
+  end
+
+  get '/new/control' do
+  end
+
+  post '/controls' do
+  end
+
+  get '/edit/control/:id' do
+  end
+
+  put '/controls' do
+  end
+
+  delete '/control/:id' do
+  end
+
+##### CONTACT RESOURCE #####
+
+  get '/contacts' do
+    @contacts = if current_user.is_admin?
+      Contact.all
+    else
+      current_user.branch.contacts
+    end
+    haml :'contacts/index'
+  end
+
+  get '/contact/:id' do
+  end
+
+  get '/new/contact' do
+  end
+
+  post '/contacts' do
+  end
+
+  get '/edit/contact/:id' do
+  end
+
+  put '/contacts' do
+  end
+
+  delete '/contact/:id' do
+  end
 end

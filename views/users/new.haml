@@ -1,43 +1,48 @@
-%form{:action => '/users', :method => 'POST'}
-  %fieldset
+.content
+  .page-header
+    %h2 Registrácia kontrolóra
+  .row
+    .span14
+      %form{:action => '/users', :method => 'POST'}
+        %fieldset
 
-    %div.clearfix
-      %label{:for => 'user_branch'} Redakcia
-      %div.input
-        %select{:name => 'user[branch_id]', :id => 'user_branch' }
-          - Branch.all.each do |b|
-            %option{:value => b.id}= b.name
+          %div.clearfix
+            %label{:for => 'user_branch'} Redakcia
+            %div.input
+              %select{:name => 'user[branch_id]', :id => 'user_branch' }
+                - Branch.all.each do |b|
+                  %option{:value => b.id}= b.name
 
-    %div.clearfix
-      %label{:for => 'user_first_name'} Krstné meno
-      %div.input
-        %input{:type => 'text', :name => 'user[first_name]', :id => 'user_first_name'}
+          %div.clearfix
+            %label{:for => 'user_first_name'} Krstné meno
+            %div.input
+              %input{:type => 'text', :name => 'user[first_name]', :id => 'user_first_name'}
 
-    %div.clearfix
-      %label{:for => 'user_last_name'} Priezvisko
-      %div.input
-        %input{:type => 'text', :name => 'user[last_name]', :id => 'user_last_name'}
+          %div.clearfix
+            %label{:for => 'user_last_name'} Priezvisko
+            %div.input
+              %input{:type => 'text', :name => 'user[last_name]', :id => 'user_last_name'}
 
-    %div.clearfix
-      %label{:for => 'user_phone'} Telefón
-      %div.input
-        %input{:type => 'text', :name => 'user[phone]', :id => 'user_phone'}
+          %div.clearfix
+            %label{:for => 'user_phone'} Telefón
+            %div.input
+              %input{:type => 'text', :name => 'user[phone]', :id => 'user_phone'}
 
-    %div.clearfix
-      %label{:for => 'user_email'} Email
-      %div.input
-        %input{:type => 'text', :name => 'user[email]', :placeholder => 'email', :id => 'user_email'}
+          %div.clearfix
+            %label{:for => 'user_email'} Email
+            %div.input
+              %input{:type => 'text', :name => 'user[email]', :placeholder => 'email', :id => 'user_email'}
 
-    %div.clearfix
-      %label{:for => 'user_password'} Heslo
-      %div.input
-        %input{:type => 'password', :name => 'user[password]', :placeholder => 'heslo', :id => 'user_password'}
+          %div.clearfix
+            %label{:for => 'user_password'} Heslo
+            %div.input
+              %input{:type => 'password', :name => 'user[password]', :placeholder => 'heslo', :id => 'user_password'}
 
-    %div.clearfix
-      %label{:for => 'user_password_confirmation'} Potvrdenie hesla
-      %div.input
-        %input{:type => 'password', :name => 'user[password_confirmation]', :placeholder => 'heslo', :id => 'user_password_confirmation'}
+          %div.clearfix
+            %label{:for => 'user_password_confirmation'} Potvrdenie hesla
+            %div.input
+              %input{:type => 'password', :name => 'user[password_confirmation]', :placeholder => 'heslo', :id => 'user_password_confirmation'}
 
-    %div.actions
-      %input{:type => 'submit', :value => 'Uložiť', :class => 'btn primary'}
-        %button{:type => 'reset', :class => 'btn'} Zrušiť
+          %div.actions
+            %input{:type => 'submit', :value => 'Uložiť', :class => 'btn primary'}
+              %button{:type => 'reset', :class => 'btn'} Zrušiť

@@ -47,3 +47,35 @@ body {
 .topbar .btn {
   border: 0;
 }
+
+.ui-widget-content {
+  color: #808080;
+}
+
+.ui-widget-content a{
+  color: #808080;
+}
+
+.ui-widget {
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 13px;
+}
+
+button.ui-button{
+  font-size:12px;
+}
+
+button.ui-button-icon-only {
+ height: 28px;
+ width: 26px;
+}
+
+input.ui-autocomplete-input{
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+th.center,
+td.center{
+  text-align:center;
+}

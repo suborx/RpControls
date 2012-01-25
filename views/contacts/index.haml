@@ -1,0 +1,28 @@
+.content
+  .page-header
+    %h2
+      Respondenti
+      %a.pull-right.btn.primary{:href => "/new/contact"} + Pridať respondenta
+  .row
+    .span14
+      %table.bordered-table.zebra-striped
+        %thead
+          %tr
+            %th ID
+            %th.header Respondent
+            %th.header Redakcia
+            %th.header.center Počet kontrol
+            %th.green.header.center Uspešné
+            %th.red.header.center Neuspešné
+            %th.header.center Dobrý kontakt
+            %th.center Nástroje
+        %tbody
+          - @contacts.each do |contact|
+            %tr
+              %td= contact.id
+              %td= contact.full_name
+              %td= contact.branch_name
+              %td.blue.center 45
+              %td.green.center 32
+              %td.red.center 13
+              %td.blue.center ANO
