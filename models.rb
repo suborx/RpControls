@@ -32,6 +32,10 @@ end
 class Contact < ActiveRecord::Base
   establish_connection 'local_db'
   has_many :controls
+  belongs_to :branch
+  delegate :name, :to => :branch, :prefix => true
+
+  def full_name; first_name + ' ' + last_name end
 end
 
 class Control < ActiveRecord::Base
@@ -53,9 +57,7 @@ class User < ActiveRecord::Base
 
   delegate :name, :to => :branch, :prefix => true
 
-  def full_name
-    first_name + ' ' + last_name
-  end
+  def full_name; first_name + ' ' + last_name end
 
   def self.authenticate(email,password)
     user = find_by_email(email)

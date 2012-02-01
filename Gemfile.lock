@@ -18,6 +18,8 @@ GEM
     bcrypt-ruby (3.0.1)
     builder (3.0.0)
     columnize (0.3.6)
+    faker (1.0.1)
+      i18n (~> 0.4)
     haml (3.1.4)
     i18n (0.6.0)
     linecache19 (0.5.12)
@@ -54,6 +56,7 @@ PLATFORMS
 DEPENDENCIES
   activerecord
   bcrypt-ruby
+  faker
   haml
   mysql
   mysql2

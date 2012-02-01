@@ -1,13 +1,9 @@
 $('document').ready(function(){
 
   //autocomplete for branches
-  $('select#user_branch').combobox();
-  //{
-    //source: [
-    //'Bratislavsko',
-    //'Banskobystricko'
-    //]
+  $('select.combobox').combobox();
 
-  //});
-
+  $('a.with_popover').popover({
+    animation: false,
+    placement:'left'});
 })

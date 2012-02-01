@@ -1,0 +1,49 @@
+.hero-unit
+  %h2
+    Kontroly
+    %a.pull-right.btn.btn-large.btn-primary{:href => "/new/control"} + Pridať kontrolu
+.row
+  .span12
+    %table.table.table-striped.table-bordered.table-condensed
+      %thead
+        %tr
+          %th ID
+          - if current_user.is_admin?
+            %th.center Redakcia
+            %th Kontrolór
+          - else
+            %th Respondent
+          %th Typ
+          %th.center Čas
+          %th.center Uspešné
+          %th.center Doručené
+          %th.center Overené
+          %th.center Nástroje
+      %tbody
+        - @controls.each do |control|
+          %tr
+            %td= control.id
+            %td.center= control.user.branch.mark
+            - if current_user.is_admin?
+              %td
+                %a{:href => "/user/#{control.user_id}", :rel => 'popover', :class => 'with_popover',
+                :title => control.user.full_name,
+                :'data-content' => "<strong> Kontrol: </strong>&nbsp 122 </br> <strong>Úspešných: </strong> &nbsp 72</br> <strong>Neoverených: </strong> &nbsp 44"}= control.user.full_name
+
+            - else
+              %td
+                %a{:href => "/contract/#{control.contract_id}", :rel => 'popover', :class => 'with_popover',
+                :title => control.contact.full_name,
+                :'data-content' => "<strong> Adresa: </strong> &nbsp Makovickeho 12/2, </br> <strong>Telefón: </strong> &nbsp#{control.contact.phone}"}
+                  = control.contact.full_name
+            %td
+              - if control.control_type == 'Telefonická'
+                %span.label.label-info=control.control_type
+              - else
+                %span.label= control.control_type
+            %td.center= control.time
+            %td.center= boolean_label_for(control.succeed?)
+            %td.center= boolean_label_for(control.delivered?)
+            %td.center= boolean_label_for(control.verified?)
+            %td.center
+              %a Upraviť

@@ -12,23 +12,29 @@
     %link{:href => "/stylesheets/bootstrap.min.css", :rel => "stylesheet"}
     %link{:href => "/stylesheets/application.css", :rel => "stylesheet"}
   %body
-    .topbar
-      .fill
+    .navbar.navbar-fixed-top
+      .navbar-inner
         .container
-          %a.brand{:href => "#"} Rp-Control
+          %a.brand{:href => "/"} Rp-Control
+          %form{:action => '/login', :method => 'POST', :style => 'margin:5px 0 0 0', :class => 'pull-right form-search'}
+            %input.input-small.span2{:type => 'text', :name => 'email', :placeholder => 'email', :id => 'user_email'}
+            %input.input-small{:type => 'password', :name => 'password', :placeholder => 'heslo', :id => 'user_password'}
+            %button{:type => 'submit', :class => 'btn', :style => 'margin:0px'} Prihlásiť
+
     .container
-      .content
-        %form{:action => '/login', :method => 'POST'}
-          %fieldset
-            %legend Prihlásenie
-            %div.clearfix
-              %label{:for => 'user_email'} Email
-              %div.input
-                %input{:type => 'text', :name => 'email', :placeholder => 'email', :id => 'user_email'}
-            %div.clearfix
-              %label{:for => 'user_password'} Heslo
-              %div.input
-                %input{:type => 'password', :name => 'password', :placeholder => 'heslo', :id => 'user_password'}
-            %div.actions
-              %input{:type => 'submit', :value => 'Prihlásiť', :class => 'btn primary'}
-                %button{:type => 'reset', :class => 'btn'} Zrušiť
+      .row
+        .span12
+          -#%form{:action => '/login', :method => 'POST'}
+            -#%fieldset
+              -#%legend Prihlásenie
+              -#%div.clearfix
+                -#%label{:for => 'user_email'} Email
+                -#%div.input
+                  -#%input{:type => 'text', :name => 'email', :placeholder => 'email', :id => 'user_email'}
+              -#%div.clearfix
+                -#%label{:for => 'user_password'} Heslo
+                -#%div.input
+                  -#%input{:type => 'password', :name => 'password', :placeholder => 'heslo', :id => 'user_password'}
+              -#%div.actions
+                -#%input{:type => 'submit', :value => 'Prihlásiť', :class => 'btn primary'}
+                  -#%button{:type => 'reset', :class => 'btn'} Zrušiť

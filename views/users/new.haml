@@ -1,48 +1,49 @@
 .content
-  .page-header
+  .hero-unit
     %h2 Registrácia kontrolóra
   .row
-    .span14
-      %form{:action => '/users', :method => 'POST'}
+    .span12
+      %form{:action => '/users', :method => 'POST', :class => 'well form-horizontal'}
         %fieldset
 
-          %div.clearfix
-            %label{:for => 'user_branch'} Redakcia
-            %div.input
-              %select{:name => 'user[branch_id]', :id => 'user_branch' }
+          %div.control-group
+            %label{:for => 'user_branch', :class => 'control-label'} Redakcia
+            %div.controls
+              %select{:name => 'user[branch_id]', :id => 'user_branch', :class => 'combobox' }
+                %option
                 - Branch.all.each do |b|
                   %option{:value => b.id}= b.name
 
-          %div.clearfix
-            %label{:for => 'user_first_name'} Krstné meno
-            %div.input
+          %div.control-group
+            %label{:for => 'user_first_name', :class => 'control-label'} Krstné meno
+            %div.controls
               %input{:type => 'text', :name => 'user[first_name]', :id => 'user_first_name'}
 
-          %div.clearfix
-            %label{:for => 'user_last_name'} Priezvisko
-            %div.input
+          %div.control-group
+            %label{:for => 'user_last_name', :class => 'control-label'} Priezvisko
+            %div.controls
               %input{:type => 'text', :name => 'user[last_name]', :id => 'user_last_name'}
 
-          %div.clearfix
-            %label{:for => 'user_phone'} Telefón
-            %div.input
+          %div.control-group
+            %label{:for => 'user_phone', :class => 'control-label'} Telefón
+            %div.controls
               %input{:type => 'text', :name => 'user[phone]', :id => 'user_phone'}
 
-          %div.clearfix
-            %label{:for => 'user_email'} Email
-            %div.input
+          %div.control-group
+            %label{:for => 'user_email', :class => 'control-label'} Email
+            %div.controls
               %input{:type => 'text', :name => 'user[email]', :placeholder => 'email', :id => 'user_email'}
 
-          %div.clearfix
-            %label{:for => 'user_password'} Heslo
-            %div.input
+          %div.control-group
+            %label{:for => 'user_password', :class => 'control-label'} Heslo
+            %div.controls
               %input{:type => 'password', :name => 'user[password]', :placeholder => 'heslo', :id => 'user_password'}
 
-          %div.clearfix
-            %label{:for => 'user_password_confirmation'} Potvrdenie hesla
-            %div.input
+          %div.control-group
+            %label{:for => 'user_password_confirmation', :class => 'control-label'} Potvrdenie hesla
+            %div.controls
               %input{:type => 'password', :name => 'user[password_confirmation]', :placeholder => 'heslo', :id => 'user_password_confirmation'}
 
-          %div.actions
-            %input{:type => 'submit', :value => 'Uložiť', :class => 'btn primary'}
+          %div.form-actions
+            %input{:type => 'submit', :value => 'Uložiť', :class => 'btn btn-primary'}
               %button{:type => 'reset', :class => 'btn'} Zrušiť

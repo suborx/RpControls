@@ -21,6 +21,14 @@ class RpControl < Sinatra::Base
     def is_current_path?(path)
       request.path == path ? 'active' : ''
     end
+
+    def boolean_label_for(state)
+      if state
+        '<span class="label label-success">ANO</span>'
+      else
+        '<span class="label label-important">NIE</span>'
+      end
+    end
   end
 
   get '/' do
@@ -66,7 +74,6 @@ class RpControl < Sinatra::Base
   end
 
   get '/new/user' do
-    @title = 'Registrácia kontrolóra'
     haml :'users/new'
   end
 
@@ -87,15 +94,28 @@ class RpControl < Sinatra::Base
 ##### CONTROLS RESOURCE #####
 
   get '/controls' do
+    @controls = if current_user.is_admin?
+      Control.all
+    else
+      current_user.controls
+    end
+    haml :'controls/index'
   end
 
   get '/control/:id' do
   end
 
   get '/new/control' do
+    haml :'controls/new'
   end
 
   post '/controls' do
+    @control = current_user.controls.new(params[:control])
+    if @control.save
+      redirect to '/controls'
+    else
+      haml :'controls/new'
+    end
   end
 
   get '/edit/control/:id' do
@@ -122,9 +142,16 @@ class RpControl < Sinatra::Base
   end
 
   get '/new/contact' do
+    haml :'contacts/new'
   end
 
   post '/contacts' do
+    @contact = Contact.new(params[:contact])
+    if @contact.save
+      redirect to '/contacts'
+    else
+      haml :'contacts/new'
+    end
   end
 
   get '/edit/contact/:id' do

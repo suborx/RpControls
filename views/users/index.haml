@@ -1,41 +1,41 @@
-.content
-  .page-header
-    %h2
-      Kontrolóri
-      %a.pull-right.btn.primary{:href => "/new/user"} + Pridať kontrolóra
-  .row
-    .span14
-      %table.bordered-table.zebra-striped
-        %thead
+.hero-unit
+  %h2
+    Kontrolóri
+    %a.pull-right.btn.btn-large.btn-primary{:href => "/new/user"} + Pridať kontrolóra
+.row
+  .span12
+    %table.table.table-striped.table-bordered.table-condensed
+      %thead
+        %tr
+          %th ID
+          %th.center Redakcia
+          %th Kontrolór
+          %th.center Kontakty
+          %th.green.center Overené
+          %th.red.center Neoverené
+          %th.blue.center Bonusové
+          %th.center Nástroje
+      %tbody
+        - @users.each do |user|
           %tr
-            %th ID
-            %th.header Kontrolór
-            %th.header Redakcia
-            %th.header.center Kontakty
-            %th.green.header.center Overené
-            %th.red.header.center Neoverené
-            %th.blue.header.center Bonusové
-            %th.center Nástroje
-        %tbody
-          - @users.each do |user|
-            %tr
-              %td= user.id
-              %td= user.full_name
-              %td= user.branch_name
-              %td.center 33
-              %td.green.center 1
-              %td.red.center 22
-              %td.blue.center 15
-              %td.center
-                - if user.is_active?
-                  %form{ :method => "POST", :action => "/users/activation"}
-                    %input{ :type => 'hidden', :name => '_method', :value => 'PUT'}
-                    %input{ :type => 'hidden', :name => 'user_id', :value => user.id}
-                    %input{ :type => 'hidden', :name => 'active', :value => 'false'}
-                    %input{ :class => 'pull-right btn error', :value => "Dektivovať", :type => "submit"}
-                - else
-                  %form{ :method => "POST", :action => "/users/activation"}
-                    %input{ :type => 'hidden', :name => '_method', :value => 'PUT'}
-                    %input{ :type => 'hidden', :name => 'user_id', :value => user.id}
-                    %input{ :type => 'hidden', :name => 'active', :value => 'true'}
-                    %input{ :class => 'pull-right btn success', :value => "Aktivovať", :type => "submit"}
+            %td= user.id
+            %td.center= user.branch.mark
+            %td
+              %a= user.full_name
+            %td.center 33
+            %td.green.center 1
+            %td.red.center 22
+            %td.blue.center 15
+            %td.center
+              - if user.is_active?
+                %form{ :method => "POST", :action => "/users/activation"}
+                  %input{ :type => 'hidden', :name => '_method', :value => 'PUT'}
+                  %input{ :type => 'hidden', :name => 'user_id', :value => user.id}
+                  %input{ :type => 'hidden', :name => 'active', :value => 'false'}
+                  %input{ :class => 'btn btn-small btn-danger', :value => "Dektivovať", :type => "submit"}
+              - else
+                %form{ :method => "POST", :action => "/users/activation"}
+                  %input{ :type => 'hidden', :name => '_method', :value => 'PUT'}
+                  %input{ :type => 'hidden', :name => 'user_id', :value => user.id}
+                  %input{ :type => 'hidden', :name => 'active', :value => 'true'}
+                  %input{ :class => 'btn btn-small btn-success', :value => "Aktivovať", :type => "submit"}

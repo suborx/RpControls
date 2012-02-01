@@ -1,28 +1,39 @@
-.content
-  .page-header
-    %h2
-      Respondenti
-      %a.pull-right.btn.primary{:href => "/new/contact"} + Pridať respondenta
-  .row
-    .span14
-      %table.bordered-table.zebra-striped
-        %thead
+.hero-unit
+  %h2
+    Respondenti
+    %a.pull-right.btn.btn-large.btn-primary{:href => "/new/contact"} + Pridať respondenta
+.row
+  .span12
+    %table.table.table-striped.table-bordered.table-condensed
+      %thead
+        %tr
+          %th ID
+          %th.center Redakcia
+          %th Mesto
+          %th Respondent
+          %th.blue.center Počet kontrol
+          %th.green.center Uspešné
+          %th.red.center Neuspešné
+          %th.center Dobrý kontakt
+          %th.center Nástroje
+      %tbody
+        - @contacts.each do |contact|
           %tr
-            %th ID
-            %th.header Respondent
-            %th.header Redakcia
-            %th.header.center Počet kontrol
-            %th.green.header.center Uspešné
-            %th.red.header.center Neuspešné
-            %th.header.center Dobrý kontakt
-            %th.center Nástroje
-        %tbody
-          - @contacts.each do |contact|
-            %tr
-              %td= contact.id
-              %td= contact.full_name
-              %td= contact.branch_name
-              %td.blue.center 45
-              %td.green.center 32
-              %td.red.center 13
-              %td.blue.center ANO
+            %td= contact.id
+            %td.center= contact.branch.mark
+            %td Prividza
+            %td
+              %a{:href => "/contact/#{contact.id}", :rel => 'popover', :class => 'with_popover',
+              :title => contact.full_name,
+              :'data-content' => "<strong> Adresa: </strong> &nbsp Makovickeho 12/2, </br> <strong>Telefón: </strong> &nbsp#{contact.phone}"}= contact.full_name
+            %td.blue.center 45
+            %td.green.center 32
+            %td.red.center 13
+            - if contact.is_favorite?
+              %td.center
+                %span.label.label-success ANO
+            - else
+              %td.center
+                %span.label NIE
+            %td.center
+              %a Upraviť
