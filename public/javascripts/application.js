@@ -6,4 +6,8 @@ $('document').ready(function(){
   $('a.with_popover').popover({
     animation: false,
     placement:'left'});
+
+  $('a.close').click(function(){
+    $('div.alert').fadeOut(200);
+  });
 })

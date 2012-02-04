@@ -1,4 +1,5 @@
 # -*- encoding : utf-8 -*-
+require 'sinatra/flash'
 require 'sinatra/activerecord'
 require 'will_paginate'
 require 'will_paginate/active_record'
@@ -10,6 +11,7 @@ class RpControl < Sinatra::Base
     enable :sessions
     enable :method_override
     set :session_secret, "My session secret"
+    register Sinatra::Flash
   end
 
   before do
@@ -36,6 +38,22 @@ class RpControl < Sinatra::Base
       else
         '<span class="label label-important">NIE</span>'
       end
+    end
+
+    def flash_messages
+      return if flash.empty?
+      if flash.key?(:error)
+        html_class = "alert-error"
+        html_message = flash[:error]
+      else
+        html_class = "alert-success"
+        html_message = flash[:success]
+      end
+
+      "<div class='alert #{html_class}'>
+        <a class='close'>x</a>
+        #{html_message}
+      </div>"
     end
   end
 
@@ -87,7 +105,13 @@ class RpControl < Sinatra::Base
 
   post '/users' do
     @user = User.new(params[:user])
-    redirect to @user.save ? '/' : '/new/user'
+    if @user.save
+      flash.now[:success] = 'Registrácia nového kontrolóra bola úspešná.'
+      redirect to '/'
+    else
+      flash.now[:error] = 'Registrácia bola neuspešná.'
+      redirect to '/new/user'
+    end
   end
 
   get '/edit/user/:id' do
@@ -120,8 +144,10 @@ class RpControl < Sinatra::Base
   post '/controls' do
     @control = @current_user.controls.new(params[:control])
     if @control.save
+      flash.now[:success] = 'Pridanie kontroly prebehlo úspešne.'
       redirect to '/controls'
     else
+      flash.now[:error] = 'Pridanie kontroly bolo neúspešné.'
       haml :'controls/new'
     end
   end
@@ -156,8 +182,10 @@ class RpControl < Sinatra::Base
   post '/contacts' do
     @contact = Contact.new(params[:contact])
     if @contact.save
+      flash.now[:success] = 'Registrácia respondenta prebehla úspešne.'
       redirect to '/contacts'
     else
+      flash.now[:error] = 'Registrácia respondenta nebola úspešná.'
       haml :'contacts/new'
     end
   end
