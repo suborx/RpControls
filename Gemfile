@@ -11,3 +11,5 @@ gem 'haml'
 gem "bcrypt-ruby", :require => "bcrypt"
 gem 'ruby-debug19', :require => 'ruby-debug'
 gem 'faker'
+gem 'will_paginate', '~> 3.0'
+

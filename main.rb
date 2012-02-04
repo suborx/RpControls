@@ -1,5 +1,8 @@
 # -*- encoding : utf-8 -*-
 require 'sinatra/activerecord'
+require 'will_paginate'
+require 'will_paginate/active_record'
+include WillPaginate::Sinatra::Helpers
 
 class RpControl < Sinatra::Base
 
@@ -19,13 +22,9 @@ class RpControl < Sinatra::Base
 
   helpers do
 
-    #def current_user
-      #@current_user = if session[:current_user]
-        #session[:current_user]
-      #elsif session[:user_id]
-        #User.find(session[:user_id])
-      #end
-    #end
+    def paginate_labels
+      {:previous_label => '<<', :next_label => '>>'}
+    end
 
     def is_current_path?(path)
       request.path == path ? 'active' : ''
@@ -74,7 +73,7 @@ class RpControl < Sinatra::Base
 ##### USER RESOURCE #####
 
   get '/users' do
-    @users = User.includes([:controls, :branch => :contacts,])
+    @users = User.order('is_active DESC').paginate(:page =>params[:page], :per_page => 10).includes([:controls, :branch => :contacts,])
     haml :'users/index'
   end
 
@@ -104,7 +103,7 @@ class RpControl < Sinatra::Base
 
   get '/controls' do
     @controls = if @current_user.is_admin?
-      Control.includes([:contact,:user => :branch])
+      Control.paginate(:page =>params[:page], :per_page => 18).includes([:contact,:user => :branch])
     else
       @current_user.controls
     end
@@ -140,7 +139,7 @@ class RpControl < Sinatra::Base
 
   get '/contacts' do
     @contacts = if @current_user.is_admin?
-      Contact.includes(:controls, :branch)
+      Contact.paginate(:page =>params[:page], :per_page => 18).includes(:controls, :branch)
     else
       @current_user.branch.contacts
     end

@@ -8,7 +8,7 @@
       %thead
         %tr
           %th ID
-          %th.center Redakcia
+          %th Redakcia
           %th Kontrolór
           %th.center Kontakty
           %th.green.center Overené
@@ -19,7 +19,7 @@
         - @users.each do |user|
           %tr
             %td= user.id
-            %td.center= user.branch_name
+            %td= user.branch_name
             %td
               %a= user.full_name
             %td.center 33
@@ -39,3 +39,5 @@
                   %input{ :type => 'hidden', :name => 'user_id', :value => user.id}
                   %input{ :type => 'hidden', :name => 'active', :value => 'true'}
                   %input{ :class => 'btn btn-small btn-success', :value => "Aktivovať", :type => "submit"}
+
+    = will_paginate @users, paginate_labels
