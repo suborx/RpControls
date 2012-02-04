@@ -10,13 +10,22 @@ class RpControl < Sinatra::Base
   end
 
   before do
-    redirect to '/login' unless current_user || request.path == '/login'
+    if session[:current_user]
+      @current_user = session[:current_user]
+    elsif request.path != '/login'
+      redirect to '/login'
+    end
   end
 
   helpers do
-    def current_user
-      @current_user ||= User.find(session[:user_id]) if session[:user_id]
-    end
+
+    #def current_user
+      #@current_user = if session[:current_user]
+        #session[:current_user]
+      #elsif session[:user_id]
+        #User.find(session[:user_id])
+      #end
+    #end
 
     def is_current_path?(path)
       request.path == path ? 'active' : ''
@@ -32,7 +41,7 @@ class RpControl < Sinatra::Base
   end
 
   get '/' do
-    redirect to current_user.is_admin? ? '/users' : '/contacts'
+    redirect to '/contacts'
   end
 
   get '/login' do
@@ -41,20 +50,20 @@ class RpControl < Sinatra::Base
 
   post '/login' do
     user = User.authenticate(params[:email], params[:password])
-    session[:user_id] = user.id if user
+    session[:current_user] = user if user
     redirect to '/'
   end
 
   delete '/logout' do
-    session[:user_id] = nil
+    session[:current_user] = nil
     redirect to '/'
   end
 
   put '/users/activation' do
     user = User.find(params[:user_id])
-    if current_user.is_admin? && user && params[:active] == 'true'
+    if @current_user.is_admin? && user && params[:active] == 'true'
       user.activate!
-    elsif current_user.is_admin? && user && params[:active] == 'false'
+    elsif @current_user.is_admin? && user && params[:active] == 'false'
       user.deactivate!
     else
       nil
@@ -65,7 +74,7 @@ class RpControl < Sinatra::Base
 ##### USER RESOURCE #####
 
   get '/users' do
-    @users = User.all
+    @users = User.includes([:controls, :branch => :contacts,])
     haml :'users/index'
   end
 
@@ -94,10 +103,10 @@ class RpControl < Sinatra::Base
 ##### CONTROLS RESOURCE #####
 
   get '/controls' do
-    @controls = if current_user.is_admin?
-      Control.all
+    @controls = if @current_user.is_admin?
+      Control.includes([:contact,:user => :branch])
     else
-      current_user.controls
+      @current_user.controls
     end
     haml :'controls/index'
   end
@@ -110,7 +119,7 @@ class RpControl < Sinatra::Base
   end
 
   post '/controls' do
-    @control = current_user.controls.new(params[:control])
+    @control = @current_user.controls.new(params[:control])
     if @control.save
       redirect to '/controls'
     else
@@ -130,10 +139,10 @@ class RpControl < Sinatra::Base
 ##### CONTACT RESOURCE #####
 
   get '/contacts' do
-    @contacts = if current_user.is_admin?
-      Contact.all
+    @contacts = if @current_user.is_admin?
+      Contact.includes(:controls, :branch)
     else
-      current_user.branch.contacts
+      @current_user.branch.contacts
     end
     haml :'contacts/index'
   end
@@ -162,4 +171,5 @@ class RpControl < Sinatra::Base
 
   delete '/contact/:id' do
   end
+
 end

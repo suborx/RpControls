@@ -1,63 +1,53 @@
 .content
-  .page-header
+  .hero-unit
     %h2 Pridať kontrolu
   .row
-    .span14
-      %form{:action => '/controls', :method => 'POST', :id => 'controls'}
+    .span12
+      %form{:action => '/controls', :method => 'POST', :id => 'controls', :class => 'form-horizontal well'}
         %fieldset
-
-          %div.clearfix
-            %label{:for => 'control_contact'} Respondent
-            %div.input
+          %div.control-group
+            %label{:for => 'control_contact', :class => 'control-label'} Respondent
+            %div.controls
               %select{:name => 'control[contact_id]', :id => 'control_contact', :class => 'combobox' }
                 %option
                 - Contact.all.each do |c|
                   %option{:value => c.id}= "#{c.full_name}, Makovickeho 14, Prievidza"
 
-          %div.clearfix
-            %label{:for => 'control_type'} Typ kontroly
-            %div.input
-              %ul.inputs-list
-                %li
-                  %label{:for => 'control_type_phone' }
-                    %input{:type => 'radio', :name => 'control[control_type]', :value => 'Telefonická', :checked => 'checked', :id => 'control_type_phone'}
-                    %span Telefonická
-                %li
-                  %label{:for => 'control_type_terain' }
-                    %input{:type => 'radio', :name => 'control[control_type]', :value => 'Terénna', :checked => '', :id => 'control_type_terain'}
-                    %span Terénna
+          %div.control-group
+            %label{:for => 'control_type', :class => 'control-label'} Typ kontroly
+            %div.controls
+              %label{:for => 'control_type_phone', :class => 'checkbox inline' }
+                %input{:type => 'radio', :name => 'control[control_type]', :value => 'Telefonická', :checked => 'checked', :id => 'control_type_phone'}
+                Telefonická
+              %label{:for => 'control_type_terain', :class => 'checkbox inline' }
+                %input{:type => 'radio', :name => 'control[control_type]', :value => 'Terénna', :checked => '', :id => 'control_type_terain'}
+                Terénna
 
-          %div.clearfix
-            %label{:for => 'control_success'} Úspešná kontrola?
-            %div.input
-              %ul.inputs-list
-                %li
-                  %label{:for => 'control_success_true' }
-                    %input{:type => 'radio', :name => 'control[succeed]', :value => 'true', :checked => '', :id => 'control_success_true'}
-                    %span Áno
-                %li
-                  %label{:for => 'control_success_false' }
-                    %input{:type => 'radio', :name => 'control[succeed]', :value => 'false', :checked => 'checked', :id => 'control_success_false'}
-                    %span Nie
+          %div.control-group
+            %label{:for => 'control_success', :class => 'control-label'} Úspešná kontrola?
+            %div.controls
+              %label{:for => 'control_success_true', :class => 'checkbox inline' }
+                %input{:type => 'radio', :name => 'control[succeed]', :value => 'true', :checked => '', :id => 'control_success_true'}
+                Áno
+              %label{:for => 'control_success_false', :class => 'checkbox inline' }
+                %input{:type => 'radio', :name => 'control[succeed]', :value => 'false', :checked => 'checked', :id => 'control_success_false'}
+                Nie
 
-          %div.clearfix
-            %label{:for => 'control_delivered'} Noviny doručené?
-            %div.input
-              %ul.inputs-list
-                %li
-                  %label{:for => 'control_delivered_true' }
-                    %input{:type => 'radio', :name => 'control[delivered]', :value => 'true', :checked => '', :id => 'control_delivered_true'}
-                    %span Áno
-                %li
-                  %label{:for => 'control_delivered_false' }
-                    %input{:type => 'radio', :name => 'control[delivered]', :value => 'false', :checked => 'checked', :id => 'control_delivered_false'}
-                    %span Nie
+          %div.control-group
+            %label{:for => 'control_delivered', :class => 'control-label'} Noviny doručené?
+            %div.controls
+              %label{:for => 'control_delivered_true', :class => 'checkbox inline' }
+                %input{:type => 'radio', :name => 'control[delivered]', :value => 'true', :checked => '', :id => 'control_delivered_true'}
+                Áno
+              %label{:for => 'control_delivered_false', :class => 'checkbox inline' }
+                %input{:type => 'radio', :name => 'control[delivered]', :value => 'false', :checked => 'checked', :id => 'control_delivered_false'}
+                Nie
 
-          %div.clearfix
-            %label{:for => 'control_notice'} Poznámka
-            %div.input
+          %div.control-group
+            %label{:for => 'control_notice', :class => 'control-label'} Poznámka
+            %div.controls
               %textarea{:name => 'control[notice]', :id => 'control_notice'}
 
-          %div.actions
-            %input{:type => 'submit', :value => 'Uložiť', :class => 'btn primary'}
+          %div.form-actions
+            %input{:type => 'submit', :value => 'Uložiť', :class => 'btn btn-primary'}
               %button{:type => 'reset', :class => 'btn'} Zrušiť

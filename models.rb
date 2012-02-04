@@ -27,6 +27,7 @@ class Branch < ActiveRecord::Base
   establish_connection 'local_db'
   validates_presence_of :name
   has_many :users
+  has_many :contacts
 end
 
 class Contact < ActiveRecord::Base
@@ -48,7 +49,7 @@ class User < ActiveRecord::Base
   attr_accessor :password
   establish_connection 'local_db'
   has_many :controls
-  belongs_to :branch
+  belongs_to :branch, :include => :contacts
   before_save :encrypt_password
 
   validates_presence_of :email, :password, :first_name, :last_name, :phone, :branch_id

@@ -14,5 +14,6 @@ class Controls < ActiveRecord::Migration
   end
 
   def self.down
+    drop_table :contacts
   end
 end

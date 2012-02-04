@@ -8,7 +8,8 @@
       %thead
         %tr
           %th ID
-          %th.center Redakcia
+          - if @current_user.is_admin?
+            %th.center Redakcia
           %th Mesto
           %th Respondent
           %th.blue.center Počet kontrol
@@ -20,15 +21,16 @@
         - @contacts.each do |contact|
           %tr
             %td= contact.id
-            %td.center= contact.branch.mark
+            - if @current_user.is_admin?
+              %td.center= contact.branch.mark
             %td Prividza
             %td
               %a{:href => "/contact/#{contact.id}", :rel => 'popover', :class => 'with_popover',
               :title => contact.full_name,
               :'data-content' => "<strong> Adresa: </strong> &nbsp Makovickeho 12/2, </br> <strong>Telefón: </strong> &nbsp#{contact.phone}"}= contact.full_name
-            %td.blue.center 45
-            %td.green.center 32
-            %td.red.center 13
+            %td.blue.center= contact.controls.size
+            %td.green.center= contact.controls.to_a.count{|c| c.succeed?}
+            %td.red.center= contact.controls.to_a.count{|c| !c.succeed?}
             - if contact.is_favorite?
               %td.center
                 %span.label.label-success ANO
