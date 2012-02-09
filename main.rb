@@ -6,7 +6,7 @@ require 'will_paginate/active_record'
 include WillPaginate::Sinatra::Helpers
 
 class RpControl < Sinatra::Base
-
+  TIME_FORMAT = '%d. %m. %Y'
   configure do
     enable :sessions
     enable :method_override
@@ -32,8 +32,10 @@ class RpControl < Sinatra::Base
       request.path == path ? 'active' : ''
     end
 
-    def boolean_label_for(state)
-      if state
+    def boolean_label_for(state,conditions={})
+      if conditions.key?(:represented_if) && !conditions[:represented_if]
+        '<span class="label">N/A</span>'
+      elsif state
         '<span class="label label-success">ANO</span>'
       else
         '<span class="label label-important">NIE</span>'
@@ -107,7 +109,7 @@ class RpControl < Sinatra::Base
     @user = User.new(params[:user])
     if @user.save
       flash.now[:success] = 'Registrácia nového kontrolóra bola úspešná.'
-      redirect to '/'
+      redirect to '/users'
     else
       flash.now[:error] = 'Registrácia bola neuspešná.'
       redirect to '/new/user'
@@ -165,9 +167,9 @@ class RpControl < Sinatra::Base
 
   get '/contacts' do
     @contacts = if @current_user.is_admin?
-      Contact.paginate(:page =>params[:page], :per_page => 18).includes(:controls, :branch)
+      Contact.paginate(:page =>params[:page], :per_page => 18).includes(:controls, :branch).order('created_at DESC')
     else
-      @current_user.branch.contacts
+      @current_user.branch.contacts.order('created_at DESC')
     end
     haml :'contacts/index'
   end
@@ -193,10 +195,20 @@ class RpControl < Sinatra::Base
     end
   end
 
-  get '/edit/contact/:id' do
+  get '/edit/contacts/:id' do
+    @contact = Contact.find(params[:id])
+    haml :'contacts/edit'
   end
 
-  put '/contacts' do
+  put '/contacts/:id' do
+    @contact = Contact.find(params[:id])
+    if @contact.update_attributes(params[:contact])
+      flash.now[:success] = 'Úprava respondenta prebehla úspešne.'
+      redirect to '/contacts'
+    else
+      flash.now[:error] = 'Úprava respondenta nebola úspešná.'
+      haml :'contacts/edit'
+    end
   end
 
   delete '/contact/:id' do

@@ -1,10 +1,11 @@
 .content
   .hero-unit
-    %h2 Nový respondent
+    %h2 Úprava respondenta
   .row
     .span12
-      %form{:action => '/contacts', :method => 'POST', :class => 'well form-horizontal'}
+      %form{:action => "/contacts/#{@contact.id}", :method => 'POST', :class => 'well form-horizontal'}
         %fieldset
+          %input{:type => 'hidden', :name => '_method', :value => 'PUT'}
           - if @current_user.is_admin?
             %div.control-group
               %label{:for => 'contact_branch', :class => 'control-label'} Redakcia
@@ -12,39 +13,39 @@
                 %select{:name => 'contact[branch_id]', :id => 'contact_branch', :class => 'combobox' }
                   %option
                   - Branch.all.each do |b|
-                    %option{:value => b.id}= b.name
+                    %option{:value => b.id, :selected => (@contact.branch_name == b.name ? 'selected' : '')}= b.name
           - else
-            %input{:type => 'hidden', :name => 'contact[branch_id]', :value => @current_user.branch_id, :id => 'contact_branch'}
+            %input{:type => 'hidden', :name => 'contact[branch_id]', :value => @contact.branch_id, :id => 'contact_branch'}
 
           %div.control-group
             %label{:for => 'contact_first_name', :class => 'control-label'} Krstné meno
             %div.controls
-              %input{:type => 'text', :name => 'contact[first_name]', :id => 'contact_first_name'}
+              %input{:type => 'text', :name => 'contact[first_name]', :value => @contact.first_name, :id => 'contact_first_name'}
 
           %div.control-group
             %label{:for => 'contact_last_name', :class => 'control-label'} Priezvisko
             %div.controls
-              %input{:type => 'text', :name => 'contact[last_name]', :id => 'contact_last_name'}
+              %input{:type => 'text', :name => 'contact[last_name]', :value => @contact.last_name,  :id => 'contact_last_name'}
 
           %div.control-group
             %label{:for => 'contact_phone', :class => 'control-label'} Telefón
             %div.controls
-              %input{:type => 'text', :name => 'contact[phone]', :id => 'contact_phone'}
+              %input{:type => 'text', :name => 'contact[phone]', :value => @contact.phone, :id => 'contact_phone'}
 
           %div.control-group
             %label{:for => 'contact_favorite', :class => 'control-label'} Oblubený kontakt?
             %div.controls
               %label{:for => 'contact_favorite_true', :class => 'checkbox inline' }
-                %input{:type => 'radio', :name => 'contact[is_favorite]', :value => 'true', :checked => '', :id => 'contact_favorite_true', :class => 'inline_radio'}
+                %input{:type => 'radio', :name => 'contact[is_favorite]', :value => 'true', :checked => ('checked' if @contact.is_favorite?) , :id => 'contact_favorite_true', :class => 'inline_radio'}
                 ANO
               %label{:for => 'contact_favorite_false', :class => 'checkbox inline' }
-                %input{:type => 'radio', :name => 'contact[is_favorite]', :value => 'false', :checked => 'checked', :id => 'contact_favorite_false', :class => 'inline_radio'}
+                %input{:type => 'radio', :name => 'contact[is_favorite]', :value => 'false', :checked => ('checked' unless @contact.is_favorite?) , :id => 'contact_favorite_false', :class => 'inline_radio'}
                 NIE
 
           %div.control-group
             %label{:for => 'contact_description', :class => 'control-label'} Poznámka
             %div.controls
-              %textarea{:name => 'contact[description]', :id => 'contact_description'}
+              %textarea{:name => 'contact[description]', :id => 'contact_description', :value => @contact.description}
 
           %div.form-actions
             %input{:type => 'submit', :value => 'Uložiť', :class => 'btn btn-primary'}

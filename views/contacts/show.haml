@@ -50,7 +50,7 @@
                   :'data-content' => "<strong> Kontrol: </strong>&nbsp 122 </br> <strong>Úspešných: </strong> &nbsp 72</br> <strong>Neoverených: </strong> &nbsp 44"}= control.user.full_name
               - else
                 %td= control.user.full_name
-              %td= control.created_at.strftime('%d. %m. %Y')
+              %td= control.created_at.strftime(TIME_FORMAT)
               %td
                 - if control.control_type == 'Telefonická'
                   %span.label.label-info=control.control_type

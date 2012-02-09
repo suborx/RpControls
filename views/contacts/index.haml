@@ -4,6 +4,7 @@
     %a.pull-right.btn.btn-large.btn-primary{:href => "/new/contact"} + Pridať respondenta
 .row
   .span12
+    = flash_messages
     %table.table.table-striped.table-bordered.table-condensed
       %thead
         %tr
@@ -38,5 +39,5 @@
               %td.center
                 %span.label NIE
             %td.center
-              %a Upraviť
+              %a{:href => "/edit/contacts/#{contact.id}"} Upraviť
     = will_paginate @contacts, paginate_labels
