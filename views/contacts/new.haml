@@ -5,7 +5,7 @@
     .span12
       %form{:action => '/contacts', :method => 'POST', :class => 'well form-horizontal'}
         %fieldset
-          - if current_user.is_admin?
+          - if @current_user.is_admin?
             %div.control-group
               %label{:for => 'contact_branch', :class => 'control-label'} Redakcia
               %div.controls
@@ -14,7 +14,7 @@
                   - Branch.all.each do |b|
                     %option{:value => b.id}= b.name
           - else
-            %input{:type => 'hidden', :name => 'contact[branch_id]', :value => current_user.branch_id, :id => 'contact_branch'}
+            %input{:type => 'hidden', :name => 'contact[branch_id]', :value => @current_user.branch_id, :id => 'contact_branch'}
 
           %div.control-group
             %label{:for => 'contact_first_name', :class => 'control-label'} Krstné meno

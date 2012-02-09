@@ -25,7 +25,7 @@
               %td.center= contact.branch.mark
             %td Prividza
             %td
-              %a{:href => "/contact/#{contact.id}", :rel => 'popover', :class => 'with_popover',
+              %a{:href => "/contacts/#{contact.id}", :rel => 'popover', :class => 'with_popover',
               :title => contact.full_name,
               :'data-content' => "<strong> Adresa: </strong> &nbsp Makovickeho 12/2, </br> <strong>Telefón: </strong> &nbsp#{contact.phone}"}= contact.full_name
             %td.blue.center= contact.controls.size

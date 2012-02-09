@@ -1,0 +1,65 @@
+.content
+  .hero-unit
+    .row
+      .span9
+        %h2
+          = @contact.full_name
+          - if @contact.is_favorite?
+            %i.icon-star
+        %small
+          %i.icon-home
+          Makovického 14, Prievidza
+          %i.icon-user
+          0901324234
+      .span3-last
+        %ul.unstyled.stats
+          %li
+            %h4
+              %span= @contact.controls.size
+              %small HOVOROV
+          %li
+            %h4
+              %span= @contact.controls.to_a.count{|c| c.succeed?}
+              %small ÚSPEŠNÝCH
+          %li
+            %h4
+              %span= @contact.controls.to_a.count{|c| c.delivered?}
+              %small DORUČENÝCH
+  .row
+    .span12
+      %table.table.table-striped.table-bordered.table-condensed
+        %thead
+          %tr
+            %th ID
+            %th Kontrolór
+            %th Dátum
+            %th Typ
+            %th Čas
+            %th.center Uspešné
+            %th.center Doručené
+            %th.center Overené
+            %th.center Nástroje
+        %tbody
+          - @controls.each do |control|
+            %tr
+              %td= control.id
+              - if @current_user.is_admin?
+                %td
+                  %a{:href => "/user/#{control.user_id}", :rel => 'popover', :class => 'with_popover',
+                  :title => control.user.full_name,
+                  :'data-content' => "<strong> Kontrol: </strong>&nbsp 122 </br> <strong>Úspešných: </strong> &nbsp 72</br> <strong>Neoverených: </strong> &nbsp 44"}= control.user.full_name
+              - else
+                %td= control.user.full_name
+              %td= control.created_at.strftime('%d. %m. %Y')
+              %td
+                - if control.control_type == 'Telefonická'
+                  %span.label.label-info=control.control_type
+                - else
+                  %span.label= control.control_type
+              %td.center= control.time
+              %td.center= boolean_label_for(control.succeed?)
+              %td.center= boolean_label_for(control.delivered?)
+              %td.center= boolean_label_for(control.verified?)
+              %td.center
+                %a Upraviť
+      = will_paginate @controls, paginate_labels

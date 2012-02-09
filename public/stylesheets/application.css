@@ -136,5 +136,18 @@ input.inline_radio{
 .pagination .previous_page{
   border-left: 1px solid #DDDDDD
 }
+ul.stats{
+  margin-left:80px;
+}
 
+ul.stats li:nth-child(2){
+  border-top: 2px solid #DDD;
+  border-bottom: 2px solid #DDD;
+  padding: 3px 0;
+  margin: 3px 0;
+}
 
+ul.stats span{
+  float:left;
+  margin-right:5px;
+}

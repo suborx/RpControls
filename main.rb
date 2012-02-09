@@ -172,7 +172,10 @@ class RpControl < Sinatra::Base
     haml :'contacts/index'
   end
 
-  get '/contact/:id' do
+  get '/contacts/:id' do
+    @contact = Contact.includes(:controls).find(params[:id])
+    @controls = @contact.controls.paginate(:page =>params[:page], :per_page => 18).includes(:user)
+    haml :'contacts/show'
   end
 
   get '/new/contact' do
