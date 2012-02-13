@@ -13,15 +13,19 @@ GEM
     activesupport (3.2.1)
       i18n (~> 0.6)
       multi_json (~> 1.0)
+    archive-tar-minitar (0.5.2)
     arel (3.0.0)
     backports (2.3.0)
     bcrypt-ruby (3.0.1)
     builder (3.0.0)
+    columnize (0.3.6)
     eventmachine (0.12.10)
     faker (1.0.1)
       i18n (~> 0.4)
     haml (3.1.4)
     i18n (0.6.0)
+    linecache19 (0.5.12)
+      ruby_core_source (>= 0.1.4)
     multi_json (1.0.4)
     mysql (2.8.1)
     mysql2 (0.3.11)
@@ -30,6 +34,16 @@ GEM
       rack
     rack-test (0.6.1)
       rack (>= 1.0)
+    ruby-debug-base19 (0.11.25)
+      columnize (>= 0.3.1)
+      linecache19 (>= 0.5.11)
+      ruby_core_source (>= 0.1.4)
+    ruby-debug19 (0.11.6)
+      columnize (>= 0.3.1)
+      linecache19 (>= 0.5.11)
+      ruby-debug-base19 (>= 0.11.19)
+    ruby_core_source (0.1.5)
+      archive-tar-minitar (>= 0.5.2)
     sinatra (1.3.2)
       rack (~> 1.3, >= 1.3.6)
       rack-protection (~> 1.2)
@@ -60,6 +74,7 @@ DEPENDENCIES
   haml
   mysql
   mysql2
+  ruby-debug19
   sinatra
   sinatra-activerecord
   sinatra-contrib
