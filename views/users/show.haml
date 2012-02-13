@@ -1,0 +1,92 @@
+.content
+  .hero-unit
+    .row
+      .span9
+        %h2
+          = @user.full_name
+          - if @user.is_active?
+            %span.label.label-success AKTIVNY
+          - else
+            %span.label.label-important NEAKTIVNY
+        %small
+
+          %i.icon-envelope
+          = @user.email
+          %i.icon-user
+          = @user.phone
+          %br
+          %i.icon-flag
+          = @user.branch.name
+          %i.icon-edit
+          %a Upraviť
+      .span3-last
+        %ul.unstyled.stats
+          %li
+            %h4
+              %span= @user.controls.size
+              %small KONTROL
+          %li
+            %h4
+              %span= @user.count_verified
+              %small OVERENÝCH
+          %li
+            %h4
+              %span{:class => ((@user.count_unverified > 0) ? 'red' : '')}= @user.count_unverified
+              %small{:class => ((@user.count_unverified > 0) ? 'red' : '')} NEOVERENÝCH
+.row
+  .span12
+    .well.well-wide
+      .span8
+        %h3= "Kontroly za mesiac #{(l Date.today, '%B').chop.camelize}"
+      .span4-last
+        %form.form-search
+          %select{:name => 'contact[branch_id]', :id => 'contact_branch', :class => 'combobox' }
+            %option
+          %input{:type => 'submit', :value => 'Vyhladať', :class => 'btn btn-primary'}
+    %table.table.table-striped.table-bordered.table-condensed
+      %thead
+        %tr
+          %th ID
+          - if @current_user.is_admin?
+            %th.center Redakcia
+            %th Kontrolór
+          - else
+            %th Respondent
+          %th Dátum
+          %th Typ
+          %th.center Čas
+          %th.center Uspešné
+          %th.center Doručené
+          %th.center Overené
+          %th.center Nástroje
+      %tbody
+        - @controls.each do |control|
+          - @user_controls = control.user.controls
+          %tr
+            %td= control.id
+            - if @current_user.is_admin?
+              %td.center= control.user.branch.mark
+              %td
+                %a{:href => "/user/#{control.user_id}", :rel => 'popover', :class => 'with_popover',
+                :title => control.user.full_name,
+                :'data-content' => "<strong> Kontrol: </strong>&nbsp #{@user_controls.size} </br> <strong>Úspešných: </strong> &nbsp #{@user_controls.to_a.count{|c| c.succeed?}}</br> <strong>Neoverených: </strong> &nbsp #{@user_controls.to_a.count{|c| c.verified?}}"}= control.user.full_name
+            - else
+              %td
+                %a{:href => "/contract/#{control.contract_id}", :rel => 'popover', :class => 'with_popover',
+                :title => control.contact.full_name,
+                :'data-content' => "<strong> Adresa: </strong> &nbsp Makovickeho 12/2, </br> <strong>Telefón: </strong> &nbsp#{control.contact.phone}"}
+                  = control.contact.full_name
+            %td= control.created_at.strftime(TIME_FORMAT)
+            %td
+              - if control.control_type == 'Telefonická'
+                %span.label.label-info=control.control_type
+              - else
+                %span.label= control.control_type
+            %td.center= control.time
+            %td.center= boolean_label_for(control.succeed?)
+            %td.center= boolean_label_for(control.delivered?, :represented_if => control.succeed?)
+
+            %td.center= boolean_label_for(control.verified?,:represented_if => (control.control_type == 'Telefonická'))
+            %td.center
+              %a Upraviť
+    = will_paginate @controls, paginate_labels

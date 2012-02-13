@@ -11,6 +11,11 @@
           Makovického 14, Prievidza
           %i.icon-user
           0901324234
+          %br
+          %i.icon-flag
+          = @contact.branch.name
+          %i.icon-edit
+          %a{:href => "/edit/contacts/#{@contact.id}"} Upraviť
       .span3-last
         %ul.unstyled.stats
           %li

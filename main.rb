@@ -2,6 +2,7 @@
 require 'sinatra/reloader'
 require 'sinatra/activerecord'
 require 'sinatra/flash'
+require 'sinatra/r18n'
 require 'will_paginate'
 require 'will_paginate/active_record'
 include WillPaginate::Sinatra::Helpers
@@ -10,11 +11,14 @@ class RpControl < Sinatra::Base
   TIME_FORMAT = '%d. %m. %Y'
 
   configure do
-    enable :sessions
-    enable :method_override
-    set :session_secret, "My session secret"
     register Sinatra::Flash
     register Sinatra::Reloader
+    register Sinatra::R18n
+    enable :sessions
+    enable :method_override
+    set :root, File.dirname(__FILE__)
+    set :session_secret, "My session secret"
+    set :default_locale, 'sk'
   end
 
   before do
@@ -85,8 +89,10 @@ class RpControl < Sinatra::Base
     user = User.find(params[:user_id])
     if @current_user.is_admin? && user && params[:active] == 'true'
       user.activate!
+      flash.next[:success] = "Kontrolor #{user.full_name} bol úspešne aktivovaný."
     elsif @current_user.is_admin? && user && params[:active] == 'false'
       user.deactivate!
+      flash.next[:success] = "Kontrolor #{user.full_name} bol úspešne deaktivovaný."
     else
       nil
     end
@@ -100,8 +106,10 @@ class RpControl < Sinatra::Base
     haml :'users/index'
   end
 
-  get '/user/:id' do
-    @user = User.find(:id)
+  get '/users/:id' do
+    @user = User.includes(:controls).find(params[:id])
+    @controls = @user.controls.paginate(:page =>params[:page], :per_page => 10)
+    haml :'users/show'
   end
 
   get '/new/user' do
@@ -111,11 +119,11 @@ class RpControl < Sinatra::Base
   post '/users' do
     @user = User.new(params[:user])
     if @user.save
-      flash.now[:success] = 'Registrácia nového kontrolóra bola úspešná.'
+      flash.next[:success] = 'Registrácia nového kontrolóra bola úspešná.'
       redirect to '/users'
     else
       flash.now[:error] = 'Registrácia bola neuspešná.'
-      redirect to '/new/user'
+      haml :'users/new'
     end
   end
 
@@ -149,7 +157,7 @@ class RpControl < Sinatra::Base
   post '/controls' do
     @control = @current_user.controls.new(params[:control])
     if @control.save
-      flash.now[:success] = 'Pridanie kontroly prebehlo úspešne.'
+      flash.next[:success] = 'Pridanie kontroly prebehlo úspešne.'
       redirect to '/controls'
     else
       flash.now[:error] = 'Pridanie kontroly bolo neúspešné.'
@@ -190,7 +198,7 @@ class RpControl < Sinatra::Base
   post '/contacts' do
     @contact = Contact.new(params[:contact])
     if @contact.save
-      flash.now[:success] = 'Registrácia respondenta prebehla úspešne.'
+      flash.next[:success] = 'Registrácia respondenta prebehla úspešne.'
       redirect to '/contacts'
     else
       flash.now[:error] = 'Registrácia respondenta nebola úspešná.'
@@ -206,7 +214,7 @@ class RpControl < Sinatra::Base
   put '/contacts/:id' do
     @contact = Contact.find(params[:id])
     if @contact.update_attributes(params[:contact])
-      flash.now[:success] = 'Úprava respondenta prebehla úspešne.'
+      flash.next[:success] = 'Úprava respondenta prebehla úspešne.'
       redirect to '/contacts'
     else
       flash.now[:error] = 'Úprava respondenta nebola úspešná.'

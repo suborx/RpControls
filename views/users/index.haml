@@ -22,7 +22,7 @@
             %td= user.id
             %td= user.branch_name
             %td
-              %a= user.full_name
+              %a{:href => "/users/#{user.id}"}= user.full_name
             %td.center 33
             %td.green.center 1
             %td.red.center 22

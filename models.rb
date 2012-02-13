@@ -36,6 +36,8 @@ class Contact < ActiveRecord::Base
   belongs_to :branch
   delegate :name, :to => :branch, :prefix => true
 
+  validates_presence_of :first_name, :last_name, :phone, :branch_id
+
   def full_name; first_name + ' ' + last_name end
 end
 
@@ -43,6 +45,7 @@ class Control < ActiveRecord::Base
   establish_connection 'local_db'
   belongs_to :user
   belongs_to :contact
+  validates_presence_of :contact_id, :user_id
 end
 
 class User < ActiveRecord::Base
@@ -84,4 +87,11 @@ class User < ActiveRecord::Base
     update_attribute(:is_active, false)
   end
 
+  def count_verified
+    @count_verified ||= controls.to_a.count{|c| c.verified?}
+  end
+
+  def count_unverified
+   @count_unverified ||= controls.to_a.count{|c| !c.verified?}
+  end
 end
