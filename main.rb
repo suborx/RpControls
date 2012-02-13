@@ -1,17 +1,20 @@
 # -*- encoding : utf-8 -*-
-require 'sinatra/flash'
+require 'sinatra/reloader'
 require 'sinatra/activerecord'
+require 'sinatra/flash'
 require 'will_paginate'
 require 'will_paginate/active_record'
 include WillPaginate::Sinatra::Helpers
 
 class RpControl < Sinatra::Base
   TIME_FORMAT = '%d. %m. %Y'
+
   configure do
     enable :sessions
     enable :method_override
     set :session_secret, "My session secret"
     register Sinatra::Flash
+    register Sinatra::Reloader
   end
 
   before do

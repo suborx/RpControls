@@ -2,50 +2,47 @@ GEM
   remote: http://gemcutter.org/
   remote: http://rubygems.org/
   specs:
-    activemodel (3.2.0)
-      activesupport (= 3.2.0)
+    activemodel (3.2.1)
+      activesupport (= 3.2.1)
       builder (~> 3.0.0)
-    activerecord (3.2.0)
-      activemodel (= 3.2.0)
-      activesupport (= 3.2.0)
+    activerecord (3.2.1)
+      activemodel (= 3.2.1)
+      activesupport (= 3.2.1)
       arel (~> 3.0.0)
       tzinfo (~> 0.3.29)
-    activesupport (3.2.0)
+    activesupport (3.2.1)
       i18n (~> 0.6)
       multi_json (~> 1.0)
-    archive-tar-minitar (0.5.2)
     arel (3.0.0)
+    backports (2.3.0)
     bcrypt-ruby (3.0.1)
     builder (3.0.0)
-    columnize (0.3.6)
+    eventmachine (0.12.10)
     faker (1.0.1)
       i18n (~> 0.4)
     haml (3.1.4)
     i18n (0.6.0)
-    linecache19 (0.5.12)
-      ruby_core_source (>= 0.1.4)
     multi_json (1.0.4)
     mysql (2.8.1)
     mysql2 (0.3.11)
     rack (1.4.1)
     rack-protection (1.2.0)
       rack
-    ruby-debug-base19 (0.11.25)
-      columnize (>= 0.3.1)
-      linecache19 (>= 0.5.11)
-      ruby_core_source (>= 0.1.4)
-    ruby-debug19 (0.11.6)
-      columnize (>= 0.3.1)
-      linecache19 (>= 0.5.11)
-      ruby-debug-base19 (>= 0.11.19)
-    ruby_core_source (0.1.5)
-      archive-tar-minitar (>= 0.5.2)
+    rack-test (0.6.1)
+      rack (>= 1.0)
     sinatra (1.3.2)
       rack (~> 1.3, >= 1.3.6)
       rack-protection (~> 1.2)
       tilt (~> 1.3, >= 1.3.3)
     sinatra-activerecord (0.1.3)
       sinatra (>= 0.9.4)
+    sinatra-contrib (1.3.1)
+      backports (>= 2.0)
+      eventmachine
+      rack-protection
+      rack-test
+      sinatra (~> 1.3.0)
+      tilt (~> 1.3)
     sinatra-flash (0.3.0)
       sinatra (>= 1.0.0)
     sqlite3 (1.3.5)
@@ -63,9 +60,9 @@ DEPENDENCIES
   haml
   mysql
   mysql2
-  ruby-debug19
   sinatra
   sinatra-activerecord
+  sinatra-contrib
   sinatra-flash
   sqlite3
   will_paginate (~> 3.0)

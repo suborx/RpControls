@@ -3,6 +3,7 @@
     %h2 Registrácia kontrolóra
   .row
     .span12
+      = flash_messages
       %form{:action => '/users', :method => 'POST', :class => 'well form-horizontal'}
         %fieldset
 
