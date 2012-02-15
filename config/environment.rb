@@ -3,5 +3,6 @@ require 'bundler'
 
 Bundler.require
 
-require './main'
+require './database'
 require './models'
+require './main'

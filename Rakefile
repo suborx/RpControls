@@ -7,13 +7,36 @@ task :environment do
 end
 
 namespace :db do
-  desc 'Load the seed data from db/seeds.rb'
-  task :seed => :environment do
-    User.delete_all
-    Branch.delete_all
-    Contact.delete_all
-    Control.delete_all
 
+  desc 'Load the seed data for production'
+  task :production_seed => [:delete_all, :load_branches, :basic_accesses ] do
+  end
+
+  desc 'Load the seed data for development'
+  task :development_seed => [:delete_all, :load_branches, :basic_accesses, :generate_fake_data] do
+  end
+
+  desc 'Create admin user and controlor user'
+  task :basic_accesses => :environment do
+    admin = create_user(Branch.first, {:first_name => 'Admin', :last_name => 'Admín', :email => 'admin@admin.sk', :is_admin => true })
+    puts "#{admin.full_name} pridaný"
+    admin = create_user(Branch.first, {:first_name => 'Martin', :last_name => 'Marochnič', :email => 'seller@seller.sk'})
+    puts "#{admin.full_name} pridaný"
+  end
+
+  desc 'Generate fake users, controlors and controls'
+  task :generate_fake_data => :environment do
+    Branch.all.each do |b|
+      user = create_user(b)
+      10.times do |n|
+        contact = create_contact(b)
+        10.times{ |n| create_control(user,contact)}
+      end
+    end
+  end
+
+  desc 'Load the branches'
+  task :load_branches => :environment do
     branches =
        [[ "Bratislavsko", "BA" ],
         [ "Dunajskostredsko", "DS"],
@@ -51,73 +74,54 @@ namespace :db do
         [ "Popradsko-Kežmarsko-Staroľubovniansko", "PP"],
         [ "Prešovsko-Sabinovsko", "PO"],
         [ "Spišskonovomestsko-Levočsko-Gelnicko", "SN"]]
+    branches.each{ |b|  branch = Branch.create(:name => b.first, :mark => b.last)}
+  end
 
-    branches.each do |b|
-      branch = Branch.create(:name => b.first, :mark => b.last)
-
-      user = User.new(
-        :first_name => Faker::Name.first_name,
-        :last_name => Faker::Name.last_name,
-        :phone => Faker::PhoneNumber.phone_number,
-        :branch_id => branch.id,
-        :email => Faker::Internet.email,
-        :password => 'heslo',
-        :password_confirmation => 'heslo',
-        :is_admin => false,
-        :is_active => true
-      )
-      user.save
-
-      10.times do |n|
-        contact = Contact.create(
-          :first_name => Faker::Name.first_name,
-          :last_name => Faker::Name.last_name,
-          :phone => Faker::PhoneNumber.phone_number,
-          :branch_id => branch.id
-        )
-
-        10.times do |n|
-          Control.create(
-            :user_id => user.id,
-            :contact_id => contact.id,
-            :delivered => true_or_false,
-            :succeed => true_or_false,
-            :verified => true_or_false,
-            :control_type => true_or_false ? 'Terenna' : 'Telefonická'
-          )
-        end
-      end
-    end
-
-    admin = User.new(
-      :first_name => 'Admin',
-      :last_name => 'RpControl',
-      :phone => '0944171017',
-      :branch_id => Branch.first.id,
-      :email => 'matoweb@gmail.com',
-      :password => 'heslo',
-      :password_confirmation => 'heslo',
-      :is_admin => true,
-      :is_active => true
-    )
-    admin.save
-
-    controlor = User.new(
-      :first_name => 'Martin',
-      :last_name => 'Marochnic',
-      :phone => '0944171017',
-      :branch_id => Branch.first.id,
-      :email => 'suborx@gmail.com',
-      :password => 'heslo',
-      :password_confirmation => 'heslo',
-      :is_admin => false,
-      :is_active => true
-    )
-    controlor.save
-    puts User.first.full_name
+  desc 'Delete all data'
+  task :delete_all => :environment do
+    User.delete_all
+    Contact.delete_all
+    Control.delete_all
+    Branch.delete_all
   end
 end
 
 def true_or_false
   rand(2) == 1 ? true : false
+end
+
+def create_user(branch, options={})
+  attrs = {
+    :first_name => Faker::Name.first_name,
+    :last_name => Faker::Name.last_name,
+    :phone => Faker::PhoneNumber.phone_number,
+    :branch_id => branch.id,
+    :email => Faker::Internet.email,
+    :password => 'heslo',
+    :password_confirmation => 'heslo',
+    :is_admin => false,
+    :is_active => true}.merge!(options)
+  u = User.create(attrs)
+end
+
+def create_contact(branch)
+  contact = Contact.create(
+    :first_name => Faker::Name.first_name,
+    :last_name => Faker::Name.last_name,
+    :phone => Faker::PhoneNumber.phone_number,
+    :branch_id => branch.id
+  )
+end
+
+def create_control(user,contact)
+  10.times do |n|
+    Control.create(
+      :user_id => user.id,
+      :contact_id => contact.id,
+      :delivered => true_or_false,
+      :succeed => true_or_false,
+      :verified => true_or_false,
+      :control_type => true_or_false ? 'Terenna' : 'Telefonická'
+    )
+  end
 end
