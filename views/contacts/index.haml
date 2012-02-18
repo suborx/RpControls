@@ -24,11 +24,11 @@
             %td= contact.id
             - if @current_user.is_admin?
               %td.center= contact.branch.mark
-            %td Prividza
+            %td= contact.address.city_name
             %td
               %a{:href => "/contacts/#{contact.id}", :rel => 'popover', :class => 'with_popover',
               :title => contact.full_name,
-              :'data-content' => "<strong> Adresa: </strong> &nbsp Makovickeho 12/2, </br> <strong>Telefón: </strong> &nbsp#{contact.phone}"}= contact.full_name
+              :'data-content' => "<strong> Adresa: </strong> &nbsp #{contact.address.street} #{contact.address.number}, </br> <strong>Telefón: </strong> &nbsp#{contact.phone}"}= contact.full_name
             %td.blue.center= contact.controls.size
             %td.green.center= contact.controls.to_a.count{|c| c.succeed?}
             %td.red.center= contact.controls.to_a.count{|c| !c.succeed?}

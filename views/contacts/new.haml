@@ -32,6 +32,21 @@
               %input{:type => 'text', :name => 'contact[phone]', :id => 'contact_phone'}
 
           %div.control-group
+            %label{:for => 'contact_city', :class => 'control-label'} Mesto
+            %div.controls
+              %input{:type => 'text', :name => 'contact[city]', :id => 'contact_city'}
+
+          %div.control-group
+            %label{:for => 'contact_address', :class => 'control-label'} Ulica
+            %div.controls
+              %input{:type => 'text', :name => 'contact[street]', :id => 'contact_address'}
+
+          %div.control-group
+            %label{:for => 'contact_number', :class => 'control-label'} Číslo domu
+            %div.controls
+              %input{:type => 'text', :name => 'contact[number]', :id => 'contact_number'}
+
+          %div.control-group
             %label{:for => 'contact_favorite', :class => 'control-label'} Oblubený kontakt?
             %div.controls
               %label{:for => 'contact_favorite_true', :class => 'checkbox inline' }

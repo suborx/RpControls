@@ -8,9 +8,9 @@
             %i.icon-star
         %small
           %i.icon-home
-          Makovického 14, Prievidza
+          = @contact.address.complete_address
           %i.icon-user
-          0901324234
+          = @contact.phone
           %br
           %i.icon-flag
           = @contact.branch.name

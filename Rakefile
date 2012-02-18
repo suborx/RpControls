@@ -109,7 +109,10 @@ def create_contact(branch)
     :first_name => Faker::Name.first_name,
     :last_name => Faker::Name.last_name,
     :phone => Faker::PhoneNumber.phone_number,
-    :branch_id => branch.id
+    :branch_id => branch.id,
+    :city => Faker::Address.city,
+    :street => Faker::Address.street_name,
+    :number => rand(100)
   )
 end
 
