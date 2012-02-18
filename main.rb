@@ -11,14 +11,15 @@ class RpControl < Sinatra::Base
   TIME_FORMAT = '%d. %m. %Y'
 
   configure do
+    set :root, File.dirname(__FILE__)
+    set :locales, File.join(File.dirname(__FILE__), 'i18n/sk.yml')
+    set :default_locale, 'sk'
+    set :session_secret, "My session secret"
     register Sinatra::Flash
     register Sinatra::Reloader
     register Sinatra::R18n
     enable :sessions
     enable :method_override
-    set :root, File.dirname(__FILE__)
-    set :session_secret, "My session secret"
-    set :default_locale, 'sk'
   end
 
   before do
