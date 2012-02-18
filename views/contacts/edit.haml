@@ -3,6 +3,7 @@
     %h2 Úprava respondenta
   .row
     .span12
+      = flash_messages
       %form{:action => "/contacts/#{@contact.id}", :method => 'POST', :class => 'well form-horizontal'}
         %fieldset
           %input{:type => 'hidden', :name => '_method', :value => 'PUT'}

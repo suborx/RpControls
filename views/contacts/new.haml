@@ -3,6 +3,7 @@
     %h2 Nový respondent
   .row
     .span12
+      = flash_messages
       %form{:action => '/contacts', :method => 'POST', :class => 'well form-horizontal'}
         %fieldset
           - if @current_user.is_admin?
