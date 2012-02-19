@@ -65,6 +65,7 @@ class RpControl < Sinatra::Base
         #{html_message}
       </div>"
     end
+
   end
 
   get '/' do
@@ -118,6 +119,7 @@ class RpControl < Sinatra::Base
   end
 
   get '/new/user' do
+    @user = User.new
     haml :'users/new'
   end
 
@@ -163,6 +165,7 @@ class RpControl < Sinatra::Base
   end
 
   get '/new/control' do
+    @control = Control.new
     haml :'controls/new'
   end
 
@@ -200,7 +203,7 @@ class RpControl < Sinatra::Base
 
   get '/contacts' do
     @contacts = if @current_user.is_admin?
-      Contact.paginate(:page =>params[:page], :per_page => 18).includes([{:address => :city},:controls, :branch]).order('created_at DESC')
+      Contact.paginate(:page =>params[:page], :per_page => 18).includes([{:address => :city},:controls, :branch]).order('last_name')
     else
       @current_user.branch.contacts.order('created_at DESC')
     end
@@ -214,11 +217,16 @@ class RpControl < Sinatra::Base
   end
 
   get '/new/contact' do
+    @contact = Contact.new
     haml :'contacts/new'
   end
 
   post '/contacts' do
-    @contact = Contact.new(params[:contact])
+    if @current_user.is_admin?
+      @contact = Contact.new(params[:contact])
+    else
+      @contact = @current_user.branch.contacts.new(params[:contact])
+    end
     if @contact.save
       flash.next[:success] = 'Registrácia respondenta prebehla úspešne.'
       redirect to '/contacts'

@@ -12,6 +12,7 @@
           - if @current_user.is_admin?
             %th.center Redakcia
             %th Kontrolór
+            %th Respondent
           - else
             %th Respondent
           %th Dátum
@@ -29,9 +30,11 @@
             - if @current_user.is_admin?
               %td.center= control.user.branch.mark
               %td
-                %a{:href => "/user/#{control.user_id}", :rel => 'popover', :class => 'with_popover',
+                %a{:href => "/users/#{control.user_id}", :rel => 'popover', :class => 'with_popover',
                 :title => control.user.full_name,
                 :'data-content' => "<strong> Kontrol: </strong>&nbsp #{@user_controls.size} </br> <strong>Úspešných: </strong> &nbsp #{@user_controls.to_a.count{|c| c.succeed?}}</br> <strong>Neoverených: </strong> &nbsp #{@user_controls.to_a.count{|c| c.verified?}}"}= control.user.full_name
+              %td
+                %a{:href => "/contacts/#{control.contact.id}"}= control.contact.full_name
             - else
               %td
                 %a{:href => "/contract/#{control.contract_id}", :rel => 'popover', :class => 'with_popover',

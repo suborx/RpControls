@@ -7,8 +7,10 @@
       %form{:action => "/users/#{@user.id}", :method => 'POST', :class => 'well form-horizontal'}
         %fieldset
           %input{:type => 'hidden', :name => '_method', :value => 'PUT'}
-          %div.control-group
-            %label{:for => 'user_branch', :class => 'control-label'} Redakcia
+          %div.control-group{ :class => @user.has_error_on?(:branch_id)}
+            %label{:for => 'user_branch', :class => 'control-label'}
+              Redakcia
+              %abbr *
             %div.controls
               %select{:name => 'user[branch_id]', :id => 'user_branch', :class => 'combobox' }
                 %option
@@ -16,26 +18,39 @@
                   - options = {:value => b.id}
                   - options.merge!(:selected => 'selected') if b.id == @user.branch_id
                   %option{options }= b.name
+              %span.help-inline= @user.flash_error_for(:branch_id)
 
-          %div.control-group
-            %label{:for => 'user_first_name', :class => 'control-label'} Krstné meno
+          %div.control-group{ :class => @user.has_error_on?(:first_name)}
+            %label{:for => 'user_first_name', :class => 'control-label'}
+              Krstné meno
+              %abbr *
             %div.controls
               %input{:type => 'text', :name => 'user[first_name]', :id => 'user_first_name', :value => @user.first_name}
+              %span.help-inline= @user.flash_error_for(:first_name)
 
-          %div.control-group
-            %label{:for => 'user_last_name', :class => 'control-label'} Priezvisko
+          %div.control-group{ :class => @user.has_error_on?(:last_name)}
+            %label{:for => 'user_last_name', :class => 'control-label'}
+              Priezvisko
+              %abbr *
             %div.controls
               %input{:type => 'text', :name => 'user[last_name]', :id => 'user_last_name', :value => @user.last_name}
+              %span.help-inline= @user.flash_error_for(:last_name)
 
-          %div.control-group
-            %label{:for => 'user_phone', :class => 'control-label'} Telefón
+          %div.control-group{ :class => @user.has_error_on?(:phone)}
+            %label{:for => 'user_phone', :class => 'control-label'}
+              Telefón
+              %abbr *
             %div.controls
               %input{:type => 'text', :name => 'user[phone]', :id => 'user_phone', :value => @user.phone}
+              %span.help-inline= @user.flash_error_for(:phone)
 
-          %div.control-group
-            %label{:for => 'user_email', :class => 'control-label'} Email
+          %div.control-group{ :class => @user.has_error_on?(:email)}
+            %label{:for => 'user_email', :class => 'control-label'}
+              Email
+              %abbr *
             %div.controls
               %input{:type => 'text', :name => 'user[email]', :placeholder => 'email', :id => 'user_email', :value => @user.email}
+              %span.help-inline= @user.flash_error_for(:email)
 
           %div.control-group
             %label{:for => 'user_is_active', :class => 'control-label'} Aktivovaný?

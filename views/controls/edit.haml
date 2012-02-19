@@ -7,8 +7,10 @@
       %form{:action => "/controls/#{@control.id}", :method => 'POST', :id => 'controls', :class => 'form-horizontal well'}
         %fieldset
           %input{:type => 'hidden', :name => '_method', :value => 'PUT'}
-          %div.control-group
-            %label{:for => 'control_contact', :class => 'control-label'} Respondent
+          %div.control-group{ :class => @control.has_error_on?(:contact_id)}
+            %label{:for => 'control_contact', :class => 'control-label'}
+              Respondent
+              %abbr *
             %div.controls
               %select{:name => 'control[contact_id]', :id => 'control_contact', :class => 'combobox' }
                 %option
@@ -16,6 +18,7 @@
                   - options = {:value => c.id}
                   - options.merge!(:selected => 'selected') if c.id == @control.contact_id
                   %option{options}= "#{c.full_name}, #{c.address.complete_address}"
+              %span.help-inline= @control.flash_error_for(:contact_id)
 
           %div.control-group
             %label{:for => 'control_type', :class => 'control-label'} Typ kontroly

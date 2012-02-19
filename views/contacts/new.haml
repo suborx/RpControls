@@ -8,44 +8,66 @@
         %fieldset
           - if @current_user.is_admin?
             %div.control-group
-              %label{:for => 'contact_branch', :class => 'control-label'} Redakcia
+            %div.control-group{ :class => @contact.has_error_on?(:branch_id)}
+              %label{:for => 'contact_branch', :class => 'control-label'}
+                Redakcia
+                %abbr *
               %div.controls
                 %select{:name => 'contact[branch_id]', :id => 'contact_branch', :class => 'combobox' }
                   %option
                   - Branch.all.each do |b|
-                    %option{:value => b.id}= b.name
-          - else
-            %input{:type => 'hidden', :name => 'contact[branch_id]', :value => @current_user.branch_id, :id => 'contact_branch'}
+                    - options = {:value => b.id}
+                    - options.merge!(:selected => 'selected') if b.id == @contact.branch_id
+                    %option{options}= b.name
+                %span.help-inline= @contact.flash_error_for(:branch_id)
 
-          %div.control-group
-            %label{:for => 'contact_first_name', :class => 'control-label'} Krstné meno
+          %div.control-group{ :class => @contact.has_error_on?(:first_name)}
+            %label{:for => 'contact_first_name', :class => 'control-label'}
+              Krstné meno
+              %abbr *
             %div.controls
-              %input{:type => 'text', :name => 'contact[first_name]', :id => 'contact_first_name'}
+              %input{:type => 'text', :name => 'contact[first_name]', :id => 'contact_first_name', :value => @contact.first_name}
+              %span.help-inline= @contact.flash_error_for(:first_name)
 
-          %div.control-group
-            %label{:for => 'contact_last_name', :class => 'control-label'} Priezvisko
+          %div.control-group{ :class => @contact.has_error_on?(:last_name)}
+            %label{:for => 'contact_last_name', :class => 'control-label'}
+              Priezvisko
+              %abbr *
             %div.controls
-              %input{:type => 'text', :name => 'contact[last_name]', :id => 'contact_last_name'}
+              %input{:type => 'text', :name => 'contact[last_name]', :id => 'contact_last_name', :value => @contact.last_name}
+              %span.help-inline= @contact.flash_error_for(:last_name)
 
-          %div.control-group
-            %label{:for => 'contact_phone', :class => 'control-label'} Telefón
+          %div.control-group{ :class => @contact.has_error_on?(:phone)}
+            %label{:for => 'contact_phone', :class => 'control-label'}
+              Telefón
+              %abbr *
             %div.controls
-              %input{:type => 'text', :name => 'contact[phone]', :id => 'contact_phone'}
+              %input{:type => 'text', :name => 'contact[phone]', :id => 'contact_phone', :value => @contact.phone}
+              %span.help-inline= @contact.flash_error_for(:phone)
 
-          %div.control-group
-            %label{:for => 'contact_city', :class => 'control-label'} Mesto
+          %div.control-group{ :class => @contact.has_error_on?(:city)}
+            %label{:for => 'contact_city', :class => 'control-label'}
+              Mesto
+              %abbr *
             %div.controls
-              %input{:type => 'text', :name => 'contact[city]', :id => 'contact_city'}
+              %input{:type => 'text', :name => 'contact[city]', :id => 'contact_city', :value => @contact.city}
+              %span.help-inline= @contact.flash_error_for(:city)
 
-          %div.control-group
-            %label{:for => 'contact_address', :class => 'control-label'} Ulica
+          %div.control-group{ :class => @contact.has_error_on?(:street)}
+            %label{:for => 'contact_address', :class => 'control-label'}
+              Ulica
+              %abbr *
             %div.controls
-              %input{:type => 'text', :name => 'contact[street]', :id => 'contact_address'}
+              %input{:type => 'text', :name => 'contact[street]', :id => 'contact_address', :value => @contact.street}
+              %span.help-inline= @contact.flash_error_for(:street)
 
-          %div.control-group
-            %label{:for => 'contact_number', :class => 'control-label'} Číslo domu
+          %div.control-group{ :class => @contact.has_error_on?(:number)}
+            %label{:for => 'contact_number', :class => 'control-label'}
+              Číslo domu
+              %abbr *
             %div.controls
-              %input{:type => 'text', :name => 'contact[number]', :id => 'contact_number'}
+              %input{:type => 'text', :name => 'contact[number]', :id => 'contact_number', :value => @contact.number}
+              %span.help-inline= @contact.flash_error_for(:number)
 
           %div.control-group
             %label{:for => 'contact_favorite', :class => 'control-label'} Oblubený kontakt?
