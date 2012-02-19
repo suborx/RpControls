@@ -14,7 +14,9 @@
                 %select{:name => 'contact[branch_id]', :id => 'contact_branch', :class => 'combobox' }
                   %option
                   - Branch.all.each do |b|
-                    %option{:value => b.id, :selected => (@contact.branch_name == b.name ? 'selected' : '')}= b.name
+                  - options = {:value => b.id}
+                  - options.merge!(:selected => 'selected') if b.id == @contact.branch_id
+                    %option{options}= b.name
           - else
             %input{:type => 'hidden', :name => 'contact[branch_id]', :value => @contact.branch_id, :id => 'contact_branch'}
 

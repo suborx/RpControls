@@ -68,7 +68,11 @@ class RpControl < Sinatra::Base
   end
 
   get '/' do
-    redirect to '/contacts'
+    if @current_user.is_admin?
+      redirect to '/users'
+    else
+      redirect to '/contacts'
+    end
   end
 
   get '/login' do
@@ -128,13 +132,20 @@ class RpControl < Sinatra::Base
     end
   end
 
-  get '/edit/user/:id' do
-    @user = User.find(:id)
+  get '/edit/users/:id' do
+    @user = User.find(params[:id])
+    haml :'users/edit'
   end
 
-  put '/users' do
-    @user = User.find(:id)
-    @user.update_attributes(params[:user])
+  put '/users/:id' do
+    @user = User.find(params[:id])
+    if @user.update_attributes(params[:user])
+      flash.next[:success] = 'Úprava kontrolóra prebehla úspešne.'
+      redirect to '/users'
+    else
+      flash.now[:error] = 'Úprava kontrolóra nebola úspešná.'
+      haml :'users/edit'
+    end
   end
 
 ##### CONTROLS RESOURCE #####
@@ -179,7 +190,7 @@ class RpControl < Sinatra::Base
 
   get '/contacts' do
     @contacts = if @current_user.is_admin?
-      Contact.paginate(:page =>params[:page], :per_page => 18).includes(:controls, :branch).order('created_at DESC')
+      Contact.paginate(:page =>params[:page], :per_page => 18).includes([{:address => :city},:controls, :branch]).order('created_at DESC')
     else
       @current_user.branch.contacts.order('created_at DESC')
     end

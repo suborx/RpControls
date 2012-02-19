@@ -9,29 +9,6 @@ class Branch < ActiveRecord::Base
   has_many :contacts
 end
 
-class Contact < ActiveRecord::Base
-  establish_connection 'local_db'
-  attr_accessor :street, :number, :city
-  has_many :controls
-  belongs_to :branch
-  belongs_to :address
-  delegate :name, :to => :branch, :prefix => true
-  validates_presence_of :first_name, :last_name, :phone, :branch_id, :street, :number, :city
-  before_save :assign_address
-
-  def full_name; first_name + ' ' + last_name end
-
-  private
-
-  def assign_address
-    a = Address.find_by_street_and_number(street, number)
-    a = Address.new(:street => street, :number => number) unless address
-    a.city = City.find_or_create_by_name(city)
-    a.save
-    self.address = a
-  end
-end
-
 class Control < ActiveRecord::Base
   establish_connection 'local_db'
   belongs_to :user
@@ -44,11 +21,12 @@ class User < ActiveRecord::Base
   establish_connection 'local_db'
   has_many :controls
   belongs_to :branch, :include => :contacts
-  before_save :encrypt_password
+  before_create :encrypt_password
 
-  validates_presence_of :email, :password, :first_name, :last_name, :phone, :branch_id
+  validates_presence_of :email, :first_name, :last_name, :phone, :branch_id
   validates_uniqueness_of :email
-  validates_confirmation_of :password
+  validates :password, :presence => true, :if => "password_hash.blank?"
+  validates :password, :confirmation => true, :if => 'password_hash.blank?'
 
   delegate :name, :to => :branch, :prefix => true
 
@@ -84,6 +62,29 @@ class User < ActiveRecord::Base
 
   def count_unverified
    @count_unverified ||= controls.to_a.count{|c| !c.verified?}
+  end
+end
+
+class Contact < ActiveRecord::Base
+  establish_connection 'local_db'
+  attr_accessor :street, :number, :city
+  has_many :controls
+  belongs_to :branch
+  belongs_to :address
+  delegate :name, :to => :branch, :prefix => true
+  validates_presence_of :first_name, :last_name, :phone, :branch_id, :street, :number, :city
+  before_save :assign_address
+
+  def full_name; first_name + ' ' + last_name end
+
+  private
+
+  def assign_address
+    a = Address.find_by_street_and_number(street, number)
+    a = Address.new(:street => street, :number => number) unless address
+    a.city = City.find_or_create_by_name(city)
+    a.save
+    self.address = a
   end
 end
 

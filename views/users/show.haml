@@ -18,7 +18,7 @@
           %i.icon-flag
           = @user.branch.name
           %i.icon-edit
-          %a Upraviť
+          %a{:href => "/edit/users/#{@user.id}"} Upraviť
       .span3-last
         %ul.unstyled.stats
           %li
