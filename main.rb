@@ -177,10 +177,20 @@ class RpControl < Sinatra::Base
     end
   end
 
-  get '/edit/control/:id' do
+  get '/edit/controls/:id' do
+    @control = Control.find(params[:id])
+    haml :'controls/edit'
   end
 
-  put '/controls' do
+  put '/controls/:id' do
+    @control = Control.find(params[:id])
+    if @control.update_attributes(params[:control])
+      flash.next[:success] = 'Úprava kontroly prebehla úspešne.'
+      redirect to '/controls'
+    else
+      flash.now[:error] = 'Úprava kontroly nebola úspešná.'
+      haml :'controls/edit'
+    end
   end
 
   delete '/control/:id' do

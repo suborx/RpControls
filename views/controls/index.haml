@@ -4,6 +4,7 @@
     %a.pull-right.btn.btn-large.btn-primary{:href => "/new/control"} + Pridať kontrolu
 .row
   .span12
+    = flash_messages
     %table.table.table-striped.table-bordered.table-condensed
       %thead
         %tr
@@ -49,5 +50,5 @@
 
             %td.center= boolean_label_for(control.verified?,:represented_if => (control.control_type == 'Telefonická'))
             %td.center
-              %a Upraviť
+              %a{:href => "edit/controls/#{control.id}"} Upraviť
     = will_paginate @controls, paginate_labels

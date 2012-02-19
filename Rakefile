@@ -124,7 +124,7 @@ def create_control(user,contact)
       :delivered => true_or_false,
       :succeed => true_or_false,
       :verified => true_or_false,
-      :control_type => true_or_false ? 'Terenna' : 'Telefonická'
+      :control_type => true_or_false ? 'Terénna' : 'Telefonická'
     )
   end
 end
