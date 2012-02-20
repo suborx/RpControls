@@ -156,7 +156,7 @@ class RpControl < Sinatra::Base
     @controls = if @current_user.is_admin?
       Control.paginate(:page =>params[:page], :per_page => 18).includes([:contact,:user => :branch])
     else
-      @current_user.controls
+      @current_user.controls.paginate(:page =>params[:page], :per_page => 18).includes([:contact,:user => :branch])
     end
     haml :'controls/index'
   end
@@ -205,7 +205,7 @@ class RpControl < Sinatra::Base
     @contacts = if @current_user.is_admin?
       Contact.paginate(:page =>params[:page], :per_page => 18).includes([{:address => :city},:controls, :branch]).order('last_name')
     else
-      @current_user.branch.contacts.order('created_at DESC')
+      @current_user.branch.contacts.paginate(:page =>params[:page], :per_page => 18).includes([{:address => :city},:controls, :branch]).order('created_at DESC')
     end
     haml :'contacts/index'
   end

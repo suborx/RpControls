@@ -37,7 +37,7 @@
                 %a{:href => "/contacts/#{control.contact.id}"}= control.contact.full_name
             - else
               %td
-                %a{:href => "/contract/#{control.contract_id}", :rel => 'popover', :class => 'with_popover',
+                %a{:href => "/contact/#{control.contact_id}", :rel => 'popover', :class => 'with_popover',
                 :title => control.contact.full_name,
                 :'data-content' => "<strong> Adresa: </strong> &nbsp Makovickeho 12/2, </br> <strong>Telefón: </strong> &nbsp#{control.contact.phone}"}
                   = control.contact.full_name
