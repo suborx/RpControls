@@ -12,8 +12,9 @@ class RpControl < Sinatra::Base
 
   configure do
     set :root, File.dirname(__FILE__)
-    set :locales, File.join(File.dirname(__FILE__), 'i18n/sk.yml')
-    set :default_locale, 'sk'
+    #set :locales, File.join(File.dirname(__FILE__), 'i18n/sk.yml')
+    #set :default_locale, 'sk'
+
     set :session_secret, "My session secret"
     register Sinatra::Flash
     register Sinatra::Reloader
@@ -31,6 +32,18 @@ class RpControl < Sinatra::Base
   end
 
   helpers do
+
+    def current_month_number
+      l(Date.today, '%m').to_i - 1
+    end
+
+    def months_names
+      ['Január','Február','Marec','Apríl','Máj','Jún','Júl','August','September','Október','November','December']
+    end
+
+    def month_name(index)
+      months_names[index]
+    end
 
     def paginate_labels
       {:previous_label => '<<', :next_label => '>>'}

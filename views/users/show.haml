@@ -37,7 +37,7 @@
   .span12
     .well.well-wide
       .span8
-        %h3= "Kontroly za mesiac #{(l Date.today, '%B').chop.camelize}"
+        %h3= "Kontroly za mesiac #{month_name(current_month_number)}"
       .span4-last
         %form.form-search
           %select{:name => 'contact[branch_id]', :id => 'contact_branch', :class => 'combobox' }
