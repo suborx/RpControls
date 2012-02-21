@@ -34,7 +34,10 @@
                 :title => control.user.full_name,
                 :'data-content' => "<strong> Kontrol: </strong>&nbsp #{@user_controls.size} </br> <strong>Úspešných: </strong> &nbsp #{@user_controls.to_a.count{|c| c.succeed?}}</br> <strong>Neoverených: </strong> &nbsp #{@user_controls.to_a.count{|c| c.verified?}}"}= control.user.full_name
               %td
-                %a{:href => "/contacts/#{control.contact.id}"}= control.contact.full_name
+                -#%a{:href => "/contacts/#{control.contact.id}"}= control.contact.full_name
+                %a{:href => "/contacts/#{control.contact.id}", :rel => 'popover', :class => 'with_popover',
+                :title => control.contact.full_name,
+                :'data-content' => "<strong> Adresa: </strong> &nbsp #{control.contact.address.street} #{control.contact.address.number}, </br> <strong>Telefón: </strong> &nbsp#{control.contact.phone}"}= control.contact.full_name
             - else
               %td
                 %a{:href => "/contact/#{control.contact_id}", :rel => 'popover', :class => 'with_popover',
@@ -47,7 +50,11 @@
                 %span.label.label-info=control.control_type
               - else
                 %span.label= control.control_type
-            %td.center= control.time
+            %td.center
+              - if control.time.nil?
+                %span.label N/A
+              - else
+                = control.time
             %td.center= boolean_label_for(control.succeed?)
             %td.center= boolean_label_for(control.delivered?, :represented_if => control.succeed?)
 
