@@ -77,7 +77,12 @@ class User < ActiveRecord::Base
   end
 
   def count_unverified
-   @count_unverified ||= controls.to_a.count{|c| !c.verified?}
+    @count_unverified ||= controls.to_a.count{|c| !c.verified?}
+  end
+
+  def count_bonuses
+    #TODO
+    10
   end
 end
 

@@ -23,10 +23,10 @@
             %td= user.branch_name
             %td
               %a{:href => "/users/#{user.id}"}= user.full_name
-            %td.center 33
-            %td.green.center 1
-            %td.red.center 22
-            %td.blue.center 15
+            %td.center= user.branch.contacts.size
+            %td.green.center= user.count_verified
+            %td.red.center= user.count_unverified
+            %td.blue.center= user.count_bonuses
             %td.center
               - if user.is_active?
                 %form{ :method => "POST", :action => "/users/activation"}
