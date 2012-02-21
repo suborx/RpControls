@@ -13,10 +13,10 @@
             %div.controls
               %select{:name => 'control[contact_id]', :id => 'control_contact', :class => 'combobox' }
                 %option
-                - Contact.all.each do |c|
+                - Contact.includes(:address => :city).each do |c|
                   - options = {:value => c.id}
                   - options.merge!(:selected => 'selected') if c.id == @control.contact_id
-                  %option{:value => c.id}= "#{c.full_name}, Makovickeho 14, Prievidza"
+                  %option{options}= "#{c.full_name}, #{c.address.complete_address}"
               %span.help-inline= @control.flash_error_for(:contact_id)
 
           %div.control-group
