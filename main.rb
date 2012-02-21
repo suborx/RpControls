@@ -55,9 +55,12 @@ class RpControl < Sinatra::Base
       if flash.key?(:error)
         html_class = "alert-error"
         html_message = flash[:error]
-      else
+      elsif flash[:success]
         html_class = "alert-success"
         html_message = flash[:success]
+      elsif flash[:warning]
+        html_class = "alert"
+        html_message = flash[:warning]
       end
 
       "<div class='alert #{html_class}'>
@@ -95,10 +98,10 @@ class RpControl < Sinatra::Base
     user = User.find(params[:user_id])
     if @current_user.is_admin? && user && params[:active] == 'true'
       user.activate!
-      flash.next[:success] = "Kontrolor #{user.full_name} bol úspešne aktivovaný."
+      flash.next[:warning] = "Kontrolor #{user.full_name} bol úspešne aktivovaný."
     elsif @current_user.is_admin? && user && params[:active] == 'false'
       user.deactivate!
-      flash.next[:success] = "Kontrolor #{user.full_name} bol úspešne deaktivovaný."
+      flash.next[:warning] = "Kontrolor #{user.full_name} bol úspešne deaktivovaný."
     else
       nil
     end
