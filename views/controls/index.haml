@@ -15,6 +15,8 @@
             %th Respondent
           - else
             %th Respondent
+          -#%th Mesto
+          -#%th Adresa
           %th Dátum
           %th Typ
           %th.center Čas
@@ -42,8 +44,10 @@
               %td
                 %a{:href => "/contact/#{control.contact_id}", :rel => 'popover', :class => 'with_popover',
                 :title => control.contact.full_name,
-                :'data-content' => "<strong> Adresa: </strong> &nbsp Makovickeho 12/2, </br> <strong>Telefón: </strong> &nbsp#{control.contact.phone}"}
+                :'data-content' => "<strong> Mesto: </strong> &nbsp #{control.contact.address.city_name}</br> <strong> Adresa: </strong> &nbsp #{control.contact.address.street} #{control.contact.address.number}, </br> <strong>Telefón: </strong> &nbsp#{control.contact.phone}"}
                   = control.contact.full_name
+            -#%td= control.contact.address.city_name
+            -#%td= control.contact.address.street + ' ' + control.contact.address.number
             %td= control.created_at.strftime(TIME_FORMAT)
             %td
               - if control.control_type == 'Telefonická'
