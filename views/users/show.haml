@@ -47,11 +47,8 @@
       %thead
         %tr
           %th ID
-          - if @current_user.is_admin?
-            %th.center Redakcia
-            %th Kontrolór
-          - else
-            %th Respondent
+          %th Mesto
+          %th Respondent
           %th Dátum
           %th Typ
           %th.center Čas
@@ -61,21 +58,12 @@
           %th.center Nástroje
       %tbody
         - @controls.each do |control|
-          - @user_controls = control.user.controls
           %tr
             %td= control.id
-            - if @current_user.is_admin?
-              %td.center= control.user.branch.mark
-              %td
-                %a{:href => "/user/#{control.user_id}", :rel => 'popover', :class => 'with_popover',
-                :title => control.user.full_name,
-                :'data-content' => "<strong> Kontrol: </strong>&nbsp #{@user_controls.size} </br> <strong>Úspešných: </strong> &nbsp #{@user_controls.to_a.count{|c| c.succeed?}}</br> <strong>Neoverených: </strong> &nbsp #{@user_controls.to_a.count{|c| c.verified?}}"}= control.user.full_name
-            - else
-              %td
-                %a{:href => "/contract/#{control.contract_id}", :rel => 'popover', :class => 'with_popover',
-                :title => control.contact.full_name,
-                :'data-content' => "<strong> Adresa: </strong> &nbsp Makovickeho 12/2, </br> <strong>Telefón: </strong> &nbsp#{control.contact.phone}"}
-                  = control.contact.full_name
+            %td= control.contact.address.city_name
+            %td
+              %a{:href => "/contacts/#{control.contact_id}",:class => 'with_popover'}
+                = control.contact.full_name
             %td= control.created_at.strftime(TIME_FORMAT)
             %td
               - if control.control_type == 'Telefonická'
@@ -88,5 +76,5 @@
 
             %td.center= boolean_label_for(control.verified?,:represented_if => (control.control_type == 'Telefonická'))
             %td.center
-              %a Upraviť
+              %a{:href => "/edit/controls/#{control.id}"} Upraviť
     = will_paginate @controls, paginate_labels

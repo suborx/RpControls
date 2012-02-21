@@ -130,7 +130,7 @@ class RpControl < Sinatra::Base
 
   get '/users/:id' do
     @user = User.includes(:controls).find(params[:id])
-    @controls = @user.controls.paginate(:page =>params[:page], :per_page => 10)
+    @controls = @user.controls.paginate(:page =>params[:page], :per_page => 10).includes(:contact => {:address => :city})
     haml :'users/show'
   end
 
