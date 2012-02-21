@@ -1,10 +1,15 @@
-.hero-unit
-  %h2
-    Kontrolóri
-    %a.pull-right.btn.btn-large.btn-primary{:href => "/new/user"} + Pridať kontrolóra
 .row
   .span12
     = flash_messages
+    .well
+      %h3
+        Kontrolóri
+        .btn-group.pull-right
+          %a.btn.btn-primary{:href => "/new/user"} + Pridať kontrolóra
+          %a#search.btn.btn-success Vyhľadávanie
+    %form.form-search.pull-right.well.hide{:action => '/users', :method => 'GET'}
+      %input{:type => 'text', :placeholder => 'Vyhľadávanie', :name => 'search', :class => 'input-tooltip', :'data-original-title' => 'Zadajte priezvisko kontrolóra'}
+      %input{:type => 'submit', :value => 'Vyhladať', :class => 'btn btn-primary'}
     %table.table.table-striped.table-bordered.table-condensed
       %thead
         %tr

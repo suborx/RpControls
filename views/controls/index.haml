@@ -1,10 +1,15 @@
-.hero-unit
-  %h2
-    Kontroly
-    %a.pull-right.btn.btn-large.btn-primary{:href => "/new/control"} + Pridať kontrolu
 .row
   .span12
     = flash_messages
+    .well
+      %h3
+        Kontroly
+        .btn-group.pull-right
+          %a.btn.btn-primary{:href => "/new/control"} + Pridať kontrolu
+          %a#search.btn.btn-success Vyhľadávanie
+    %form.form-search.pull-right.well.hide
+      %input{:type => 'text', :placeholder => 'Vyhľadávanie', :name => 'search', :class => 'input-tooltip', :'data-original-title' => 'Zadajte priezvisko respondenta'}
+      %input{:type => 'submit', :value => 'Vyhladať', :class => 'btn btn-primary'}
     %table.table.table-striped.table-bordered.table-condensed
       %thead
         %tr

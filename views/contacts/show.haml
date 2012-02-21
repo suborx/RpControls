@@ -1,8 +1,9 @@
 .content
-  .hero-unit
+  .well
     .row
       .span9
-        %h2
+        %h3
+          Respondent:
           = @contact.full_name
           - if @contact.is_favorite?
             %i.icon-star

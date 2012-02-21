@@ -28,7 +28,18 @@ class Control < ActiveRecord::Base
   belongs_to :user
   belongs_to :contact
   validates_presence_of :contact_id, :user_id, :message => "povinná položka"
+  scope :with_contact_last_name, lambda { |contact_last_name| joins(:contact).where(["contacts.last_name LIKE ?", "#{contact_last_name}%"]) }
   default_scope(order('created_at DESC'))
+
+
+  def self.search(user,search_query=nil)
+    if user.is_admin?
+      search_query ? with_contact_last_name(search_query) : self
+    else
+      controls =  where(:user_id => user.id)
+      search_query ? controls.with_contact_last_name(search_query) : controls
+    end
+  end
 end
 
 class User < ActiveRecord::Base
@@ -43,6 +54,8 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :email, :message => 'email už bol použitý'
   validates_presence_of :password, :if => "password_hash.blank?", :message => "povinná položka"
   validates_confirmation_of :password, :if => 'password_hash.blank?', :message => "nebolo potvrdené"
+
+  scope :with_last_name, lambda { |last_name| where(["last_name LIKE ?", "#{last_name}%"])  }
 
   delegate :name, :to => :branch, :prefix => true
 
@@ -62,6 +75,10 @@ class User < ActiveRecord::Base
       self.password_salt = BCrypt::Engine.generate_salt
       self.password_hash = BCrypt::Engine.hash_secret(password, password_salt)
     end
+  end
+
+  def self.search(search_query)
+    search_query ? with_last_name(search_query) : order('is_active DESC')
   end
 
   def activate!

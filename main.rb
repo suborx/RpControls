@@ -124,7 +124,7 @@ class RpControl < Sinatra::Base
 ##### USER RESOURCE #####
 
   get '/users' do
-    @users = User.order('is_active DESC').paginate(:page =>params[:page], :per_page => 10).includes([:controls, :branch => :contacts,])
+    @users = User.search(params[:search]).paginate(:page =>params[:page], :per_page => 10).includes([:controls, :branch => :contacts])
     haml :'users/index'
   end
 
@@ -169,11 +169,7 @@ class RpControl < Sinatra::Base
 ##### CONTROLS RESOURCE #####
 
   get '/controls' do
-    @controls = if @current_user.is_admin?
-      Control.paginate(:page =>params[:page], :per_page => 18).includes([:contact,:user => :branch])
-    else
-      @current_user.controls.paginate(:page =>params[:page], :per_page => 18).includes([:contact,:user => :branch])
-    end
+    @controls = Control.search(@current_user,params[:search]).paginate(:page =>params[:page], :per_page => 18).includes([:contact => :address,:user => :branch])
     haml :'controls/index'
   end
 
