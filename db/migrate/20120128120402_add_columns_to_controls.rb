@@ -5,7 +5,7 @@ class AddColumnsToControls < ActiveRecord::Migration
   end
 
   def self.down
-    remove :controls, :type
+    remove_column :controls, :type
     rename_column :controls, :succeed, :successful_call
   end
 

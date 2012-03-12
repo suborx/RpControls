@@ -7,12 +7,14 @@ $('document').ready(function(){
     'trigger': 'focus'
   })
 
+  $('#myModal').modal()
+
   $('a#search').on('click',function(){
     $("form.form-search").slideDown(300);
   })
   $('a.with_popover').popover({
     animation: false,
-    placement:'left'});
+    placement:'top'});
 
   $('a.close').click(function(){
     $('div.alert').fadeOut(200);

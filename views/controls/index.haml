@@ -24,7 +24,7 @@
           -#%th Adresa
           %th Dátum
           %th Typ
-          %th.center Čas
+          %th.center Dĺžka hovoru
           %th.center Uspešné
           %th.center Doručené
           %th.center Overené
@@ -53,7 +53,7 @@
                   = control.contact.full_name
             -#%td= control.contact.address.city_name
             -#%td= control.contact.address.street + ' ' + control.contact.address.number
-            %td= control.created_at.strftime(TIME_FORMAT)
+            %td= control.week_number#strftime(TIME_FORMAT)
             %td
               - if control.control_type == 'Telefonická'
                 %span.label.label-info=control.control_type

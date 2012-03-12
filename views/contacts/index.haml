@@ -17,12 +17,12 @@
           - if @current_user.is_admin?
             %th.center Redakcia
           %th Respondent
+          %th Telefon
           %th Mesto
           %th Adresa
-          %th.blue.center Počet kontrol
           %th.green.center Uspešné
           %th.red.center Neuspešné
-          %th.center Dobrý kontakt
+          %th.center Obľúbený
           %th.center Nástroje
       %tbody
         - @contacts.each do |contact|
@@ -31,12 +31,12 @@
             - if @current_user.is_admin?
               %td.center= contact.branch.mark
             %td
-              %a{:href => "/contacts/#{contact.id}", :rel => 'popover', :class => 'with_popover',
+              %a{:href => "/contacts/#{contact.id}", :rel => 'popover', :class => '',
               :title => contact.full_name,
               :'data-content' => "<strong> Mesto: </strong> &nbsp #{contact.address.city_name}</br> <strong> Adresa: </strong> &nbsp #{contact.address.street} #{contact.address.number}, </br> <strong>Telefón: </strong> &nbsp#{contact.phone}"}= contact.full_name
+            %td= contact.phone
             %td= contact.address.city_name
             %td= contact.address.street + ' ' + contact.address.number
-            %td.blue.center= contact.controls.size
             %td.green.center= contact.controls.to_a.count{|c| c.succeed?}
             %td.red.center= contact.controls.to_a.count{|c| !c.succeed?}
             - if contact.is_favorite?

@@ -40,6 +40,12 @@ class Control < ActiveRecord::Base
       search_query ? controls.with_contact_last_name(search_query) : controls
     end
   end
+
+  def week_number
+    d = DateTime.parse(created_at.to_s)
+    "#{d.cweek}. týždeň"
+  end
+
 end
 
 class User < ActiveRecord::Base
