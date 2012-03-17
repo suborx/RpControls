@@ -11,13 +11,17 @@
               Respondent
               %abbr *
             %div.controls
-              %select{:name => 'control[contact_id]', :id => 'control_contact', :class => 'combobox' }
-                %option
-                - Contact.includes(:address => :city).each do |c|
-                  - options = {:value => c.id}
-                  - options.merge!(:selected => 'selected') if c.id == @control.contact_id
-                  %option{options}= "#{c.full_name}, #{c.address.complete_address}"
-              %span.help-inline= @control.flash_error_for(:contact_id)
+              - if @control.contact
+                %input{:type => 'hidden', :name => 'control[contact_id]', :value => @control.contact_id}
+                  %h4= "#{@control.contact.full_name}, #{@control.contact.address.complete_address}"
+              - else
+                %select{:name => 'control[contact_id]', :id => 'control_contact', :class => 'combobox' }
+                  %option
+                  - Contact.includes(:address => :city).each do |c|
+                    - options = {:value => c.id}
+                    - options.merge!(:selected => 'selected') if c.id == @control.contact_id
+                    %option{options}= "#{c.full_name}, #{c.address.complete_address}"
+                %span.help-inline= @control.flash_error_for(:contact_id)
 
           %div.control-group
             %label{:for => 'control_type', :class => 'control-label'} Typ kontroly
@@ -40,13 +44,13 @@
                 Nie
 
           %div.control-group
-            %label{:for => 'control_delivered', :class => 'control-label'} Noviny doručené?
+            %label{:for => 'control_regulary_delivered', :class => 'control-label'} Pravidelne doručené?
             %div.controls
-              %label{:for => 'control_delivered_true', :class => 'checkbox inline' }
-                %input{:type => 'radio', :name => 'control[delivered]', :value => 'true', :checked => '', :id => 'control_delivered_true'}
+              %label{:for => 'control_regulary_delivered_true', :class => 'checkbox inline' }
+                %input{:type => 'radio', :name => 'control[regulary_delivered]', :value => 'true', :checked => '', :id => 'control_delivered_true'}
                 Áno
-              %label{:for => 'control_delivered_false', :class => 'checkbox inline' }
-                %input{:type => 'radio', :name => 'control[delivered]', :value => 'false', :checked => 'checked', :id => 'control_delivered_false'}
+              %label{:for => 'control_regulary_delivered_false', :class => 'checkbox inline' }
+                %input{:type => 'radio', :name => 'control[regulary_delivered]', :value => 'false', :checked => 'checked', :id => 'control_delivered_false'}
                 Nie
 
           %div.control-group

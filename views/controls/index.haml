@@ -3,7 +3,7 @@
     = flash_messages
     .well
       %h3
-        Kontroly
+        Výsledky kontrol
         .btn-group.pull-right
           %a.btn.btn-primary{:href => "/new/control"} + Pridať kontrolu
           %a#search.btn.btn-success Vyhľadávanie
@@ -26,7 +26,7 @@
           %th Typ
           %th.center Dĺžka hovoru
           %th.center Uspešné
-          %th.center Doručené
+          %th.center Pravidelne doručené
           %th.center Overené
           %th.center Nástroje
       %tbody
@@ -47,13 +47,13 @@
                 :'data-content' => "<strong> Adresa: </strong> &nbsp #{control.contact.address.street} #{control.contact.address.number}, </br> <strong>Telefón: </strong> &nbsp#{control.contact.phone}"}= control.contact.full_name
             - else
               %td
-                %a{:href => "/contact/#{control.contact_id}", :rel => 'popover', :class => 'with_popover',
+                %a{:href => "/contacts/#{control.contact_id}", :rel => 'popover', :class => 'with_popover',
                 :title => control.contact.full_name,
                 :'data-content' => "<strong> Mesto: </strong> &nbsp #{control.contact.address.city_name}</br> <strong> Adresa: </strong> &nbsp #{control.contact.address.street} #{control.contact.address.number}, </br> <strong>Telefón: </strong> &nbsp#{control.contact.phone}"}
                   = control.contact.full_name
             -#%td= control.contact.address.city_name
             -#%td= control.contact.address.street + ' ' + control.contact.address.number
-            %td= control.week_number#strftime(TIME_FORMAT)
+            %td= control.current_week.to_s + ". týždeň"#strftime(TIME_FORMAT)
             %td
               - if control.control_type == 'Telefonická'
                 %span.label.label-info=control.control_type
@@ -65,7 +65,7 @@
               - else
                 = control.time
             %td.center= boolean_label_for(control.succeed?)
-            %td.center= boolean_label_for(control.delivered?, :represented_if => control.succeed?)
+            %td.center= boolean_label_for(control.regulary_delivered?, :represented_if => control.succeed?)
 
             %td.center= boolean_label_for(control.verified?,:represented_if => (control.control_type == 'Telefonická'))
             %td.center

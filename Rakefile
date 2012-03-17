@@ -121,7 +121,7 @@ def create_control(user,contact)
     Control.create(
       :user_id => user.id,
       :contact_id => contact.id,
-      :delivered => true_or_false,
+      :regulary_delivered => true_or_false,
       :succeed => true_or_false,
       :verified => true_or_false,
       :control_type => true_or_false ? 'Terénna' : 'Telefonická'

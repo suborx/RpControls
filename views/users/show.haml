@@ -76,7 +76,7 @@
                   %span.label= control.control_type
               %td.center= control.time
               %td.center= boolean_label_for(control.succeed?)
-              %td.center= boolean_label_for(control.delivered?, :represented_if => control.succeed?)
+              %td.center= boolean_label_for(control.regulary_delivered?, :represented_if => control.succeed?)
 
               %td.center= boolean_label_for(control.verified?,:represented_if => (control.control_type == 'Telefonická'))
               %td.center

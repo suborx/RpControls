@@ -1,0 +1,48 @@
+.row
+  .span12
+    = flash_messages
+    .well
+      %h3
+        Zadania pre kontroly
+        .btn-group.pull-right
+          %a.btn.btn-primary{:href => "/new/job"} + Pridať zadanie
+          %a#search.btn.btn-success Vyhľadávanie
+    %form.form-search.pull-right.well.hide
+      %input{:type => 'text', :placeholder => 'Vyhľadávanie', :name => 'search', :class => 'input-tooltip', :'data-original-title' => 'Zadajte priezvisko respondenta'}
+      %input{:type => 'submit', :value => 'Vyhladať', :class => 'btn btn-primary'}
+    %table.table.table-striped.table-bordered.table-condensed
+      %thead
+        %tr
+          %th ID
+          - if @current_user.is_admin?
+            %th.center Redakcia
+            %th Kontrolór
+          %th Klient
+          %th Mesto a Adresa
+          %th Typ
+          %th Poznámka
+          %th.center Nástroje
+      %tbody
+        - @controls.each do |control|
+          - @user_controls = control.user.controls
+          %tr
+            %td= control.id
+            - if @current_user.is_admin?
+              %td.center= control.user.branch.mark
+              %td
+                %a{:href => "/users/#{control.user_id}", :rel => 'popover', :class => '',
+                :title => control.user.full_name,
+                :'data-content' => "<strong> Kontrol: </strong>&nbsp #{@user_controls.size} </br> <strong>Úspešných: </strong> &nbsp #{@user_controls.to_a.count{|c| c.succeed?}}</br> <strong>Neoverených: </strong> &nbsp #{@user_controls.to_a.count{|c| c.verified?}}"}= control.user.full_name
+            %td= control.for_client
+            %td= control.for_address
+            %td
+              - if control.control_type == 'Telefonická'
+                %span.label.label-info=control.control_type
+              - else
+                %span.label= control.control_type
+            %td= control.notice
+            %td.center
+              %a{:href => "edit/jobs/#{control.id}"} Upraviť
+              |
+              %a{:href => "edit/controls/#{control.id}"} Kontrolovať
+    = will_paginate @controls, paginate_labels

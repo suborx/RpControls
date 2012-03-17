@@ -22,15 +22,12 @@
           %li
             %h4
               %span= @contact.controls.size
-              %small HOVOROV
+              %small KONTROL
           %li
             %h4
               %span= @contact.controls.to_a.count{|c| c.succeed?}
               %small ÚSPEŠNÝCH
-          %li
-            %h4
-              %span= @contact.controls.to_a.count{|c| c.delivered?}
-              %small DORUČENÝCH
+        %a{ :href => "/new/control/#{@contact.id}", :class => 'btn btn-primary stats'} + Pridať kontrolu
   .row
     .span12
       %table.table.table-striped.table-bordered.table-condensed
@@ -51,7 +48,7 @@
               %td= control.id
               - if @current_user.is_admin?
                 %td
-                  %a{:href => "/user/#{control.user_id}", :rel => 'popover', :class => 'with_popover',
+                  %a{:href => "/users/#{control.user_id}", :rel => 'popover', :class => 'with_popover',
                   :title => control.user.full_name,
                   :'data-content' => "<strong> Kontrol: </strong>&nbsp 122 </br> <strong>Úspešných: </strong> &nbsp 72</br> <strong>Neoverených: </strong> &nbsp 44"}= control.user.full_name
               - else
@@ -64,7 +61,7 @@
                   %span.label= control.control_type
               %td.center= control.time
               %td.center= boolean_label_for(control.succeed?)
-              %td.center= boolean_label_for(control.delivered?)
+              %td.center= boolean_label_for(control.regulary_delivered?)
               %td.center= boolean_label_for(control.verified?)
               %td.center
                 %a Upraviť

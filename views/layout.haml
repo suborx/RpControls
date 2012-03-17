@@ -28,8 +28,10 @@
               - if @current_user.is_admin?
                 %li{:class => is_current_path?('/users')}
                   %a{:href => "/users"} Kontrolóri
+              %li{:class => is_current_path?('/jobs')}
+                %a{:href => "/jobs"} Zadania
               %li{:class => is_current_path?('/controls')}
-                %a{:href => "/controls"} Kontroly
+                %a{:href => "/controls"} Výsledky
               %li{:class => is_current_path?('/contacts')}
                 %a{:href => "/contacts"} Respondenti
           %form{:action => "/logout", :method => 'POST', :id => 'logout_form', :class => 'pull-right'}

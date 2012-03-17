@@ -20,6 +20,12 @@ class Branch < ActiveRecord::Base
   validates_presence_of :name, :message => "povinná položka"
   has_many :users
   has_many :contacts
+
+  scope :with_users, joins('LEFT JOIN users ON users.branch_id = branches.id').where('users.branch_id = branches.id').uniq
+
+  def actual_controlor
+    users.where(:is_active => true).last
+  end
 end
 
 class Control < ActiveRecord::Base
@@ -27,8 +33,14 @@ class Control < ActiveRecord::Base
   establish_connection 'local_db'
   belongs_to :user
   belongs_to :contact
-  validates_presence_of :contact_id, :user_id, :message => "povinná položka"
+
+  validates_presence_of :contact_id, :if => 'was_controlled', :message => "povinná položka"
+  validates_presence_of :user_id, :message => "povinná položka"
+
   scope :with_contact_last_name, lambda { |contact_last_name| joins(:contact).where(["contacts.last_name LIKE ?", "#{contact_last_name}%"]) }
+  scope :controlled, where(:was_controlled => true)
+  scope :uncontrolled, where(:was_controlled => false)
+
   default_scope(order('created_at DESC'))
 
 
@@ -41,9 +53,28 @@ class Control < ActiveRecord::Base
     end
   end
 
-  def week_number
+  def self.find_related_controls(group_id)
+    where(:group_id => group_id)
+  end
+
+  def current_week
     d = DateTime.parse(created_at.to_s)
-    "#{d.cweek}. týždeň"
+    d.cweek
+  end
+
+  def create_default_number_of_controls
+    return false unless save
+    update_attributes(:group_id => id)
+    (RpControl::DEFAULT_NUMBER_OF_CONTROLS - 1).times do
+      control_dup = self.dup
+      control_dup.save
+    end
+  end
+
+  def update_related_controls(params)
+    related_controls = Control.find_related_controls(group_id)
+    related_controls.each{ |c| @valid = c.update_attributes(params)}
+    @valid
   end
 
 end
@@ -107,6 +138,7 @@ class User < ActiveRecord::Base
     #TODO
     10
   end
+
 end
 
 class Contact < ActiveRecord::Base

@@ -1,0 +1,96 @@
+.content
+  .hero-unit
+    %h2 Úprava zadania kontroly
+  .row
+    .span12
+      = flash_messages
+      %form{:action => "/jobs/#{@control.id}", :method => 'POST', :id => 'jobs', :class => 'form-horizontal well'}
+        %input{:type => 'hidden', :name => '_method', :value => 'PUT'}
+        %fieldset
+          %div.control-group{ :class => @control.has_error_on?(:branch_id)}
+            %label{:for => 'control_user', :class => 'control-label'}
+              Redakcia
+              %abbr *
+            %div.controls
+              %select{:name => 'control[user_id]', :id => 'control_user', :class => 'combobox' }
+                %option
+                - Branch.with_users.each do |b|
+                  - options = {:value => b.actual_controlor.id}
+                  - options.merge!(:selected => 'selected') if b.actual_controlor.id == @control.user_id
+                  %option{options}= b.name
+              %span.help-inline= @control.flash_error_for(:user_id)
+
+          %div.control-group{ :class => @control.has_error_on?(:for_week)}
+            %label{:for => 'control_for_week', :class => 'control-label'}
+              Týždeň
+              %abbr *
+            %div.controls
+              %select{:name => 'control[for_week]', :id => 'control_contact', :class => 'combobox' }
+                %option
+                - 52.times do |n|
+                  - options = {:value => n + 1}
+                  - options.merge!(:selected => 'selected') if n == @control.current_week
+                  %option{options}= n + 1
+              %span.help-inline= @control.flash_error_for(:for_week)
+
+          %div.control-group{ :class => @control.has_error_on?(:for_client)}
+            %label{:for => 'control_for_client', :class => 'control-label'}
+              Klient
+              %abbr *
+            %div.controls
+              %input{:type => 'text', :name => 'control[for_client]', :id => 'control_for_client', :value => @control.for_client}
+              %span.help-inline= @control.flash_error_for(:for_client)
+
+          %div.control-group
+            %label{:for => 'control_type', :class => 'control-label'} Typ kontroly
+            %div.controls
+              %label{:for => 'control_type_phone', :class => 'checkbox inline' }
+                %input{:type => 'radio', :name => 'control[control_type]', :value => 'Telefonická', :checked => ('checked' if @control.control_type == 'Telefonická'), :id => 'control_type_phone'}
+                Telefonická
+              %label{:for => 'control_type_terain', :class => 'checkbox inline' }
+                %input{:type => 'radio', :name => 'control[control_type]', :value => 'Terénna', :checked => ('checked' if @control.control_type == 'Terénna'), :id => 'control_type_terain'}
+                Terénna
+
+          %div.control-group{ :class => @control.has_error_on?(:for_address)}
+            %label{:for => 'control_for_client', :class => 'control-label'}
+              Mesto a Adresa
+              %abbr *
+            %div.controls
+              %input{:type => 'text', :name => 'control[for_address]', :id => 'control_for_address', :value => @control.for_address}
+              %span.help-inline= @control.flash_error_for(:for_address)
+
+          -#%div.control-group{ :class => @control.has_error_on?(:number_of_controls)}
+            -#%label{:for => 'control_number_of_controls', :class => 'control-label'}
+              -#Počet kontrol
+            -#%div.controls
+              -#%input{:type => 'text', :name => 'control[number_of_controls]', :id => 'control_number_of_controls'}
+              -#%span.help-inline= @control.flash_error_for(:number_of_controls)
+
+          -#%div.control-group
+            -#%label{:for => 'control_success', :class => 'control-label'} Úspešná kontrola?
+            -#%div.controls
+              -#%label{:for => 'control_success_true', :class => 'checkbox inline' }
+                -#%input{:type => 'radio', :name => 'control[succeed]', :value => 'true', :checked => '', :id => 'control_success_true'}
+                -#Áno
+              -#%label{:for => 'control_success_false', :class => 'checkbox inline' }
+                -#%input{:type => 'radio', :name => 'control[succeed]', :value => 'false', :checked => 'checked', :id => 'control_success_false'}
+                -#Nie
+
+          -#%div.control-group
+            -#%label{:for => 'control_regulary_delivered', :class => 'control-label'} Pravidelne doručené?
+            -#%div.controls
+              -#%label{:for => 'control_regulary_delivered_true', :class => 'checkbox inline' }
+                -#%input{:type => 'radio', :name => 'control[regulary_delivered]', :value => 'true', :checked => '', :id => 'control_delivered_true'}
+                -#Áno
+              -#%label{:for => 'control_regulary_delivered_false', :class => 'checkbox inline' }
+                -#%input{:type => 'radio', :name => 'control[regulary_delivered]', :value => 'false', :checked => 'checked', :id => 'control_delivered_false'}
+                -#Nie
+
+          %div.control-group
+            %label{:for => 'control_notice', :class => 'control-label'} Poznámka
+            %div.controls
+              %textarea{:name => 'control[notice]', :id => 'control_notice', :value => @control.notice}
+
+          %div.form-actions
+            %input{:type => 'submit', :value => 'Uložiť', :class => 'btn btn-primary'}
+            %button{:type => 'reset', :class => 'btn'} Zrušiť

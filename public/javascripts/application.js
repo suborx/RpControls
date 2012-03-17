@@ -19,4 +19,6 @@ $('document').ready(function(){
   $('a.close').click(function(){
     $('div.alert').fadeOut(200);
   });
+
+  $( "#datepicker" ).datepicker({dateFormat: 'yy-mm-dd'});
 })

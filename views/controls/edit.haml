@@ -1,12 +1,13 @@
 .content
   .hero-unit
-    %h2 Upraviť kontrolu
+    %h2 Kontrola!
   .row
-    .span12
+    .span6
       = flash_messages
       %form{:action => "/controls/#{@control.id}", :method => 'POST', :id => 'controls', :class => 'form-horizontal well'}
         %fieldset
           %input{:type => 'hidden', :name => '_method', :value => 'PUT'}
+          %input{:type => 'hidden', :name => 'control[was_controlled]', :value => 'true'}
           %div.control-group{ :class => @control.has_error_on?(:contact_id)}
             %label{:for => 'control_contact', :class => 'control-label'}
               Respondent
@@ -20,15 +21,13 @@
                   %option{options}= "#{c.full_name}, #{c.address.complete_address}"
               %span.help-inline= @control.flash_error_for(:contact_id)
 
-          %div.control-group
-            %label{:for => 'control_type', :class => 'control-label'} Typ kontroly
+          %div.control-group{ :class => @control.has_error_on?(:control_date)}
+            %label{:for => 'control_control_date', :class => 'control-label'}
+              Dátum kontroly
+              %abbr *
             %div.controls
-              %label{:for => 'control_type_phone', :class => 'checkbox inline' }
-                %input{:type => 'radio', :name => 'control[control_type]', :value => 'Telefonická', :checked => ('checked' if @control.control_type == 'Telefonická'), :id => 'control_type_phone'}
-                Telefonická
-              %label{:for => 'control_type_terain', :class => 'checkbox inline' }
-                %input{:type => 'radio', :name => 'control[control_type]', :value => 'Terénna', :checked => ('checked' if @control.control_type == 'Terénna'), :id => 'control_type_terain'}
-                Terénna
+              %input{:type => 'text', :name => 'control[control_date]', :id => 'datepicker', :value => Date.today}
+              %span.help-inline= @control.flash_error_for(:control_date)
 
           %div.control-group
             %label{:for => 'control_success', :class => 'control-label'} Úspešná kontrola?
@@ -41,13 +40,13 @@
                 Nie
 
           %div.control-group
-            %label{:for => 'control_delivered', :class => 'control-label'} Noviny doručené?
+            %label{:for => 'control_regulary_delivered', :class => 'control-label'} Pravidelne doručené?
             %div.controls
-              %label{:for => 'control_delivered_true', :class => 'checkbox inline' }
-                %input{:type => 'radio', :name => 'control[delivered]', :value => 'true', :checked => ('checked' if @control.delivered?), :id => 'control_delivered_true'}
+              %label{:for => 'control_regulary_delivered_true', :class => 'checkbox inline' }
+                %input{:type => 'radio', :name => 'control[regulary_delivered]', :value => 'true', :checked => ('checked' if @control.regulary_delivered?), :id => 'control_delivered_true'}
                 Áno
-              %label{:for => 'control_delivered_false', :class => 'checkbox inline' }
-                %input{:type => 'radio', :name => 'control[delivered]', :value => 'false', :checked => ('checked' if !@control.delivered?), :id => 'control_delivered_false'}
+              %label{:for => 'control_regulary_delivered_false', :class => 'checkbox inline' }
+                %input{:type => 'radio', :name => 'control[regulary_delivered]', :value => 'false', :checked => ('checked' if !@control.regulary_delivered?), :id => 'control_delivered_false'}
                 Nie
 
           %div.control-group
@@ -58,3 +57,23 @@
           %div.form-actions
             %input{:type => 'submit', :value => 'Uložiť', :class => 'btn btn-primary'}
               %button{:type => 'reset', :class => 'btn'} Zrušiť
+    .span6
+      %div.well
+        %h3 Zadanie kontroly
+        %br
+        %strong= @control.control_type + ' kontrola'
+        %br
+        %strong=@control.for_address
+        %br
+        %strong= 'Poznámka ' + (@control.notice.blank? ? 'nie je' : @control.notice)
+        %br
+        %br
+        Klient
+        = @control.for_client
+        %br
+        = @control.for_week.to_s + '. Týždeň'
+
+        %br
+        Kontrolór
+        = @control.user.full_name
+        %br

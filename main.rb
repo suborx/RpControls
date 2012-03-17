@@ -8,6 +8,8 @@ require 'will_paginate/active_record'
 include WillPaginate::Sinatra::Helpers
 
 class RpControl < Sinatra::Base
+
+  DEFAULT_NUMBER_OF_CONTROLS = 3
   TIME_FORMAT = '%d. %m. %Y'
 
   configure do
@@ -169,7 +171,7 @@ class RpControl < Sinatra::Base
 ##### CONTROLS RESOURCE #####
 
   get '/controls' do
-    @controls = Control.search(@current_user,params[:search]).paginate(:page =>params[:page], :per_page => 18).includes([:contact => :address,:user => :branch])
+    @controls = Control.search(@current_user,params[:search]).controlled.paginate(:page =>params[:page], :per_page => 18).includes([:contact => :address,:user => :branch])
     haml :'controls/index'
   end
 
@@ -178,6 +180,12 @@ class RpControl < Sinatra::Base
 
   get '/new/control' do
     @control = Control.new
+    haml :'controls/new'
+  end
+
+  get '/new/control/:contact_id' do
+    @control = Control.new
+    @control.contact_id = params[:contact_id]
     haml :'controls/new'
   end
 
@@ -208,7 +216,44 @@ class RpControl < Sinatra::Base
     end
   end
 
-  delete '/control/:id' do
+
+##### JOBS RESOURCE #####
+
+  get '/jobs' do
+    @controls = Control.search(@current_user,params[:search]).uncontrolled.paginate(:page =>params[:page], :per_page => 18).includes([:contact => :address,:user => :branch])
+    haml :'jobs/index'
+  end
+
+  get '/new/job' do
+    @control = Control.new
+    haml :'jobs/new'
+  end
+
+  post '/jobs' do
+    @control = Control.new(params[:control])
+    if @control.create_default_number_of_controls
+      flash.next[:success] = 'Pridanie kontroly prebehlo úspešne.'
+      redirect to '/jobs'
+    else
+      flash.now[:error] = 'Pridanie kontroly bolo neúspešné.'
+      haml :'jobs/new'
+    end
+  end
+
+  get '/edit/jobs/:id' do
+    @control = Control.find(params[:id])
+    haml :'jobs/edit'
+  end
+
+  put '/jobs/:id' do
+    @control = Control.find(params[:id])
+    if @control.update_related_controls(params[:control])
+      flash.next[:success] = 'Úprava kontroly prebehla úspešne.'
+      redirect to '/jobs'
+    else
+      flash.now[:error] = 'Úprava kontroly nebola úspešná.'
+      haml :'jobs/edit'
+    end
   end
 
 ##### CONTACT RESOURCE #####

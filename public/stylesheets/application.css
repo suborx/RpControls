@@ -90,6 +90,10 @@ body {
   padding-bottom: 40px;
 }
 
+small{
+  line-height: 20px;
+}
+
 .hero-unit{
   padding:30px;
 }
@@ -136,7 +140,7 @@ input.inline_radio{
 .pagination .previous_page{
   border-left: 1px solid #DDDDDD
 }
-ul.stats{
+ul.stats, a.stats{
   margin-left:80px;
 }
 
