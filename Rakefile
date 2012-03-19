@@ -84,6 +84,11 @@ namespace :db do
     Control.delete_all
     Branch.delete_all
   end
+
+  desc 'Delete all controls'
+  task :delete_all_controls => :environment do
+    Control.delete_all
+  end
 end
 
 def true_or_false
