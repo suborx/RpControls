@@ -35,6 +35,16 @@ class RpControl < Sinatra::Base
 
   helpers do
 
+    def week_numbers_with_dates
+      (1..52).inject({}) do |result,number|
+        last_week_for_control = Date.today.cweek - 4
+        year = (number < last_week_for_control) ? (Date.today.cwyear + 1) : Date.today.cwyear
+        week_to_date = Date.commercial(year,number)
+        result[number] = week_to_date
+        result
+      end
+    end
+
     def current_month_number
       l(Date.today, '%m').to_i - 1
     end
@@ -132,7 +142,7 @@ class RpControl < Sinatra::Base
 
   get '/users/:id' do
     @user = User.includes(:controls).find(params[:id])
-    @controls = @user.controls.paginate(:page =>params[:page], :per_page => 10).includes(:contact => {:address => :city})
+    @controls = @user.controls.controlled.paginate(:page =>params[:page], :per_page => 10).includes(:contact => {:address => :city})
     haml :'users/show'
   end
 
@@ -185,7 +195,7 @@ class RpControl < Sinatra::Base
 
   get '/new/control/:contact_id' do
     @control = Control.new
-    @control.contact_id = params[:contact_id]
+    @contact = Contact.find params[:contact_id]
     haml :'controls/new'
   end
 

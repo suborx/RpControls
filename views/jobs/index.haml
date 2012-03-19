@@ -14,19 +14,22 @@
       %thead
         %tr
           %th ID
+          %th.center Týždeň
           - if @current_user.is_admin?
             %th.center Redakcia
             %th Kontrolór
           %th Klient
           %th Mesto a Adresa
-          %th Typ
-          %th Poznámka
+          %th.center Typ
+          - unless @current_user.is_admin?
+            %th Poznámka
           %th.center Nástroje
       %tbody
         - @controls.each do |control|
           - @user_controls = control.user.controls
           %tr
             %td= control.id
+            %td.center= control.for_week.cweek
             - if @current_user.is_admin?
               %td.center= control.user.branch.mark
               %td
@@ -35,14 +38,17 @@
                 :'data-content' => "<strong> Kontrol: </strong>&nbsp #{@user_controls.size} </br> <strong>Úspešných: </strong> &nbsp #{@user_controls.to_a.count{|c| c.succeed?}}</br> <strong>Neoverených: </strong> &nbsp #{@user_controls.to_a.count{|c| c.verified?}}"}= control.user.full_name
             %td= control.for_client
             %td= control.for_address
-            %td
+            %td.center
               - if control.control_type == 'Telefonická'
                 %span.label.label-info=control.control_type
               - else
                 %span.label= control.control_type
-            %td= control.notice
+            - unless @current_user.is_admin?
+              %td= control.notice
             %td.center
-              %a{:href => "edit/jobs/#{control.id}"} Upraviť
-              |
-              %a{:href => "edit/controls/#{control.id}"} Kontrolovať
+              %a.btn.btn-small{:href => "edit/jobs/#{control.id}"}
+                %i.icon-edit
+                Upraviť
+              %a.btn.btn-danger.btn-small{:href => "edit/controls/#{control.id}"}
+                Kontrolovať
     = will_paginate @controls, paginate_labels

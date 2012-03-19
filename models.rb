@@ -11,6 +11,19 @@ module FormErrorHelper
 
 end
 
+module PhoneNumberFormater
+
+  def convert_phone_format
+    phone.gsub!(/\s/,'')
+    phone.gsub!(/\A\+421/,'')
+    phone.gsub!(/\D/,'')
+    phone.gsub!(/\A00421/,'')
+    phone.gsub!(/\A0/,'')
+    phone.insert(0,'+421')
+  end
+
+end
+
 class PhoneRecord < ActiveRecord::Base
   establish_connection 'remote_db'
 end
@@ -35,7 +48,8 @@ class Control < ActiveRecord::Base
   belongs_to :contact
 
   validates_presence_of :contact_id, :if => 'was_controlled', :message => "povinná položka"
-  validates_presence_of :user_id, :message => "povinná položka"
+  validates_presence_of :control_date, :if => 'was_controlled', :message => "povinná položka"
+  validates_presence_of :user_id, :for_week, :for_address, :control_type, :message => "povinná položka"
 
   scope :with_contact_last_name, lambda { |contact_last_name| joins(:contact).where(["contacts.last_name LIKE ?", "#{contact_last_name}%"]) }
   scope :controlled, where(:was_controlled => true)
@@ -74,6 +88,7 @@ class Control < ActiveRecord::Base
   def update_related_controls(params)
     related_controls = Control.find_related_controls(group_id)
     related_controls.each{ |c| @valid = c.update_attributes(params)}
+    update_attributes(params) unless @valid
     @valid
   end
 
@@ -81,11 +96,13 @@ end
 
 class User < ActiveRecord::Base
   include FormErrorHelper
+  include PhoneNumberFormater
   attr_accessor :password
   establish_connection 'local_db'
   has_many :controls
   belongs_to :branch, :include => :contacts
   before_create :encrypt_password
+  before_save :convert_phone_format
 
   validates_presence_of :email, :first_name, :last_name, :phone, :branch_id, :message => "povinná položka"
   validates_uniqueness_of :email, :message => 'email už bol použitý'
@@ -134,15 +151,11 @@ class User < ActiveRecord::Base
     @count_unverified ||= controls.to_a.count{|c| !c.verified?}
   end
 
-  def count_bonuses
-    #TODO
-    10
-  end
-
 end
 
 class Contact < ActiveRecord::Base
   include FormErrorHelper
+  include PhoneNumberFormater
   establish_connection 'local_db'
   attr_accessor :street, :number, :city
   has_many :controls
@@ -150,7 +163,7 @@ class Contact < ActiveRecord::Base
   belongs_to :address
   delegate :name, :to => :branch, :prefix => true
   validates_presence_of :first_name, :last_name, :phone, :branch_id, :street, :number, :city, :message => "povinná položka"
-  before_save :assign_address
+  before_save :assign_address, :convert_phone_format
 
   def full_name; last_name + ' ' + first_name end
 

@@ -19,7 +19,6 @@
           %th.center Kontakty
           %th.green.center Overené
           %th.red.center Neoverené
-          %th.blue.center Bonusové
           %th.center Nástroje
       %tbody
         - @users.each do |user|
@@ -31,8 +30,10 @@
             %td.center= user.branch.contacts.size
             %td.green.center= user.count_verified
             %td.red.center= user.count_unverified
-            %td.blue.center= user.count_bonuses
-            %td.center
+            %td.center{:style => 'width:150px'}
+              %a{:href => "edit/users/#{user.id}", :class => 'btn btn-small', :style => 'float:left'}
+                %i.icon-edit
+                Upraviť
               - if user.is_active?
                 %form{ :method => "POST", :action => "/users/activation"}
                   %input{ :type => 'hidden', :name => '_method', :value => 'PUT'}
@@ -45,5 +46,4 @@
                   %input{ :type => 'hidden', :name => 'user_id', :value => user.id}
                   %input{ :type => 'hidden', :name => 'active', :value => 'true'}
                   %input{ :class => 'btn btn-small btn-success', :value => "Aktivovať", :type => "submit"}
-
     = will_paginate @users, paginate_labels

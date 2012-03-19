@@ -6,18 +6,21 @@
       = flash_messages
       %form{:action => '/jobs', :method => 'POST', :id => 'jobs', :class => 'form-horizontal well'}
         %fieldset
-          %div.control-group{ :class => @control.has_error_on?(:branch_id)}
+          %div.control-group{ :class => @control.has_error_on?(:user_id)}
             %label{:for => 'control_user', :class => 'control-label'}
               Redakcia
               %abbr *
             %div.controls
-              %select{:name => 'control[user_id]', :id => 'control_user', :class => 'combobox' }
-                %option
-                - Branch.with_users.each do |b|
-                  - options = {:value => b.actual_controlor.id}
-                  %option{options}= b.name
-              %span.help-inline= @control.flash_error_for(:user_id)
-
+              - if @current_user.is_admin?
+                %select{:name => 'control[user_id]', :id => 'control_user', :class => 'combobox' }
+                  %option
+                  - Branch.with_users.each do |b|
+                    - options = {:value => b.actual_controlor.id}
+                    %option{options}= b.name
+                %span.help-inline= @control.flash_error_for(:user_id)
+              - else
+                %input{:type => 'hidden', :name => 'control[user_id]', :value => @current_user.id}
+                %h4= @current_user.branch_name
           %div.control-group{ :class => @control.has_error_on?(:for_week)}
             %label{:for => 'control_for_week', :class => 'control-label'}
               Týždeň
@@ -25,15 +28,15 @@
             %div.controls
               %select{:name => 'control[for_week]', :id => 'control_contact', :class => 'combobox' }
                 %option
-                - 52.times do |n|
-                  - options = {:value => n + 1}
-                  %option{options}= n + 1
+                - week_numbers_with_dates.each do |week,date|
+                  - options = {:value => date}
+                  - options.merge!(:selected => 'selected') if week == Date.today.cweek
+                  %option{options}= week.to_s + " týždeň - " + date.strftime(TIME_FORMAT)
               %span.help-inline= @control.flash_error_for(:for_week)
 
           %div.control-group{ :class => @control.has_error_on?(:for_client)}
             %label{:for => 'control_for_client', :class => 'control-label'}
               Klient
-              %abbr *
             %div.controls
               %input{:type => 'text', :name => 'control[for_client]', :id => 'control_for_client'}
               %span.help-inline= @control.flash_error_for(:for_client)
@@ -55,33 +58,6 @@
             %div.controls
               %input{:type => 'text', :name => 'control[for_address]', :id => 'control_for_address'}
               %span.help-inline= @control.flash_error_for(:for_address)
-
-          -#%div.control-group{ :class => @control.has_error_on?(:number_of_controls)}
-            -#%label{:for => 'control_number_of_controls', :class => 'control-label'}
-              -#Počet kontrol
-            -#%div.controls
-              -#%input{:type => 'text', :name => 'control[number_of_controls]', :id => 'control_number_of_controls'}
-              -#%span.help-inline= @control.flash_error_for(:number_of_controls)
-
-          -#%div.control-group
-            -#%label{:for => 'control_success', :class => 'control-label'} Úspešná kontrola?
-            -#%div.controls
-              -#%label{:for => 'control_success_true', :class => 'checkbox inline' }
-                -#%input{:type => 'radio', :name => 'control[succeed]', :value => 'true', :checked => '', :id => 'control_success_true'}
-                -#Áno
-              -#%label{:for => 'control_success_false', :class => 'checkbox inline' }
-                -#%input{:type => 'radio', :name => 'control[succeed]', :value => 'false', :checked => 'checked', :id => 'control_success_false'}
-                -#Nie
-
-          -#%div.control-group
-            -#%label{:for => 'control_regulary_delivered', :class => 'control-label'} Pravidelne doručené?
-            -#%div.controls
-              -#%label{:for => 'control_regulary_delivered_true', :class => 'checkbox inline' }
-                -#%input{:type => 'radio', :name => 'control[regulary_delivered]', :value => 'true', :checked => '', :id => 'control_delivered_true'}
-                -#Áno
-              -#%label{:for => 'control_regulary_delivered_false', :class => 'checkbox inline' }
-                -#%input{:type => 'radio', :name => 'control[regulary_delivered]', :value => 'false', :checked => 'checked', :id => 'control_delivered_false'}
-                -#Nie
 
           %div.control-group
             %label{:for => 'control_notice', :class => 'control-label'} Poznámka

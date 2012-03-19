@@ -46,5 +46,7 @@
               %td.center
                 %span.label NIE
             %td.center
-              %a{:href => "/edit/contacts/#{contact.id}"} Upraviť
+              %a.btn.btn-small{:href => "/edit/contacts/#{contact.id}"}
+                %i.icon-edit
+                Upraviť
     = will_paginate @contacts, paginate_labels

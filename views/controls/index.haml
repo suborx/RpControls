@@ -5,7 +5,7 @@
       %h3
         Výsledky kontrol
         .btn-group.pull-right
-          %a.btn.btn-primary{:href => "/new/control"} + Pridať kontrolu
+          %a.btn.btn-primary{:href => "/new/control"} + Pridať výsledok bez zadania
           %a#search.btn.btn-success Vyhľadávanie
     %form.form-search.pull-right.well.hide
       %input{:type => 'text', :placeholder => 'Vyhľadávanie', :name => 'search', :class => 'input-tooltip', :'data-original-title' => 'Zadajte priezvisko respondenta'}
@@ -14,15 +14,14 @@
       %thead
         %tr
           %th ID
+          %th.center Týždeň
+          %th.center Dátum kontroly
           - if @current_user.is_admin?
             %th.center Redakcia
             %th Kontrolór
             %th Respondent
           - else
             %th Respondent
-          -#%th Mesto
-          -#%th Adresa
-          %th Dátum
           %th Typ
           %th.center Dĺžka hovoru
           %th.center Uspešné
@@ -34,26 +33,17 @@
           - @user_controls = control.user.controls
           %tr
             %td= control.id
+            %td.center= control.for_week.cweek
+            %td.center= control.control_date.strftime(TIME_FORMAT)
             - if @current_user.is_admin?
               %td.center= control.user.branch.mark
               %td
-                %a{:href => "/users/#{control.user_id}", :rel => 'popover', :class => 'with_popover',
-                :title => control.user.full_name,
-                :'data-content' => "<strong> Kontrol: </strong>&nbsp #{@user_controls.size} </br> <strong>Úspešných: </strong> &nbsp #{@user_controls.to_a.count{|c| c.succeed?}}</br> <strong>Neoverených: </strong> &nbsp #{@user_controls.to_a.count{|c| c.verified?}}"}= control.user.full_name
+                %a{:href => "/users/#{control.user_id}"}= control.user.full_name
               %td
-                -#%a{:href => "/contacts/#{control.contact.id}"}= control.contact.full_name
-                %a{:href => "/contacts/#{control.contact.id}", :rel => 'popover', :class => 'with_popover',
-                :title => control.contact.full_name,
-                :'data-content' => "<strong> Adresa: </strong> &nbsp #{control.contact.address.street} #{control.contact.address.number}, </br> <strong>Telefón: </strong> &nbsp#{control.contact.phone}"}= control.contact.full_name
+                %a{:href => "/contacts/#{control.contact.id}"}= control.contact.full_name
             - else
               %td
-                %a{:href => "/contacts/#{control.contact_id}", :rel => 'popover', :class => 'with_popover',
-                :title => control.contact.full_name,
-                :'data-content' => "<strong> Mesto: </strong> &nbsp #{control.contact.address.city_name}</br> <strong> Adresa: </strong> &nbsp #{control.contact.address.street} #{control.contact.address.number}, </br> <strong>Telefón: </strong> &nbsp#{control.contact.phone}"}
-                  = control.contact.full_name
-            -#%td= control.contact.address.city_name
-            -#%td= control.contact.address.street + ' ' + control.contact.address.number
-            %td= control.current_week.to_s + ". týždeň"#strftime(TIME_FORMAT)
+                %a{:href => "/contacts/#{control.contact.id}"}= control.contact.full_name
             %td
               - if control.control_type == 'Telefonická'
                 %span.label.label-info=control.control_type
@@ -65,9 +55,10 @@
               - else
                 = control.time
             %td.center= boolean_label_for(control.succeed?)
-            %td.center= boolean_label_for(control.regulary_delivered?, :represented_if => control.succeed?)
-
+            %td.center= boolean_label_for(control.regulary_delivered?)
             %td.center= boolean_label_for(control.verified?,:represented_if => (control.control_type == 'Telefonická'))
             %td.center
-              %a{:href => "edit/controls/#{control.id}"} Upraviť
+              %a.btn.btn-small{:href => "edit/controls/#{control.id}"}
+                %i.icon-edit
+                Upraviť
     = will_paginate @controls, paginate_labels
