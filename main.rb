@@ -16,7 +16,7 @@ class RpControl < Sinatra::Base
     set :root, File.dirname(__FILE__)
     #set :locales, File.join(File.dirname(__FILE__), 'i18n/sk.yml')
     #set :default_locale, 'sk'
-
+    set :show_exceptions, true
     set :session_secret, "My session secret"
     register Sinatra::Flash
     register Sinatra::Reloader
