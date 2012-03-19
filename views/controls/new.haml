@@ -19,7 +19,7 @@
                 - if @current_user.is_admin?
                   %select{:name => 'control[user_id]', :id => 'control_user', :class => 'combobox' }
                     %option
-                    - Branch.with_users.each do |b|
+                    - Branch.with_active_users.each do |b|
                       - options = {:value => b.actual_controlor.id}
                       %option{options}= b.name
                   %span.help-inline= @control.flash_error_for(:user_id)
