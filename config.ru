@@ -1,3 +1,8 @@
-require File.expand_path(File.join(*%w[ config environment ]), File.dirname(__FILE__))
-run RpControl
+require 'rubygems'
+require 'bundler'
 
+Bundler.require
+
+require './main'
+
+run RpControl

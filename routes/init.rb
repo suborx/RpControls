@@ -1,0 +1,5 @@
+require_relative 'auth_router'
+require_relative 'contact_router'
+require_relative 'control_router'
+require_relative 'jobs_router'
+require_relative 'users_router'
