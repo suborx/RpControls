@@ -21,4 +21,17 @@ $('document').ready(function(){
   });
 
   $( "#datepicker" ).datepicker({dateFormat: 'yy-mm-dd'});
+
+
+  $(getRespondent);
+
+  function getRespondent(){
+    $('ul.ui-autocomplete li').live('click', function(){
+      current_contact =  $(this).text();
+      if ($("select#control_contact option:contains("+current_contact+")")){
+        contact_id = $("select#control_contact option:contains("+current_contact+")").val();
+      }
+      $('#contact').show().load("/contacts/"+contact_id+".js");
+    });
+  };
 })

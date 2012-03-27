@@ -2,7 +2,7 @@
   .hero-unit
     %h2 Kontrola!
   .row
-    .span6
+    .span8
       = flash_messages
       %form{:action => "/controls/#{@control.id}", :method => 'POST', :id => 'controls', :class => 'form-horizontal well'}
         %fieldset
@@ -57,23 +57,25 @@
           %div.form-actions
             %input{:type => 'submit', :value => 'Uložiť', :class => 'btn btn-primary'}
               %button{:type => 'reset', :class => 'btn'} Zrušiť
-    .span6
+    .span4
       %div.well
         %h3 Zadanie kontroly
+        %strong='Typ: ' + @control.control_type + ' kontrola'
         %br
-        %strong= @control.control_type + ' kontrola'
+        %strong='Adresa: ' + @control.for_address
         %br
-        %strong=@control.for_address
-        %br
-        %strong= 'Poznámka ' + (@control.notice.blank? ? 'nie je' : @control.notice)
-        %br
-        %br
-        Klient
-        = @control.for_client
-        %br
-        = "#{@control.for_week.cweek} . Týždeň"
-
-        %br
-        Kontrolór
+        %strong='Kontrolór: '
         = @control.user.full_name
         %br
+        - if @control.for_client
+          %strong='Klient: '
+          = @control.for_client
+          %br
+
+        %strong='Týždeň: '
+        =@control.for_week.cweek.to_s
+        %br
+        - unless @control.notice.blank?
+          %strong= 'Poznámka ' + (@control.notice.blank? ? 'nie je' : @control.notice)
+          %br
+      %div.well.hide#contact
