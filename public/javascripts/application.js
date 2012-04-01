@@ -24,6 +24,8 @@ $('document').ready(function(){
 
 
   $(getRespondent);
+  $(getQuestions);
+
 
   function getRespondent(){
     $('ul.ui-autocomplete li').live('click', function(){
@@ -33,5 +35,32 @@ $('document').ready(function(){
       }
       $('#contact').show().load("/contacts/"+contact_id+".js");
     });
+  };
+
+
+  function getQuestions(){
+    $('#control_user, #control_for_week').next().bind('autocompleteselect', function(event, ui) {
+      console.log(ui.option)
+      var users = $('#control_user').find('option:selected');
+          weeks = $('#control_for_week').find('option:selected');
+
+            user = $(users.first()).attr('value');
+            week_date = $(weeks.first()).attr('value');
+
+            if (user &&  week_date){
+              $('#questions').show().load("/questions/"+user+"/"+week_date);
+            }
+    });
+
+    //$("#control_user option:eq(2)").attr("selected", "selected");
+    //$("#control_user").change(function() {
+      //$(this).next().val($(this).children(':selected').text());
+    //});
+
+    //$("#control_for_week option:eq(2)").attr("selected", "selected");
+    //$("#control_for_week").change(function() {
+      //$(this).next().val($(this).children(':selected').text());
+    //});
+
   };
 })

@@ -4,10 +4,18 @@ class Control < ActiveRecord::Base
 
   include FormErrorHelper
 
+  attr_accessor :questions, :for_week
+
   establish_connection 'local_db'
 
   belongs_to :user
   belongs_to :contact
+  belongs_to :week
+  has_many :answers
+  has_many :assigned_questions, :through => :answers, :source => :question, :class_name => "Question"
+
+  before_save :assign_week
+  after_create :assign_questions
 
   validates_presence_of :contact_id, :if => 'was_controlled', :message => "povinná položka"
   validates_presence_of :control_date, :if => 'was_controlled', :message => "povinná položka"
@@ -58,5 +66,20 @@ class Control < ActiveRecord::Base
     @valid
   end
 
+  private
+
+  def assign_questions
+    return if questions.blank?
+    questions.each do |q|
+      Answer.create(:control_id => self.id , :question_id => q)
+    end
+  end
+
+  def assign_week
+    user = User.find(user_id)
+    if user && for_week
+      self.week_id = Week.find_or_create_week({:branch_id => user.branch_id, :week => for_week}).id
+    end
+  end
 end
 

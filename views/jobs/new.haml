@@ -26,7 +26,7 @@
               Týždeň
               %abbr *
             %div.controls
-              %select{:name => 'control[for_week]', :id => 'control_contact', :class => 'combobox' }
+              %select{:name => 'control[for_week]', :id => 'control_for_week', :class => 'combobox' }
                 %option
                 - week_numbers_with_dates.each do |week,date|
                   - options = {:value => date}
@@ -40,6 +40,8 @@
             %div.controls
               %input{:type => 'text', :name => 'control[for_client]', :id => 'control_for_client'}
               %span.help-inline= @control.flash_error_for(:for_client)
+
+          %div#questions.hide BLA
 
           %div.control-group
             %label{:for => 'control_type', :class => 'control-label'} Typ kontroly

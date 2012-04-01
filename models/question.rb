@@ -28,12 +28,5 @@ class Question < ActiveRecord::Base
     update_attributes(:question => params[:question], :week_id => week.id)
   end
 
-  private
-
-  def self.find_or_create_week(params)
-    branch = Branch.find(params[:branch_id])
-    week = branch.weeks.find_or_create_by_week_date(:week_date => params[:week])
-    week
-  end
 
 end

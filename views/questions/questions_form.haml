@@ -1,0 +1,9 @@
+- unless @questions.empty?
+  %div.control-group
+    %label{:for => "control_questions", :class => 'control-label'} Otázky
+    - @questions.each_with_index do |q,n|
+      %div.controls
+        %label{:for => "control_question_#{n}", :class => 'checkbox inline' }
+          %input{:type => 'checkbox', :name => 'control[questions][]', :value => q.id, :id => "control_question_#{n}"}
+          = q.question
+      %br

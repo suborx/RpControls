@@ -21,6 +21,7 @@
           %th Klient
           %th Mesto a Adresa
           %th.center Typ
+          %th.center Otázok
           - unless @current_user.is_admin?
             %th Poznámka
           %th.center Nástroje
@@ -45,6 +46,7 @@
                 %span.label= control.control_type
             - unless @current_user.is_admin?
               %td= control.notice
+            %td.center= control.assigned_questions.size
             %td.center
               %a.btn.btn-small{:href => "edit/jobs/#{control.id}"}
                 %i.icon-edit
