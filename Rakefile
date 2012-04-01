@@ -3,7 +3,7 @@ require './main'
 require 'sinatra/activerecord/rake'
 
 task :environment do
-    require File.expand_path(File.join(*%w[ config environment ]), File.dirname(__FILE__))
+    require File.expand_path(File.join(*%w[ main ]), File.dirname(__FILE__))
 end
 
 namespace :db do

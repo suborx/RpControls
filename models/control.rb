@@ -4,33 +4,29 @@ class Control < ActiveRecord::Base
 
   include FormErrorHelper
 
-  attr_accessor :questions, :for_week
+  attr_accessor :questions, :answers, :for_week
 
   establish_connection 'local_db'
 
   belongs_to :user
   belongs_to :contact
   belongs_to :week
-  has_many :answers
-  has_many :assigned_questions, :through => :answers, :source => :question, :class_name => "Question"
+  has_many :assigned_answers, :class_name => 'Answer'
+  has_many :assigned_questions, :through => :assigned_answers, :source => :question, :class_name => "Question"
 
-  before_save :assign_week
+  before_save :assign_week, :update_answers
   after_create :assign_questions
 
   validates_presence_of :contact_id, :if => 'was_controlled', :message => "povinná položka"
   validates_presence_of :control_date, :if => 'was_controlled', :message => "povinná položka"
-  validates_presence_of :user_id, :for_week, :for_address, :control_type, :message => "povinná položka"
+  validates_presence_of :for_week, :unless => 'was_controlled', :message => "povinná položka"
+  validates_presence_of :user_id, :for_address, :control_type
 
   default_scope(order('created_at DESC'))
 
   scope :with_contact_last_name, lambda { |contact_last_name| joins(:contact).where(["contacts.last_name LIKE ?", "#{contact_last_name}%"]) }
   scope :controlled, where(:was_controlled => true)
   scope :uncontrolled, where(:was_controlled => false)
-
-  #fake have to be deleted
-  def for_week
-    Date.today
-  end
 
   def self.search(user,search_query=nil)
     if user.is_admin?
@@ -68,6 +64,13 @@ class Control < ActiveRecord::Base
 
   private
 
+  def update_answers
+    return if answers.blank?
+    answers.each_pair do |k,v|
+      Answer.find(k).update_attribute(:answer,v)
+    end
+  end
+
   def assign_questions
     return if questions.blank?
     questions.each do |q|
@@ -76,6 +79,7 @@ class Control < ActiveRecord::Base
   end
 
   def assign_week
+    return if for_week.blank?
     user = User.find(user_id)
     if user && for_week
       self.week_id = Week.find_or_create_week({:branch_id => user.branch_id, :week => for_week}).id

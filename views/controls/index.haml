@@ -26,6 +26,7 @@
           %th.center Dĺžka hovoru
           %th.center Uspešné
           %th.center Pravidelne doručené
+          %th.center Otazok
           %th.center Overené
           %th.center Nástroje
       %tbody
@@ -33,7 +34,7 @@
           - @user_controls = control.user.controls
           %tr
             %td= control.id
-            %td.center= control.for_week.cweek
+            %td.center= control.week.week_date.cweek
             %td.center= control.control_date.strftime(TIME_FORMAT)
             - if @current_user.is_admin?
               %td.center= control.user.branch.mark
@@ -56,6 +57,7 @@
                 = control.time
             %td.center= boolean_label_for(control.succeed?)
             %td.center= boolean_label_for(control.regulary_delivered?)
+            %td.center= control.assigned_questions.count
             %td.center= boolean_label_for(control.verified?,:represented_if => (control.control_type == 'Telefonická'))
             %td.center
               %a.btn.btn-small{:href => "edit/controls/#{control.id}"}

@@ -23,18 +23,19 @@
               - else
                 %input{:type => 'hidden', :name => 'control[user_id]', :value => @current_user.id}
                 %h4= @current_user.branch_name
-          %div.control-group{ :class => @control.has_error_on?(:for_week)}
+
+          %div.control-group{ :class => @control.has_error_on?(:week_id)}
             %label{:for => 'control_for_week', :class => 'control-label'}
               Týždeň
               %abbr *
             %div.controls
-              %select{:name => 'control[for_week]', :id => 'control_contact', :class => 'combobox' }
+              %select{:name => 'control[week]', :id => 'control_contact', :class => 'combobox' }
                 %option
                 - week_numbers_with_dates.each do |week,date|
                   - options = {:value => date}
-                  - options.merge!(:selected => 'selected') if date == @control.for_week
+                  - options.merge!(:selected => 'selected') if date == @control.week.week_date
                   %option{options}= week.to_s + " týždeň - " + date.strftime(TIME_FORMAT)
-              %span.help-inline= @control.flash_error_for(:for_week)
+              %span.help-inline= @control.flash_error_for(:week_id)
 
           %div.control-group{ :class => @control.has_error_on?(:for_client)}
             %label{:for => 'control_for_client', :class => 'control-label'}

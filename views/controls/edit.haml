@@ -49,6 +49,17 @@
                 %input{:type => 'radio', :name => 'control[regulary_delivered]', :value => 'false', :checked => ('checked' if !@control.regulary_delivered?), :id => 'control_delivered_false'}
                 Nie
 
+          - @control.assigned_answers.each do |answer|
+            %div.control-group
+              %label{:for => "control_question_#{answer.id}", :class => 'control-label'}= answer.question.question
+              %div.controls
+                %label{:for => "control_question_#{answer.id}_true", :class => 'checkbox inline' }
+                  %input{:type => 'radio', :name => "control[answers][#{answer.id}]", :value => 'true', :checked => ('checked' if answer.answer.present?), :id => "control_question_#{answer.id}_true"}
+                  Áno
+                %label{:for => "control_question_#{answer.id}_false", :class => 'checkbox inline' }
+                  %input{:type => 'radio', :name => "control[answers][#{answer.id}]", :value => 'false', :checked => ('checked' if !answer.answer.present?), :id => "control_question_#{answer.id}_false"}
+                  Nie
+
           %div.control-group
             %label{:for => 'control_notice', :class => 'control-label'} Poznámka
             %div.controls
@@ -73,7 +84,7 @@
           %br
 
         %strong='Týždeň: '
-        =@control.for_week.cweek.to_s
+        =@control.week.week_date.cweek.to_s
         %br
         - unless @control.notice.blank?
           %strong= 'Poznámka ' + (@control.notice.blank? ? 'nie je' : @control.notice)

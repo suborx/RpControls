@@ -15,7 +15,7 @@ class Question < ActiveRecord::Base
   validates_presence_of :question, :week_id, :message => "povinná položka"
 
   def self.create_questions(params)
-    week = find_or_create_week(params)
+    week = Week.find_or_create_week(params)
     questions = params[:questions].delete_if{ |q| q.blank? }
     questions.each do |q|
       week.questions.create(:question => q)
@@ -24,7 +24,7 @@ class Question < ActiveRecord::Base
   end
 
   def update_question(params)
-    week = Question.find_or_create_week(params)
+    week = Week.find_or_create_week(params)
     update_attributes(:question => params[:question], :week_id => week.id)
   end
 

@@ -30,7 +30,7 @@
           - @user_controls = control.user.controls
           %tr
             %td= control.id
-            %td.center= control.for_week.cweek
+            %td.center= control.week.week_date.cweek
             - if @current_user.is_admin?
               %td.center= control.user.branch.mark
               %td
