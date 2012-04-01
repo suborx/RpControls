@@ -1,0 +1,32 @@
+.row
+  .span12
+    = flash_messages
+    .well
+      %h3
+        Doplňujúce otázky pre kontroly
+        .btn-group.pull-right
+          %a.btn.btn-primary{:href => "/new/question"} + Pridať otázku
+          %a#search.btn.btn-success Vyhľadávanie
+    %form.form-search.pull-right.well.hide
+      %input{:type => 'text', :placeholder => 'Vyhľadávanie', :name => 'search', :class => 'input-tooltip', :'data-original-title' => 'Zadajte priezvisko respondenta'}
+      %input{:type => 'submit', :value => 'Vyhladať', :class => 'btn btn-primary'}
+    %table.table.table-striped.table-bordered.table-condensed
+      %thead
+        %tr
+          %th ID
+          %th.center Týždeň
+          %th.center Redakcia
+          %th Otazka
+          %th.center Nástroje
+      %tbody
+        - @questions.each do |question|
+          %tr
+            %td= question.id
+            %td.center= question.week.week_date.cweek
+            %td.center= question.branch_mark
+            %td= question.question
+            %td.center
+              %a.btn.btn-small{:href => "edit/questions/#{question.id}"}
+                %i.icon-edit
+                Upraviť
+    = will_paginate @questions, paginate_labels

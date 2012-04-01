@@ -6,6 +6,7 @@ class Branch < ActiveRecord::Base
 
   has_many :users
   has_many :contacts
+  has_many :weeks
 
   validates_presence_of :name, :message => "povinná položka"
 

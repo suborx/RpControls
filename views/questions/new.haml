@@ -1,0 +1,56 @@
+.content
+  .hero-unit
+    %h2 Vytvorenie doplňujúcich otázok
+  .row
+    .span12
+      = flash_messages
+      %form{:action => '/questions', :method => 'POST', :id => 'questions', :class => 'form-horizontal well'}
+        %fieldset
+          %div.control-group{ :class => @question.has_error_on?(:branch_id)}
+            %label{:for => 'question_branch', :class => 'control-label'}
+              Redakcia
+              %abbr *
+            %div.controls
+              %select{:name => 'question[branch_id]', :id => 'question_branch', :class => 'combobox' }
+                %option
+                - Branch.all.each do |b|
+                  - options = {:value => b.id}
+                  %option{options}= b.name
+              %span.help-inline= @question.flash_error_for(:branch_id)
+          %div.control-group{ :class => @question.has_error_on?(:week)}
+            %label{:for => 'question_week', :class => 'control-label'}
+              Týždeň
+              %abbr *
+            %div.controls
+              %select{:name => 'question[week]', :id => 'question_week', :class => 'combobox' }
+                %option
+                - week_numbers_with_dates.each do |week,date|
+                  - options = {:value => date}
+                  - options.merge!(:selected => 'selected') if week == Date.today.cweek
+                  %option{options}= week.to_s + " týždeň - " + date.strftime(TIME_FORMAT)
+              %span.help-inline= @question.flash_error_for(:week)
+
+          %div.control-group{ :class => @question.has_error_on?(:questions)}
+            %label{:for => 'question_question', :class => 'control-label'}
+              Otázka1
+            %div.controls
+              %input{:type => 'text', :name => 'question[questions][]', :id => 'question_question'}
+              %span.help-inline= @question.flash_error_for(:questions)
+
+          %div.control-group{ :class => @question.has_error_on?(:questions)}
+            %label{:for => 'question_question', :class => 'control-label'}
+              Otázka2
+            %div.controls
+              %input{:type => 'text', :name => 'question[questions][]', :id => 'question_question'}
+              %span.help-inline= @question.flash_error_for(:questions)
+
+          %div.control-group{ :class => @question.has_error_on?(:questions)}
+            %label{:for => 'question_question', :class => 'control-label'}
+              Otázka3
+            %div.controls
+              %input{:type => 'text', :name => 'question[questions][]', :id => 'question_question'}
+              %span.help-inline= @question.flash_error_for(:questions)
+
+          %div.form-actions
+            %input{:type => 'submit', :value => 'Uložiť', :class => 'btn btn-primary'}
+            %button{:type => 'reset', :class => 'btn'} Zrušiť

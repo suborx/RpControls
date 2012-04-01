@@ -1,0 +1,44 @@
+.content
+  .hero-unit
+    %h2 Úprava otázky
+  .row
+    .span12
+      = flash_messages
+      %form{:action => "/questions/#{@question.id}", :method => 'POST', :id => 'questions', :class => 'form-horizontal well'}
+        %input{:type => 'hidden', :name => '_method', :value => 'PUT'}
+        %fieldset
+          %div.control-group{ :class => @question.has_error_on?(:branch_id)}
+            %label{:for => 'question_branch', :class => 'control-label'}
+              Redakcia
+              %abbr *
+            %div.controls
+              %select{:name => 'question[branch_id]', :id => 'question_branch', :class => 'combobox' }
+                %option
+                - Branch.all.each do |b|
+                  - options = {:value => b.id}
+                  - options.merge!(:selected => 'selected') if b.id == @question.week.branch_id
+                  %option{options}= b.name
+              %span.help-inline= @question.flash_error_for(:branch_id)
+          %div.control-group{ :class => @question.has_error_on?(:week)}
+            %label{:for => 'question_week', :class => 'control-label'}
+              Týždeň
+              %abbr *
+            %div.controls
+              %select{:name => 'question[week]', :id => 'question_week', :class => 'combobox' }
+                %option
+                - week_numbers_with_dates.each do |week,date|
+                  - options = {:value => date}
+                  - options.merge!(:selected => 'selected') if week == @question.week.week_date.cweek
+                  %option{options}= week.to_s + " týždeň - " + date.strftime(TIME_FORMAT)
+              %span.help-inline= @question.flash_error_for(:week)
+
+          %div.control-group{ :class => @question.has_error_on?(:question)}
+            %label{:for => 'question_question', :class => 'control-label'}
+              Otázka
+            %div.controls
+              %input{:type => 'text', :name => 'question[question]', :id => 'question_question', :value => @question.question}
+              %span.help-inline= @question.flash_error_for(:question)
+
+          %div.form-actions
+            %input{:type => 'submit', :value => 'Uložiť', :class => 'btn btn-primary'}
+            %button{:type => 'reset', :class => 'btn'} Zrušiť
