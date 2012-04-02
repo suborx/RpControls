@@ -35,7 +35,7 @@ $('document').ready(function(){
       if ($("select#control_contact option:contains("+current_contact+")")){
         contact_id = $("select#control_contact option:contains("+current_contact+")").val();
       }
-      $('#contact').show().load("/contacts/"+contact_id+".js");
+      $('#contact').show().load("/contacts_for_control/"+contact_id);
     });
   };
 

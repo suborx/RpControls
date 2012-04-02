@@ -14,11 +14,7 @@ class RpControl < Sinatra::Base
   get '/contacts/:id' do
     @contact = Contact.includes(:controls).find(params[:id])
     @controls = @contact.controls.paginate(:page =>params[:page], :per_page => 18).includes(:user)
-    if request.path['js']
-      haml :'contacts/show_for_js', :layout => false
-    else
-      haml :'contacts/show'
-    end
+    haml :'contacts/show'
   end
 
   get '/new/contact' do
@@ -58,6 +54,12 @@ class RpControl < Sinatra::Base
   end
 
   delete '/contact/:id' do
+  end
+
+  get '/contacts_for_control/:id' do
+    @contact = Contact.includes(:controls).find(params[:id])
+    @controls = @contact.controls.paginate(:page =>params[:page], :per_page => 18).includes(:user)
+    haml :'contacts/show_for_js', :layout => false
   end
 
 end
