@@ -45,15 +45,17 @@ $('document').ready(function(){
       if (ui.item.option.parentElement.id == 'control_for_week'){
         users = $('#control_user').find('option:selected');
         user = $(users.first()).attr('value');
+        control_id = $('form#jobs').attr('action').split('/')[2]
         week_date = ui.item.option.attributes[0].value;
       }else{
         weeks = $('#control_for_week').find('option:selected');
         week_date = $(weeks.first()).attr('value');
+        control_id = $('form#jobs').attr('action').split('/')[2]
         user = ui.item.option.attributes[0].value;
       }
 
       if (user &&  week_date){
-        $('#questions').show().load("/questions_for_control/"+user+"/"+week_date);
+        $('#questions').show().load("/questions_for_control/" +control_id+"/"+user+"/"+week_date);
       }
     });
   };

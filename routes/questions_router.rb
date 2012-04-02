@@ -38,10 +38,10 @@ class RpControl < Sinatra::Base
     end
   end
 
-  get '/questions_for_control/:user_id/:week_date' do
+  get '/questions_for_control/:control_id/:user_id/:week_date' do
+    @control_id = params[:control_id]
     user = User.find(params[:user_id])
-    week = Week.first(:conditions => {:branch_id => user.branch.id, :week_date => params[:week_date]})
-    @questions = week ? week.questions : []
+    @questions = questions_for_branch_and_week(user.branch_id, params[:week_date])
     haml :'questions/questions_for_control', :layout => false
   end
 

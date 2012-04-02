@@ -28,5 +28,7 @@ class Question < ActiveRecord::Base
     update_attributes(:question => params[:question], :week_id => week.id)
   end
 
-
+  def has_answer_for_control?(control_id)
+    control_id == 'undefined' ? false : !!answers.find_by_control_id(control_id)
+  end
 end

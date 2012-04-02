@@ -14,8 +14,7 @@ class Control < ActiveRecord::Base
   has_many :assigned_answers, :class_name => 'Answer'
   has_many :assigned_questions, :through => :assigned_answers, :source => :question, :class_name => "Question"
 
-  before_save :assign_week, :update_answers
-  after_create :assign_questions
+  before_save :assign_week, :update_answers, :assign_questions
 
   validates_presence_of :contact_id, :if => 'was_controlled', :message => "povinná položka"
   validates_presence_of :control_date, :if => 'was_controlled', :message => "povinná položka"
@@ -72,10 +71,9 @@ class Control < ActiveRecord::Base
   end
 
   def assign_questions
-    return if questions.blank?
-    questions.each do |q|
-      Answer.create(:control_id => self.id , :question_id => q)
-    end
+    return if questions.blank? || was_controlled
+    assigned_answers.delete_all unless assigned_answers.empty?
+    questions.each{ |q| Answer.create(:control_id => self.id , :question_id => q)}
   end
 
   def assign_week

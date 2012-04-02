@@ -29,7 +29,7 @@
               Týždeň
               %abbr *
             %div.controls
-              %select{:name => 'control[week]', :id => 'control_contact', :class => 'combobox' }
+              %select{:name => 'control[for_week]', :id => 'control_for_week', :class => 'combobox' }
                 %option
                 - week_numbers_with_dates.each do |week,date|
                   - options = {:value => date}
@@ -43,6 +43,18 @@
             %div.controls
               %input{:type => 'text', :name => 'control[for_client]', :id => 'control_for_client', :value => @control.for_client}
               %span.help-inline= @control.flash_error_for(:for_client)
+
+          %div#questions{:class => (@control.week.questions.empty? ? "hide" : "")}
+            - unless @control.week.questions.empty?
+              %div.control-group
+                %label{:for => "control_questions", :class => 'control-label'} Otázky
+                - @control.week.questions.each_with_index do |q,n|
+                  %div.controls
+                    %label{:for => "control_question_#{n}", :class => 'checkbox inline' }
+                      - html_options = {:type => 'checkbox', :name => 'control[questions][]', :value => q.id, :id => "control_question_#{n}"}.merge!( q.has_answer_for_control?(@control.id) ? {:checked => "checked"} : {} )
+                      %input{html_options}
+                      = q.question
+                  %br
 
           %div.control-group
             %label{:for => 'control_type', :class => 'control-label'} Typ kontroly

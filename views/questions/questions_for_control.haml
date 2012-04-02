@@ -4,6 +4,7 @@
     - @questions.each_with_index do |q,n|
       %div.controls
         %label{:for => "control_question_#{n}", :class => 'checkbox inline' }
-          %input{:type => 'checkbox', :name => 'control[questions][]', :value => q.id, :id => "control_question_#{n}"}
+          - html_options = {:type => 'checkbox', :name => 'control[questions][]', :value => q.id, :id => "control_question_#{n}"}.merge!( q.has_answer_for_control?(@control_id) ? {:checked => "checked"} : {} )
+          %input{html_options}
           = q.question
       %br
