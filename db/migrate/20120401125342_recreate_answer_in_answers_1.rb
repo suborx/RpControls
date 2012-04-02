@@ -4,6 +4,6 @@ class RecreateAnswerInAnswers1 < ActiveRecord::Migration
   end
 
   def self.down
-    add_column :answers, :answer
+    add_column :answers, :answer, :boolean
   end
 end
