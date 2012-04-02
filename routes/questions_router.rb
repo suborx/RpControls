@@ -3,7 +3,6 @@
 class RpControl < Sinatra::Base
 
   get '/questions' do
-    debugger
     @questions = Question.search(params[:question]).paginate(:page =>params[:page], :per_page => 18).includes([:week,:answers])
     flash.now[:error] = 'Nenašli sa žiadne vyhovujúce otázky.' if @questions.empty?
     haml :'questions/index'
@@ -42,7 +41,7 @@ class RpControl < Sinatra::Base
 
   delete '/questions/:id' do
     q = Question.find(params[:id])
-    q.destroy if q.answer.count.zero?
+    q.destroy if q.answers.count.zero?
     redirect to '/questions'
   end
 
