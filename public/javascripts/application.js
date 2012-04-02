@@ -41,31 +41,40 @@ $('document').ready(function(){
 
   function getQuestionsForControl(){
     $('#control_user, #control_for_week').next().bind('autocompleteselect', function(event, ui) {
-      var users = $('#control_user').find('option:selected');
-          weeks = $('#control_for_week').find('option:selected');
 
-            user = $(users.first()).attr('value');
-            week_date = $(weeks.first()).attr('value');
+      if (ui.item.option.parentElement.id == 'control_for_week'){
+        users = $('#control_user').find('option:selected');
+        user = $(users.first()).attr('value');
+        week_date = ui.item.option.attributes[0].value;
+      }else{
+        weeks = $('#control_for_week').find('option:selected');
+        week_date = $(weeks.first()).attr('value');
+        user = ui.item.option.attributes[0].value;
+      }
 
-            if (user &&  week_date){
-              $('#questions').show().load("/questions_for_control/"+user+"/"+week_date);
-            }
+      if (user &&  week_date){
+        $('#questions').show().load("/questions_for_control/"+user+"/"+week_date);
+      }
     });
   };
 
   function getQuestionsForNewQuestion(){
     $('#question_branch, #question_week').next().bind('autocompleteselect', function(event, ui) {
-      var branches = $('#question_branch').find('option:selected');
-          weeks = $('#question_week').find('option:selected');
 
-            branch = $(branches.first()).attr('value');
-            week_date = $(weeks.first()).attr('value');
+      if (ui.item.option.parentElement.id == 'question_week'){
+        branches = $('#question_branch').find('option:selected');
+        branch = $(branches.first()).attr('value');
+        week_date = ui.item.option.attributes[0].value;
+      }else{
+        weeks = $('#question_week').find('option:selected');
+        week_date = $(weeks.first()).attr('value');
+        branch = ui.item.option.attributes[0].value;
+      }
 
-            if (branch &&  week_date){
-              $('#already_assigned_questions').show().load("/questions_for_questions/"+branch+"/"+week_date);
-            }
+      if (branch &&  week_date){
+        $('#already_assigned_questions').show().load("/questions_for_questions/"+branch+"/"+week_date);
+      }
     });
-
   };
 
   function getQuestionHtml(){
