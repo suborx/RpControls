@@ -2,7 +2,7 @@
   .hero-unit
     %h2 Vytvorenie doplňujúcich otázok
   .row
-    .span12
+    .span6
       = flash_messages
       %form{:action => '/questions', :method => 'POST', :id => 'questions', :class => 'form-horizontal well'}
         %fieldset
@@ -50,7 +50,13 @@
             %div.controls
               %input{:type => 'text', :name => 'question[questions][]', :id => 'question_question'}
               %span.help-inline= @question.flash_error_for(:questions)
-
+          %div#more_questions
           %div.form-actions
             %input{:type => 'submit', :value => 'Uložiť', :class => 'btn btn-primary'}
             %button{:type => 'reset', :class => 'btn'} Zrušiť
+            %button{:type => '', :class => 'btn', :id => 'add_more_questions'} ₊ Pridať otázoku
+    .span5.well
+      %h3 Priradené otázky
+      %div#already_assigned_questions
+        K tejto pobočke a tomuto týždňu niesu pridadené žiadne otázky.
+

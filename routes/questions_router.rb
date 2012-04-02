@@ -38,10 +38,24 @@ class RpControl < Sinatra::Base
     end
   end
 
-  get '/questions/:user_id/:week_date' do
+  get '/questions_for_control/:user_id/:week_date' do
     user = User.find(params[:user_id])
     week = Week.first(:conditions => {:branch_id => user.branch.id, :week_date => params[:week_date]})
     @questions = week ? week.questions : []
-    haml :'questions/questions_form', :layout => false
+    haml :'questions/questions_for_control', :layout => false
+  end
+
+  get '/questions_for_questions/:branch_id/:week_date' do
+    @branch = Branch.find(params[:branch_id])
+    @week_date = Date.parse params[:week_date]
+    @questions = questions_for_branch_and_week(params[:branch_id],params[:week_date])
+    haml :'questions/questions_for_questions', :layout => false
+  end
+
+  private
+
+  def questions_for_branch_and_week(branch_id,week_date)
+    @week = Week.first(:conditions => {:branch_id => branch_id, :week_date => week_date})
+    @week ? @week.questions : []
   end
 end

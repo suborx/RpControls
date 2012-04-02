@@ -24,8 +24,9 @@ $('document').ready(function(){
 
 
   $(getRespondent);
-  $(getQuestions);
-
+  $(getQuestionsForControl);
+  $(getQuestionsForNewQuestion);
+  $(getQuestionHtml);
 
   function getRespondent(){
     $('ul.ui-autocomplete li').live('click', function(){
@@ -38,9 +39,8 @@ $('document').ready(function(){
   };
 
 
-  function getQuestions(){
+  function getQuestionsForControl(){
     $('#control_user, #control_for_week').next().bind('autocompleteselect', function(event, ui) {
-      console.log(ui.option)
       var users = $('#control_user').find('option:selected');
           weeks = $('#control_for_week').find('option:selected');
 
@@ -48,19 +48,31 @@ $('document').ready(function(){
             week_date = $(weeks.first()).attr('value');
 
             if (user &&  week_date){
-              $('#questions').show().load("/questions/"+user+"/"+week_date);
+              $('#questions').show().load("/questions_for_control/"+user+"/"+week_date);
+            }
+    });
+  };
+
+  function getQuestionsForNewQuestion(){
+    $('#question_branch, #question_week').next().bind('autocompleteselect', function(event, ui) {
+      var branches = $('#question_branch').find('option:selected');
+          weeks = $('#question_week').find('option:selected');
+
+            branch = $(branches.first()).attr('value');
+            week_date = $(weeks.first()).attr('value');
+
+            if (branch &&  week_date){
+              $('#already_assigned_questions').show().load("/questions_for_questions/"+branch+"/"+week_date);
             }
     });
 
-    //$("#control_user option:eq(2)").attr("selected", "selected");
-    //$("#control_user").change(function() {
-      //$(this).next().val($(this).children(':selected').text());
-    //});
-
-    //$("#control_for_week option:eq(2)").attr("selected", "selected");
-    //$("#control_for_week").change(function() {
-      //$(this).next().val($(this).children(':selected').text());
-    //});
-
   };
+
+  function getQuestionHtml(){
+    var question_html = "<div class='control-group'>  <label for='question_question' class='control-label'> Otázka </label>  <div class='controls'>  <input type='text' name='question[questions][]' id='question_question'>  </div> </div>"
+    $('#add_more_questions').bind('click', function(){
+      $('#more_questions').append(question_html);
+      return false
+    });
+  }
 })

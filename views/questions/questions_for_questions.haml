@@ -1,0 +1,6 @@
+- if @questions.empty?
+  = "K redakcii #{@branch.name} a #{@week_date.cweek} týždňu nie su pridadené žiadne otázky."
+- else
+  %ol
+    - @questions.each do |q|
+      %li=q.question

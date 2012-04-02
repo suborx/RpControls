@@ -2,7 +2,7 @@
   .hero-unit
     %h2 Úprava otázky
   .row
-    .span12
+    .span6
       = flash_messages
       %form{:action => "/questions/#{@question.id}", :method => 'POST', :id => 'questions', :class => 'form-horizontal well'}
         %input{:type => 'hidden', :name => '_method', :value => 'PUT'}
@@ -42,3 +42,7 @@
           %div.form-actions
             %input{:type => 'submit', :value => 'Uložiť', :class => 'btn btn-primary'}
             %button{:type => 'reset', :class => 'btn'} Zrušiť
+    .span5.well
+      %h3 Priradené otázky
+      %div#already_assigned_questions
+        K tejto pobočke a tomuto týždňu niesu pridadené žiadne otázky.
