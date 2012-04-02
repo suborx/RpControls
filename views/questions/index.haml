@@ -31,6 +31,7 @@
           %th.center Týždeň
           %th.center Redakcia
           %th Otazka
+          %th.center Zadania
           %th.center Nástroje
       %tbody
         - @questions.each do |question|
@@ -39,8 +40,15 @@
             %td.center= question.week.week_date.cweek
             %td.center= question.branch_mark
             %td= question.question
-            %td.center
-              %a.btn.btn-small{:href => "edit/questions/#{question.id}"}
+            %td.center= question.answers.size
+            %td.center{:style => 'width:150px'}
+              %a.btn.btn-small{:href => "edit/questions/#{question.id}", :style => 'float:left'}
                 %i.icon-edit
                 Upraviť
+              - if question.answers.count.zero?
+                %form{ :method => "POST", :action => "/questions/#{question.id}"}
+                  %input{ :type => 'hidden', :name => '_method', :value => 'DELETE'}
+                  %input{ :class => 'btn btn-small btn-danger', :value => "Odstrániť", :type => "submit"}
+              - else
+                %a.btn.btn-small.btn-danger.disabled{:rel => 'tooltip', :'data-original-title' => 'Otázka je už použitá v zadaní na kotrolu' } Odstrániť
     = will_paginate @questions, paginate_labels

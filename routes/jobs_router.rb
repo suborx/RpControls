@@ -39,4 +39,9 @@ class RpControl < Sinatra::Base
     end
   end
 
+  delete '/jobs/:id' do
+    c = Control.find(params[:id])
+    c.destroy unless c.was_controlled
+    redirect to '/jobs'
+  end
 end

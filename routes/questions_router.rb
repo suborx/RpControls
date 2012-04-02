@@ -3,7 +3,8 @@
 class RpControl < Sinatra::Base
 
   get '/questions' do
-    @questions = Question.search(params[:question]).paginate(:page =>params[:page], :per_page => 18).includes([:week])
+    debugger
+    @questions = Question.search(params[:question]).paginate(:page =>params[:page], :per_page => 18).includes([:week,:answers])
     flash.now[:error] = 'Nenašli sa žiadne vyhovujúce otázky.' if @questions.empty?
     haml :'questions/index'
   end
@@ -37,6 +38,12 @@ class RpControl < Sinatra::Base
       flash.now[:error] = 'Úprava otazky nebola úspešná.'
       haml :'questions/edit'
     end
+  end
+
+  delete '/questions/:id' do
+    q = Question.find(params[:id])
+    q.destroy if q.answer.count.zero?
+    redirect to '/questions'
   end
 
   get '/questions_for_control/:control_id/:user_id/:week_date' do

@@ -48,9 +48,12 @@
               %td= control.notice
             %td.center= control.assigned_questions.size
             %td.center
-              %a.btn.btn-small{:href => "edit/jobs/#{control.id}"}
+              %a.btn.btn-small{:href => "edit/jobs/#{control.id}", :style => 'float:left;margin-right:10px'}
                 %i.icon-edit
                 Upraviť
-              %a.btn.btn-danger.btn-small{:href => "edit/controls/#{control.id}"}
+              %a.btn.btn-success.btn-small{:href => "edit/controls/#{control.id}", :style => 'float:left'}
                 Kontrolovať
+              %form{ :method => "POST", :action => "/jobs/#{control.id}"}
+                %input{ :type => 'hidden', :name => '_method', :value => 'DELETE'}
+                %input{ :class => 'btn btn-small btn-danger', :value => "Odstrániť", :type => "submit"}
     = will_paginate @controls, paginate_labels

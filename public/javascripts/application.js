@@ -6,6 +6,7 @@ $('document').ready(function(){
   $('.input-tooltip').tooltip({
     'trigger': 'focus'
   })
+  $('a[rel]=tooltip').tooltip({animation:false})
 
   $('#myModal').modal()
 

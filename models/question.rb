@@ -7,7 +7,7 @@ class Question < ActiveRecord::Base
   attr_accessor :branch_id, :questions
   establish_connection 'local_db'
 
-  has_many :answers
+  has_many :answers, :dependent => :destroy
   belongs_to :week
 
   delegate :branch_mark, :to => :week
