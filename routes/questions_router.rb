@@ -3,7 +3,8 @@
 class RpControl < Sinatra::Base
 
   get '/questions' do
-    @questions = Question.paginate(:page =>params[:page], :per_page => 18).includes([])
+    @questions = Question.search(params[:question]).paginate(:page =>params[:page], :per_page => 18).includes([:week])
+    flash.now[:error] = 'Nenašli sa žiadne vyhovujúce otázky.' if @questions.empty?
     haml :'questions/index'
   end
 

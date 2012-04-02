@@ -8,7 +8,21 @@
           %a.btn.btn-primary{:href => "/new/question"} + Pridať otázku
           %a#search.btn.btn-success Vyhľadávanie
     %form.form-search.pull-right.well.hide
-      %input{:type => 'text', :placeholder => 'Vyhľadávanie', :name => 'search', :class => 'input-tooltip', :'data-original-title' => 'Zadajte priezvisko respondenta'}
+      %label{:for => 'question_branch', :class => 'control-label'}
+        Redakcia
+      %select{:name => 'question[branch_id]', :id => 'question_branch', :class => 'combobox' }
+        %option
+        - Branch.all.each do |b|
+          - options = {:value => b.id}
+          %option{options}= b.name
+      %label{:for => 'question_week', :class => 'control-label'}
+        Týždeň
+      %select{:name => 'question[week_date]', :id => 'question_week', :class => 'combobox' }
+        %option
+        - week_numbers_with_dates.each do |week,date|
+          - options = {:value => date}
+          - options.merge!(:selected => 'selected') if week == Date.today.cweek
+          %option{options}= week.to_s + " týždeň - " + date.strftime(TIME_FORMAT)
       %input{:type => 'submit', :value => 'Vyhladať', :class => 'btn btn-primary'}
     %table.table.table-striped.table-bordered.table-condensed
       %thead
