@@ -29,12 +29,14 @@ class Question < ActiveRecord::Base
   end
 
   def self.create_questions(params)
-    week = Week.find_or_create_week(params)
-    questions = params[:questions].delete_if{ |q| q.blank? }
-    questions.each do |q|
-      week.questions.create(:question => q)
+    params[:branch_ids].each do |branch_id|
+      @week = Week.find_or_create_week(:branch_id => branch_id, :week => params[:week_date])
+      questions = params[:questions].delete_if{ |q| q.blank? }
+      questions.each do |q|
+        @week.questions.create(:question => q)
+      end
     end
-    !week.questions.empty?
+    !@week.questions.empty?
   end
 
   def update_question(params)

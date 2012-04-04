@@ -2,7 +2,7 @@
   .hero-unit
     %h2 Vytvorenie doplňujúcich otázok
   .row
-    .span6
+    .span8
       = flash_messages
       %form{:action => '/questions', :method => 'POST', :id => 'questions', :class => 'form-horizontal well'}
         %fieldset
@@ -11,8 +11,8 @@
               Redakcia
               %abbr *
             %div.controls
-              %select{:name => 'question[branch_id]', :id => 'question_branch', :class => 'combobox' }
-                %option
+              %select{:name => 'question[branch_ids][]', :id => 'question_for_branches', :class => 'multiselect', :multiple => 'multiple' }
+                -#%option
                 - Branch.all.each do |b|
                   - options = {:value => b.id}
                   %option{options}= b.name
@@ -22,7 +22,7 @@
               Týždeň
               %abbr *
             %div.controls
-              %select{:name => 'question[week]', :id => 'question_week', :class => 'combobox' }
+              %select{:name => 'question[week_date]', :id => 'question_week', :class => 'combobox' }
                 %option
                 - week_numbers_with_dates.each do |week,date|
                   - options = {:value => date}
@@ -55,7 +55,7 @@
             %input{:type => 'submit', :value => 'Uložiť', :class => 'btn btn-primary'}
             %button{:type => 'reset', :class => 'btn'} Zrušiť
             %button{:type => '', :class => 'btn', :id => 'add_more_questions'} ₊ Pridať otázoku
-    .span5.well
+    .span3.well
       %h3 Priradené otázky
       %div#already_assigned_questions
         K tejto pobočke a tomuto týždňu niesu pridadené žiadne otázky.

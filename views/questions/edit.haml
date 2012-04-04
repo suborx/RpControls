@@ -12,7 +12,7 @@
               Redakcia
               %abbr *
             %div.controls
-              %select{:name => 'question[branch_id]', :id => 'question_branch', :class => 'combobox' }
+              %select{:name => 'question[branch_id]', :id => 'question_for_branch', :class => 'combobox' }
                 %option
                 - Branch.all.each do |b|
                   - options = {:value => b.id}

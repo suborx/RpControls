@@ -22,7 +22,10 @@ $('document').ready(function(){
   });
 
   $( "#datepicker" ).datepicker({dateFormat: 'yy-mm-dd'});
-
+  $("#question_for_branches").multiselect({
+     height: 300,
+    minWidth:400,
+  });
 
   $(getRespondent);
   $(getQuestionsForControl);
