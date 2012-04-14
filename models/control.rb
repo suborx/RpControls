@@ -6,8 +6,6 @@ class Control < ActiveRecord::Base
 
   attr_accessor :questions, :answers, :for_week
 
-  establish_connection 'local_db'
-
   belongs_to :user
   belongs_to :contact
   belongs_to :week

@@ -28,37 +28,9 @@ begin
 rescue LoadError
 end
 
-namespace :spec do
-  begin
-    desc 'Run all model tests'
-    RSpec::Core::RakeTask.new(:models) do |t|
-      t.pattern = 'spec/models/**/*_spec.rb'
-      t.rspec_opts = [ '--backtrace', '--colour', '-fd']
-    end
-  rescue LoadError
-  end
-
-  begin
-    desc 'Run all route tests'
-    RSpec::Core::RakeTask.new(:routes) do |t|
-      t.pattern = 'spec/routes/**/*_spec.rb'
-      t.rspec_opts = [ '--backtrace', '--colour', '-fd']
-    end
-  rescue LoadError
-  end
-end
-
 namespace :db do
-
   desc 'Run database migrations'
-  task :migrate => :environment do
-    ActiveRecord::Base.logger = Logger.new(STDOUT)
-    ActiveRecord::Migration.verbose = true
-    ActiveRecord::Migrator.migrate('db/migrate')
-  end
-
-  desc 'Run database migrations for test database'
-  task :migrate => :environment do
+  task :migrate => %w(env) do
     ActiveRecord::Base.logger = Logger.new(STDOUT)
     ActiveRecord::Migration.verbose = true
     ActiveRecord::Migrator.migrate('db/migrate')

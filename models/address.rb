@@ -1,7 +1,7 @@
 # -*- encoding : utf-8 -*-
 
 class Address < ActiveRecord::Base
-  establish_connection 'local_db'
+
   has_many :contacts
   belongs_to :city
   validates_presence_of :street, :city, :message => "povinná položka"

@@ -1,6 +1,6 @@
 # -*- encoding : utf-8 -*-
 
-class RpControl < Sinatra::Base
+#class RpControl < Sinatra::Base
 
   get '/jobs' do
     @controls = Control.search(@current_user,params[:search]).uncontrolled.paginate(:page =>params[:page], :per_page => 18).includes([:contact => :address,:user => :branch])
@@ -44,4 +44,4 @@ class RpControl < Sinatra::Base
     c.destroy unless c.was_controlled
     redirect to '/jobs'
   end
-end
+#end

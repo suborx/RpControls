@@ -1,6 +1,6 @@
 # -*- encoding : utf-8 -*-
 
-class RpControl < Sinatra::Base
+#class RpControl < Sinatra::Base
 
   get '/contacts' do
     @contacts = if @current_user.is_admin?
@@ -62,4 +62,4 @@ class RpControl < Sinatra::Base
     haml :'contacts/show_for_js', :layout => false
   end
 
-end
+#end

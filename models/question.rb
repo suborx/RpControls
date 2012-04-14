@@ -5,7 +5,6 @@ class Question < ActiveRecord::Base
   include FormErrorHelper
 
   attr_accessor :branch_id, :questions
-  establish_connection 'local_db'
 
   has_many :answers, :dependent => :destroy
   belongs_to :week

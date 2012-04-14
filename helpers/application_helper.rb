@@ -1,6 +1,6 @@
 # -*- encoding : utf-8 -*-
 
-class RpControl < Sinatra::Base
+#class RpControl < Sinatra::Base
 
   helpers do
 
@@ -65,4 +65,4 @@ class RpControl < Sinatra::Base
 
   end
 
-end
+#end

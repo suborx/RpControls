@@ -1,6 +1,6 @@
 # -*- encoding : utf-8 -*-
 
-class RpControl < Sinatra::Base
+#class RpControl < Sinatra::Base
 
   get '/' do
     if @current_user.is_admin?
@@ -39,4 +39,4 @@ class RpControl < Sinatra::Base
     redirect to '/users'
   end
 
-end
+#end

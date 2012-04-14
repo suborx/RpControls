@@ -2,8 +2,6 @@
 
 class Week < ActiveRecord::Base
 
-  establish_connection 'local_db'
-
   has_many :controls
   has_many :questions
   belongs_to :branch

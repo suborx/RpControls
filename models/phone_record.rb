@@ -2,6 +2,6 @@
 
 class PhoneRecord < ActiveRecord::Base
 
-  establish_connection 'remote_db'
+  establish_connection Sinatra::Application::DB_CONFIG['remote_db']
 
 end

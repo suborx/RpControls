@@ -5,8 +5,6 @@ class User < ActiveRecord::Base
   include FormErrorHelper
   include PhoneNumberFormater
 
-  establish_connection 'local_db'
-
   attr_accessor :password
 
   has_many :controls

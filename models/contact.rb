@@ -1,11 +1,9 @@
 # -*- encoding : utf-8 -*-
 
 class Contact < ActiveRecord::Base
-
+  require_relative '../lib/extensions'
   include FormErrorHelper
   include PhoneNumberFormater
-
-  establish_connection 'local_db'
 
   attr_accessor :street, :number, :city
 

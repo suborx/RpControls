@@ -1,8 +1,3 @@
-require 'rubygems'
-require 'bundler'
+require "#{File.dirname(__FILE__)}/main"
 
-Bundler.require
-
-require './main'
-
-run RpControl
+run Sinatra::Application

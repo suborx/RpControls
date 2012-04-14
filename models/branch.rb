@@ -2,8 +2,6 @@
 
 class Branch < ActiveRecord::Base
 
-  establish_connection 'local_db'
-
   has_many :users
   has_many :contacts
   has_many :weeks

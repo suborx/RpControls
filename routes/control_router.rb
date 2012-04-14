@@ -1,6 +1,6 @@
 # -*- encoding : utf-8 -*-
 
-class RpControl < Sinatra::Base
+#class RpControl < Sinatra::Base
 
   get '/controls' do
     @controls = Control.search(@current_user,params[:search]).controlled.paginate(:page =>params[:page], :per_page => 18).includes([:contact => :address,:user => :branch])
@@ -48,4 +48,4 @@ class RpControl < Sinatra::Base
     end
   end
 
-end
+#end

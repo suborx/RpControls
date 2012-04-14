@@ -1,6 +1,6 @@
 # -*- encoding : utf-8 -*-
 
-class RpControl < Sinatra::Base
+#class RpControl < Sinatra::Base
 
   get '/questions' do
     @questions = Question.search(params[:question]).paginate(:page =>params[:page], :per_page => 18).includes([:week,:answers])
@@ -65,4 +65,4 @@ class RpControl < Sinatra::Base
     @week = Week.first(:conditions => {:branch_id => branch_id, :week_date => week_date})
     @week ? @week.questions : []
   end
-end
+#end
