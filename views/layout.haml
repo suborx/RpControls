@@ -39,7 +39,7 @@
                 %a{:href => "/contacts"} Respondenti
           %form{:action => "/logout", :method => 'POST', :id => 'logout_form', :class => 'pull-right'}
             %input{:type => "hidden", :value => 'DELETE', :name => '_method'}
-              %button.btn.btn-danger{:type => "submit"} Odhlásiť
+              %button.btn.btn-danger{:id => 'logout', :type => "submit"} Odhlásiť
     .container
       =yield
       %footer.well

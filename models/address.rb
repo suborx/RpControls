@@ -10,4 +10,5 @@ class Address < ActiveRecord::Base
   def complete_address
     "#{street} #{number}, #{city_name}"
   end
+
 end
