@@ -27,10 +27,13 @@ $('document').ready(function(){
     minWidth:400,
   });
 
+
   $(getRespondent);
   $(getQuestionsForControl);
   $(getQuestionsForNewQuestion);
-  $(getQuestionHtml);
+  $(addMoreQuestionsHtml);
+  $(addMoreControlLocalitiesHtml);
+
 
   function getRespondent(){
     $('ul.ui-autocomplete li').live('click', function(){
@@ -83,11 +86,56 @@ $('document').ready(function(){
     });
   };
 
-  function getQuestionHtml(){
+  function addMoreQuestionsHtml(){
     var question_html = "<div class='control-group'>  <label for='question_question' class='control-label'> Otázka </label>  <div class='controls'>  <input type='text' name='question[questions][]' id='question_question'>  </div> </div>"
     $('#add_more_questions').bind('click', function(){
       $('#more_questions').append(question_html);
       return false
     });
-  }
+    };
+
+  function addMoreControlLocalitiesHtml(){
+    var count = 0
+    $('#add_more_locations').bind('click', function(){
+      count = count + 1
+      odd_or_even = count%2 == 1 ? 'even' : 'odd'
+      new_location_id = count.toString()
+      locality_html =["<hr/>",
+                      "<div class='control_location "+ odd_or_even +"'>",
+                        "<div class='control-group'>",
+                          "<label for='control_type' class='control-label'> Typ kontroly </label>",
+                          "<div class='controls'>",
+                            "<label for='control_type_phone' class='checkbox inline'>",
+                               "<input type='radio' value='Telefonická' name='control[locations][location"+new_location_id+"][control_type]' id='control_type_phone' checked='checked'>",
+                                  "Telefonická",
+                            "</label>",
+                            "<label for='control_type_phone' class='checkbox inline'>",
+                               "<input type='radio' value='Terénna' name='control[locations][location"+new_location_id+"][control_type]' id='control_type_terain' checked=''>",
+                                  "Terénna",
+                            "</label>",
+                          "</div>",
+                        "</div>",
+
+                       "<div class='control-group'>",
+                         "<label class='control-label' for='control_for_address'>",
+                           "Mesto a Adresa",
+                         "</label>",
+                         "<div class='controls'>",
+                            "<input id='control_for_address' type='text' name='control[locations][location"+new_location_id+"][for_address]'>",
+                         "</div>",
+                       "</div>",
+
+                       "<div class='control-group'>",
+                         "<label class='control-label' for='control_notice'>",
+                           "Poznámka",
+                         "</label>",
+                         "<div class='controls'>",
+                            "<textarea id='control_notice' name='control[locations][location"+new_location_id+"][notice]'/>",
+                         "</div>",
+                       "</div>",
+                     "</div>"].join("")
+      $('form#jobs div.form-inputs').append(locality_html);
+      return false;
+    });
+  };
 })

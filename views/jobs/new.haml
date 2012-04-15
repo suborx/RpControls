@@ -6,66 +6,68 @@
       = flash_messages
       %form{:action => '/jobs', :method => 'POST', :id => 'jobs', :class => 'form-horizontal well'}
         %fieldset
-          %div.control-group{ :class => @control.has_error_on?(:user_id)}
-            %label{:for => 'control_user', :class => 'control-label'}
-              Redakcia
-              %abbr *
-            %div.controls
-              - if @current_user.is_admin?
-                %select{:name => 'control[user_id]', :id => 'control_user', :class => 'combobox' }
+          %div.form-inputs
+            %div.control-group{ :class => @control.has_error_on?(:user_id)}
+              %label{:for => 'control_user', :class => 'control-label'}
+                Redakcia
+                %abbr *
+              %div.controls
+                - if @current_user.is_admin?
+                  %select{:name => 'control[user_id]', :id => 'control_user', :class => 'combobox' }
+                    %option
+                    - Branch.with_active_users.each do |b|
+                      - options = {:value => b.actual_controlor.id}
+                      %option{options}= b.name
+                  %span.help-inline= @control.flash_error_for(:user_id)
+                - else
+                  %input{:type => 'hidden', :name => 'control[user_id]', :value => @current_user.id}
+                  %h4= @current_user.branch_name
+            %div.control-group{ :class => @control.has_error_on?(:for_week)}
+              %label{:for => 'control_for_week', :class => 'control-label'}
+                Týždeň
+                %abbr *
+              %div.controls
+                %select{:name => 'control[for_week]', :id => 'control_for_week', :class => 'combobox' }
                   %option
-                  - Branch.with_active_users.each do |b|
-                    - options = {:value => b.actual_controlor.id}
-                    %option{options}= b.name
-                %span.help-inline= @control.flash_error_for(:user_id)
-              - else
-                %input{:type => 'hidden', :name => 'control[user_id]', :value => @current_user.id}
-                %h4= @current_user.branch_name
-          %div.control-group{ :class => @control.has_error_on?(:for_week)}
-            %label{:for => 'control_for_week', :class => 'control-label'}
-              Týždeň
-              %abbr *
-            %div.controls
-              %select{:name => 'control[for_week]', :id => 'control_for_week', :class => 'combobox' }
-                %option
-                - week_numbers_with_dates.each do |week,date|
-                  - options = {:value => date}
-                  - options.merge!(:selected => 'selected') if week == Date.today.cweek
-                  %option{options}= week.to_s + " týždeň - " + date.strftime(TIME_FORMAT)
-              %span.help-inline= @control.flash_error_for(:for_week)
+                  - week_numbers_with_dates.each do |week,date|
+                    - options = {:value => date}
+                    - options.merge!(:selected => 'selected') if week == Date.today.cweek
+                    %option{options}= week.to_s + " týždeň - " + date.strftime(TIME_FORMAT)
+                %span.help-inline= @control.flash_error_for(:for_week)
 
-          %div.control-group{ :class => @control.has_error_on?(:for_client)}
-            %label{:for => 'control_for_client', :class => 'control-label'}
-              Klient
-            %div.controls
-              %input{:type => 'text', :name => 'control[for_client]', :id => 'control_for_client'}
-              %span.help-inline= @control.flash_error_for(:for_client)
+            %div.control-group{ :class => @control.has_error_on?(:for_client)}
+              %label{:for => 'control_for_client', :class => 'control-label'}
+                Klient
+              %div.controls
+                %input{:type => 'text', :name => 'control[for_client]', :id => 'control_for_client'}
+                %span.help-inline= @control.flash_error_for(:for_client)
 
-          %div#questions.hide
+            %div#questions.hide
+            %div.control_location.odd
+              %div.control-group
+                %label{:for => 'control_type', :class => 'control-label'} Typ kontroly
+                %div.controls
+                  %label{:for => 'control_type_phone', :class => 'checkbox inline' }
+                    %input{:type => 'radio', :name => 'control[locations][location0][control_type]', :value => 'Telefonická', :checked => 'checked', :id => 'control_type_phone'}
+                    Telefonická
+                  %label{:for => 'control_type_terain', :class => 'checkbox inline' }
+                    %input{:type => 'radio', :name => 'control[locations][location0][control_type]', :value => 'Terénna', :checked => '', :id => 'control_type_terain'}
+                    Terénna
 
-          %div.control-group
-            %label{:for => 'control_type', :class => 'control-label'} Typ kontroly
-            %div.controls
-              %label{:for => 'control_type_phone', :class => 'checkbox inline' }
-                %input{:type => 'radio', :name => 'control[control_type]', :value => 'Telefonická', :checked => 'checked', :id => 'control_type_phone'}
-                Telefonická
-              %label{:for => 'control_type_terain', :class => 'checkbox inline' }
-                %input{:type => 'radio', :name => 'control[control_type]', :value => 'Terénna', :checked => '', :id => 'control_type_terain'}
-                Terénna
+              %div.control-group{ :class => @control.has_error_on?(:for_address)}
+                %label{:for => 'control_for_address', :class => 'control-label'}
+                  Mesto a Adresa
+                  %abbr *
+                %div.controls
+                  %input{:type => 'text', :name => 'control[locations][location0][for_address]', :id => 'control_for_address'}
+                  %span.help-inline= @control.flash_error_for(:for_address)
 
-          %div.control-group{ :class => @control.has_error_on?(:for_address)}
-            %label{:for => 'control_for_client', :class => 'control-label'}
-              Mesto a Adresa
-              %abbr *
-            %div.controls
-              %input{:type => 'text', :name => 'control[for_address]', :id => 'control_for_address'}
-              %span.help-inline= @control.flash_error_for(:for_address)
-
-          %div.control-group
-            %label{:for => 'control_notice', :class => 'control-label'} Poznámka
-            %div.controls
-              %textarea{:name => 'control[notice]', :id => 'control_notice'}
+              %div.control-group
+                %label{:for => 'control_notice', :class => 'control-label'} Poznámka
+                %div.controls
+                  %textarea{:name => 'control[locations][location0][notice]', :id => 'control_notice'}
 
           %div.form-actions
             %input{:type => 'submit', :value => 'Uložiť', :class => 'btn btn-primary'}
             %button{:type => 'reset', :class => 'btn'} Zrušiť
+            %button{:type => '', :class => 'btn', :id => 'add_more_locations'} ₊ Pridať lokalitu

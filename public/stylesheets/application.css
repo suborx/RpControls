@@ -184,5 +184,7 @@ ul.stats span{
 .ui-multiselect-checkboxes label input{float:left;margin-right:10px}
 
 /* remove label borders in IE6 because IE6 does not support transparency */
-/* html .ui-multiselect-checkboxes label { border:none }
-/*
+/* html .ui-multiselect-checkboxes label { border:none }*/
+
+div.control_location.odd{ background:#DDD; padding:10px 0px}
+div.control_location.even{ background:#BBB; padding:10px 0px}

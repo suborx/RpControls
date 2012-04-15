@@ -47,7 +47,7 @@ class Control < ActiveRecord::Base
   def create_default_number_of_controls
     return false unless save
     update_attributes(:group_id => id)
-    (RpControl::DEFAULT_NUMBER_OF_CONTROLS - 1).times do
+    (Sinatra::Application::DEFAULT_NUMBER_OF_CONTROLS - 1).times do
       control_dup = self.dup
       control_dup.save
     end
