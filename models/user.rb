@@ -2,6 +2,7 @@
 
 class User < ActiveRecord::Base
 
+  require_relative '../lib/extensions'
   include FormErrorHelper
   include PhoneNumberFormater
 

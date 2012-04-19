@@ -2,6 +2,7 @@
 
 class Control < ActiveRecord::Base
 
+  require_relative '../lib/extensions'
   include FormErrorHelper
 
   attr_accessor :questions, :answers, :for_week

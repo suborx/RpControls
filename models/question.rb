@@ -2,6 +2,7 @@
 
 class Question < ActiveRecord::Base
 
+  require_relative '../lib/extensions'
   include FormErrorHelper
 
   attr_accessor :branch_id, :questions
