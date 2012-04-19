@@ -1,8 +1,12 @@
+# -*- encoding : utf-8 -*-
 require "#{File.dirname(__FILE__)}/../spec_helper"
 
 describe User do
 
   describe "Validations" do
+
+    it { should belong_to(:branch)}
+    it { should have_many(:controls)}
 
     it '#validate_presence_of :email' do
       u = build(:user, :email => nil)

@@ -188,3 +188,11 @@ ul.stats span{
 
 div.control_location.odd{ background:#DDD; padding:10px 0px}
 div.control_location.even{ background:#BBB; padding:10px 0px}
+div.inspiration_personal_info{
+  background:#DDD;
+  padding: 15px 0px;
+}
+div.inspiration_personal_info h6{
+  padding-left: 15px;
+  padding-bottom: 15px;
+}

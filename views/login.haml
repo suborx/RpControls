@@ -9,6 +9,8 @@
     /[if lt IE 9]
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     / Le styles
+    %script{:src => "/javascripts/jquery-1.7.1.min.js", :type => "text/javascript"}
+    %script{:src => "/javascripts/bootstrap.min.js", :type => "text/javascript"}
     %link{:href => "/stylesheets/bootstrap.min.css", :rel => "stylesheet"}
     %link{:href => "/stylesheets/application.css", :rel => "stylesheet"}
   %body
@@ -24,17 +26,189 @@
     .container
       .row
         .span12
-          -#%form{:action => '/login', :method => 'POST'}
-            -#%fieldset
-              -#%legend Prihlásenie
-              -#%div.clearfix
-                -#%label{:for => 'user_email'} Email
-                -#%div.input
-                  -#%input{:type => 'text', :name => 'email', :placeholder => 'email', :id => 'user_email'}
-              -#%div.clearfix
-                -#%label{:for => 'user_password'} Heslo
-                -#%div.input
-                  -#%input{:type => 'password', :name => 'password', :placeholder => 'heslo', :id => 'user_password'}
-              -#%div.actions
-                -#%input{:type => 'submit', :value => 'Prihlásiť', :class => 'btn primary'}
-                  -#%button{:type => 'reset', :class => 'btn'} Zrušiť
+          %ul.nav.nav-tabs
+            %li.active
+              %a{:href => "#contact", :'data-toggle' => "tab" }
+                Odberateľ
+            %li
+              %a{:href => "#client", :'data-toggle' => "tab" }
+                Klient
+          %div#contact_form.tab-content
+            %div#client.tab-pane.fade
+              .row
+                .span6
+                  %form{:action => '/jobs', :method => 'POST', :id => 'jobs', :class => 'form-horizontal well'}
+                    %fieldset
+                      %div.control-group
+                        %label{:for => 'control_user', :class => 'control-label'}
+                          Redakcia
+                          %abbr *
+                        %div.controls
+                          %select{:name => 'control[user_id]', :id => 'control_user', :class => 'combobox' }
+                            %option
+                            - Branch.with_active_users.each do |b|
+                              - options = {:value => b.actual_controlor.id}
+                              %option{options}= b.name
+
+                      %div.control-group
+                        %label{:for => 'control_for_week', :class => 'control-label'}
+                          Týždeň
+                          %abbr *
+                        %div.controls
+                          %select{:name => 'control[for_week]', :id => 'control_for_week', :class => 'combobox' }
+                            %option
+                            - week_numbers_with_dates.each do |week,date|
+                              - options = {:value => date}
+                              - options.merge!(:selected => 'selected') if week == Date.today.cweek
+                              %option{options}= week.to_s + " týždeň - " + date.strftime(TIME_FORMAT)
+
+                      %div.control-group
+                        %label{:for => 'control_notice', :class => 'control-label'} Popis
+                        %div.controls
+                          %textarea{:name => 'control[locations][location0][notice]', :id => 'control_notice'}
+
+                      %div.control-group
+                        %label{:for => 'control_type', :class => 'control-label'} Typ kontroly
+                        %div.controls
+                          %label{:for => 'control_type_phone', :class => 'checkbox inline' }
+                            %input{:type => 'radio', :name => 'control[locations][location0][control_type]', :value => 'Telefonická', :checked => 'checked', :id => 'control_type_phone'}
+                            Telefonická
+                          %label{:for => 'control_type_terain', :class => 'checkbox inline' }
+                            %input{:type => 'radio', :name => 'control[locations][location0][control_type]', :value => 'Terénna', :checked => '', :id => 'control_type_terain'}
+                            Terénna
+
+                      %div.control-group
+                        %label{:for => 'control_for_address', :class => 'control-label'}
+                          Mesto a Adresa
+                          %abbr *
+                        %div.controls
+                          %input{:type => 'text', :name => 'control[locations][location0][for_address]', :id => 'control_for_address'}
+
+
+                      %div.inspiration_personal_info
+
+                        %h6 Vaše osobné údaje
+                        %div.control-group
+                          %label{:for => 'control_for_client', :class => 'control-label'}
+                            Nazov firmy
+                          %div.controls
+                            %input{:type => 'text', :name => 'control[for_client]', :id => 'control_for_client'}
+
+                        %div.control-group
+                          %label{:for => 'control_for_client', :class => 'control-label'}
+                            IČO
+                          %div.controls
+                            %input{:type => 'text', :name => 'control[for_client]', :id => 'control_for_client'}
+
+                        %div.control-group
+                          %label{:for => 'control_for_client', :class => 'control-label'}
+                            Kontaktná osoba
+                          %div.controls
+                            %input{:type => 'text', :name => 'control[for_client]', :id => 'control_for_client'}
+
+                        %div.control-group
+                          %label{:for => 'control_for_client', :class => 'control-label'}
+                            Telefón
+                          %div.controls
+                            %input{:type => 'text', :name => 'control[for_client]', :id => 'control_for_client'}
+
+                      %div.form-actions
+                        %input{:type => 'submit', :value => 'Odoslať', :class => 'btn btn-primary'}
+                          - #%button{:type => 'reset', :class => 'btn'} Zrušiť
+                          %a{:href => '/contacts', :class => 'btn'} Zrušiť
+                .span6
+                  %h3 Reklamácia pre klienta
+                  %p
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+
+
+
+
+
+            %div#contact.tab-pane.fade.active.in
+              .row
+                .span6
+                  %form{:action => '/contacts', :method => 'POST', :class => 'well form-horizontal'}
+                    %fieldset
+                      %div.control-group
+                        %label{:for => 'contact_branch', :class => 'control-label'}
+                          Názov novín
+                          %abbr *
+                        %div.controls
+                          %select{:name => 'contact[branch_id]', :id => 'contact_branch', :class => 'combobox' }
+                            %option
+                            - Branch.all.each do |b|
+                              - options = {:value => b.id}
+                              %option{options}= b.name
+
+                      %div.control-group
+                        %label{:for => 'control_for_week', :class => 'control-label'}
+                          Týždeň
+                          %abbr *
+                        %div.controls
+                          %select{:name => 'control[for_week]', :id => 'control_for_week', :class => 'combobox' }
+                            %option
+                            - week_numbers_with_dates.each do |week,date|
+                              - options = {:value => date}
+                              - options.merge!(:selected => 'selected') if week == Date.today.cweek
+                              %option{options}= week.to_s + " týždeň - " + date.strftime(TIME_FORMAT)
+
+                      %div.control-group
+                        %label{:for => 'contact_city', :class => 'control-label'}
+                          Mesto
+                          %abbr *
+                        %div.controls
+                          %input{:type => 'text', :name => 'contact[city]', :id => 'contact_city'}
+
+                      %div.control-group
+                        %label{:for => 'contact_address', :class => 'control-label'}
+                          Ulica
+                          %abbr *
+                        %div.controls
+                          %input{:type => 'text', :name => 'contact[street]', :id => 'contact_address'}
+
+                      %div.control-group
+                        %label{:for => 'contact_number', :class => 'control-label'}
+                          Číslo domu
+                          %abbr *
+                        %div.controls
+                          %input{:type => 'text', :name => 'contact[number]', :id => 'contact_number'}
+
+                      %div.control-group
+                        %label{:for => 'contact_description', :class => 'control-label'} Poznámka
+                        %div.controls
+                          %textarea{:name => 'contact[description]', :id => 'contact_description'}
+
+                      %div.inspiration_personal_info
+                        %h6 Vaše osobné údaje
+                        %div.control-group
+                          %label{:for => 'contact_first_name', :class => 'control-label'}
+                            Krstné meno
+                            %abbr *
+                          %div.controls
+                            %input{:type => 'text', :name => 'contact[first_name]', :id => 'contact_first_name'}
+
+                        %div.control-group
+                          %label{:for => 'contact_last_name', :class => 'control-label'}
+                            Priezvisko
+                            %abbr *
+                          %div.controls
+                            %input{:type => 'text', :name => 'contact[last_name]', :id => 'contact_last_name'}
+
+                        %div.control-group
+                          %label{:for => 'contact_phone', :class => 'control-label'}
+                            Telefón
+                            %abbr *
+                          %div.controls
+                            %input{:type => 'text', :name => 'contact[phone]', :id => 'contact_phone'}
+
+
+
+                      %div.form-actions
+                        %input{:type => 'submit', :value => 'Odoslať', :class => 'btn btn-primary'}
+                          - #%button{:type => 'reset', :class => 'btn'} Zrušiť
+                          %a{:href => '/contacts', :class => 'btn'} Zrušiť
+                .span6
+                  %h3 Reklamácia pre odberateľa
+                  %p
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.

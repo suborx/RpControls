@@ -13,7 +13,7 @@ class User < ActiveRecord::Base
   before_create :encrypt_password
   before_save :convert_phone_format
 
-  validates_presence_of :email, :first_name, :last_name, :phone, :branch_id, :message => "povinná položka"
+  validates_presence_of :email, :first_name, :last_name, :phone, :branch_id#, :message => "povinná položka"
   validates_uniqueness_of :email, :message => 'email už bol použitý'
   validates_presence_of :password, :if => "password_hash.blank?", :message => "povinná položka"
   validates_confirmation_of :password, :if => 'password_hash.blank?', :message => "nebolo potvrdené"

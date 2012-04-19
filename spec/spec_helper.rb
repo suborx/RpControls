@@ -8,6 +8,7 @@ require 'factory_girl'
 require 'capybara'
 require 'capybara/dsl'
 require 'database_cleaner'
+require 'shoulda-matchers'
 
 # Use the following mixin to wire up rack/test and sinatra
 module RSpecMixin

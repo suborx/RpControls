@@ -18,7 +18,6 @@
           - if @current_user.is_admin?
             %th.center Redakcia
             %th Kontrolór
-          %th Klient
           %th Mesto a Adresa
           %th.center Typ
           %th.center Otázok
@@ -37,7 +36,6 @@
                 %a{:href => "/users/#{control.user_id}", :rel => 'popover', :class => '',
                 :title => control.user.full_name,
                 :'data-content' => "<strong> Kontrol: </strong>&nbsp #{@user_controls.size} </br> <strong>Úspešných: </strong> &nbsp #{@user_controls.to_a.count{|c| c.succeed?}}</br> <strong>Neoverených: </strong> &nbsp #{@user_controls.to_a.count{|c| c.verified?}}"}= control.user.full_name
-            %td= control.for_client
             %td= control.for_address
             %td.center
               - if control.control_type == 'Telefonická'

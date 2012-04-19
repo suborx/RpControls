@@ -8,6 +8,7 @@ class Contact < ActiveRecord::Base
   attr_accessor :street, :number, :city
 
   has_many :controls
+  has_many :inspirations
   belongs_to :branch
   belongs_to :address
 

@@ -1,5 +1,7 @@
 $('document').ready(function(){
 
+ $('.nav-tabs a').tab('show');
+
   //autocomplete for branches
   $('select.combobox').combobox();
 

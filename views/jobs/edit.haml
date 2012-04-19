@@ -37,12 +37,12 @@
                   %option{options}= week.to_s + " týždeň - " + date.strftime(TIME_FORMAT)
               %span.help-inline= @control.flash_error_for(:week_id)
 
-          %div.control-group{ :class => @control.has_error_on?(:for_client)}
-            %label{:for => 'control_for_client', :class => 'control-label'}
-              Klient
-            %div.controls
-              %input{:type => 'text', :name => 'control[for_client]', :id => 'control_for_client', :value => @control.for_client}
-              %span.help-inline= @control.flash_error_for(:for_client)
+          -#%div.control-group{ :class => @control.has_error_on?(:for_client)}
+            -#%label{:for => 'control_for_client', :class => 'control-label'}
+              -#Klient
+            -#%div.controls
+              -#%input{:type => 'text', :name => 'control[for_client]', :id => 'control_for_client', :value => @control.for_client}
+              -#%span.help-inline= @control.flash_error_for(:for_client)
 
           %div#questions{:class => (@control.week.questions.empty? ? "hide" : "")}
             - unless @control.week.questions.empty?

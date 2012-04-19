@@ -2,6 +2,7 @@
 
 class Week < ActiveRecord::Base
 
+  has_many :inspirations
   has_many :controls
   has_many :questions
   belongs_to :branch
