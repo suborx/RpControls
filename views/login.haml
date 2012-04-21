@@ -2,22 +2,30 @@
 %html{:lang => "en"}
   %head
     %meta{:charset => "utf-8"}
-    %title Rp-Control
+    %title Region MAIL
     %meta{:content => "", :name => "description"}
     %meta{:content => "", :name => "author"}
     / Le HTML5 shim, for IE6-8 support of HTML elements
     /[if lt IE 9]
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     / Le styles
+    %link{:href => "/stylesheets/bootstrap.min.css", :rel => "stylesheet"}
+    %link{:href => "/stylesheets/bootstrap.min.responsive.css", :rel => "stylesheet"}
+    %link{:href => "/stylesheets/flick/jquery-ui-1.8.17.custom.css", :rel => "stylesheet"}
+    %link{:href => "/stylesheets/application.css", :rel => "stylesheet"}
     %script{:src => "/javascripts/jquery-1.7.1.min.js", :type => "text/javascript"}
     %script{:src => "/javascripts/bootstrap.min.js", :type => "text/javascript"}
-    %link{:href => "/stylesheets/bootstrap.min.css", :rel => "stylesheet"}
-    %link{:href => "/stylesheets/application.css", :rel => "stylesheet"}
+    %script{:src => "/javascripts/jquery-ui-1.8.17.custom.min.js", :type => "text/javascript"}
+    %script{:src => "/javascripts/jquery-ui-combobox.js", :type => "text/javascript"}
+    %script{:src => "/javascripts/jquery-ui-multiselect.min.js", :type => "text/javascript"}
+    %script{:src => "/javascripts/formToWizard.js", :type => "text/javascript"}
+    %script{:src => "/javascripts/application.js", :type => "text/javascript"}
+
   %body
     .navbar.navbar-fixed-top
       .navbar-inner
         .container
-          %a.brand{:href => "/"} Rp-Control
+          %a.brand{:href => "/"} Region MAIL
           %form{:action => '/login', :method => 'POST', :style => 'margin:5px 0 0 0', :class => 'pull-right form-search'}
             %input.input-small.span2{:type => 'text', :name => 'email', :placeholder => 'email', :id => 'user_email'}
             %input.input-small{:type => 'password', :name => 'password', :placeholder => 'heslo', :id => 'user_password'}
@@ -37,85 +45,92 @@
             %div#client.tab-pane.fade
               .row
                 .span6
-                  %form{:action => '/jobs', :method => 'POST', :id => 'jobs', :class => 'form-horizontal well'}
+                  %form{:action => '/jobs', :method => 'POST', :id => 'SignupForm', :class => 'form-horizontal well'}
                     %fieldset
+                      %legend Registračné údaje
+
                       %div.control-group
-                        %label{:for => 'control_user', :class => 'control-label'}
-                          Redakcia
+                        %label{:for => 'control_for_client', :class => 'control-label'}
+                          Nazov firmy
                           %abbr *
                         %div.controls
-                          %select{:name => 'control[user_id]', :id => 'control_user', :class => 'combobox' }
-                            %option
-                            - Branch.with_active_users.each do |b|
-                              - options = {:value => b.actual_controlor.id}
-                              %option{options}= b.name
+                          %input{:type => 'text', :name => 'control[for_client]', :id => 'control_for_client'}
 
                       %div.control-group
-                        %label{:for => 'control_for_week', :class => 'control-label'}
-                          Týždeň
+                        %label{:for => 'control_for_client', :class => 'control-label'}
+                          IČO
                           %abbr *
                         %div.controls
-                          %select{:name => 'control[for_week]', :id => 'control_for_week', :class => 'combobox' }
-                            %option
-                            - week_numbers_with_dates.each do |week,date|
-                              - options = {:value => date}
-                              - options.merge!(:selected => 'selected') if week == Date.today.cweek
-                              %option{options}= week.to_s + " týždeň - " + date.strftime(TIME_FORMAT)
+                          %input{:type => 'text', :name => 'control[for_client]', :id => 'control_for_client'}
 
                       %div.control-group
-                        %label{:for => 'control_notice', :class => 'control-label'} Popis
-                        %div.controls
-                          %textarea{:name => 'control[locations][location0][notice]', :id => 'control_notice'}
-
-                      %div.control-group
-                        %label{:for => 'control_type', :class => 'control-label'} Typ kontroly
-                        %div.controls
-                          %label{:for => 'control_type_phone', :class => 'checkbox inline' }
-                            %input{:type => 'radio', :name => 'control[locations][location0][control_type]', :value => 'Telefonická', :checked => 'checked', :id => 'control_type_phone'}
-                            Telefonická
-                          %label{:for => 'control_type_terain', :class => 'checkbox inline' }
-                            %input{:type => 'radio', :name => 'control[locations][location0][control_type]', :value => 'Terénna', :checked => '', :id => 'control_type_terain'}
-                            Terénna
-
-                      %div.control-group
-                        %label{:for => 'control_for_address', :class => 'control-label'}
-                          Mesto a Adresa
+                        %label{:for => 'control_for_client', :class => 'control-label'}
+                          Kontaktná osoba
                           %abbr *
                         %div.controls
-                          %input{:type => 'text', :name => 'control[locations][location0][for_address]', :id => 'control_for_address'}
+                          %input{:type => 'text', :name => 'control[for_client]', :id => 'control_for_client'}
 
+                      %div.control-group
+                        %label{:for => 'control_for_client', :class => 'control-label'}
+                          Telefón
+                          %abbr *
+                        %div.controls
+                          %input{:type => 'text', :name => 'control[for_client]', :id => 'control_for_client'}
 
-                      %div.inspiration_personal_info
+                      %div.control-group
+                        %label{:for => 'control_for_email', :class => 'control-label'}
+                          Email
+                        %div.controls
+                          %input{:type => 'text', :name => 'control[email]', :id => 'control_for_email'}
 
-                        %h6 Vaše osobné údaje
+                    %fieldset
+                      %legend Zadanie kontroly
+                      %div.form-inputs
                         %div.control-group
-                          %label{:for => 'control_for_client', :class => 'control-label'}
-                            Nazov firmy
+                          %label{:for => 'control_notice', :class => 'control-label'} Popis
                           %div.controls
-                            %input{:type => 'text', :name => 'control[for_client]', :id => 'control_for_client'}
+                            %textarea{:name => 'control[locations][location0][notice]', :id => 'control_notice'}
 
                         %div.control-group
-                          %label{:for => 'control_for_client', :class => 'control-label'}
-                            IČO
+                          %label{:for => 'control_for_week', :class => 'control-label'}
+                            Týždeň
+                            %abbr *
                           %div.controls
-                            %input{:type => 'text', :name => 'control[for_client]', :id => 'control_for_client'}
+                            %select{:name => 'control[for_week]', :id => 'control_for_week', :class => 'combobox' }
+                              %option
+                              - week_numbers_with_dates.each do |week,date|
+                                - options = {:value => date}
+                                - options.merge!(:selected => 'selected') if week == Date.today.cweek
+                                %option{options}= week.to_s + " týždeň - " + date.strftime(TIME_FORMAT)
 
-                        %div.control-group
-                          %label{:for => 'control_for_client', :class => 'control-label'}
-                            Kontaktná osoba
-                          %div.controls
-                            %input{:type => 'text', :name => 'control[for_client]', :id => 'control_for_client'}
+                        %div.control_location.odd
+                          -#%div.inspiration_personal_info
+                          %div.control-group
+                            %label{:for => 'control_type', :class => 'control-label'} Typ kontroly
+                            %div.controls
+                              %label{:for => 'control_type_phone', :class => 'checkbox inline' }
+                                %input{:type => 'radio', :name => 'control[locations][location0][control_type]', :value => 'Telefonická', :checked => 'checked', :id => 'control_type_phone'}
+                                Telefonická
+                              %label{:for => 'control_type_terain', :class => 'checkbox inline' }
+                                %input{:type => 'radio', :name => 'control[locations][location0][control_type]', :value => 'Terénna', :checked => '', :id => 'control_type_terain'}
+                                Terénna
 
-                        %div.control-group
-                          %label{:for => 'control_for_client', :class => 'control-label'}
-                            Telefón
-                          %div.controls
-                            %input{:type => 'text', :name => 'control[for_client]', :id => 'control_for_client'}
+                          %div.control-group
+                            %label{:for => 'control_for_address', :class => 'control-label'}
+                              Mesto a Adresa
+                              %abbr *
+                            %div.controls
+                              %input{:type => 'text', :name => 'control[locations][location0][for_address]', :id => 'control_for_address'}
 
-                      %div.form-actions
-                        %input{:type => 'submit', :value => 'Odoslať', :class => 'btn btn-primary'}
-                          - #%button{:type => 'reset', :class => 'btn'} Zrušiť
-                          %a{:href => '/contacts', :class => 'btn'} Zrušiť
+
+                      -#%div.inspiration_personal_info
+                      %div.actions
+                        %div.step_command
+                        %div.form-actions
+                          %input{:type => 'submit', :value => 'Odoslať', :class => 'btn btn-success'}
+                            - #%button{:type => 'reset', :class => 'btn'} Zrušiť
+                            %a{:href => '/contacts', :class => 'btn'} Zrušiť
+                            %button{:type => '', :class => 'btn', :id => 'add_more_locations'} ₊ Pridať lokalitu
                 .span6
                   %h3 Reklamácia pre klienta
                   %p
@@ -141,17 +156,17 @@
                               - options = {:value => b.id}
                               %option{options}= b.name
 
-                      %div.control-group
-                        %label{:for => 'control_for_week', :class => 'control-label'}
-                          Týždeň
-                          %abbr *
-                        %div.controls
-                          %select{:name => 'control[for_week]', :id => 'control_for_week', :class => 'combobox' }
-                            %option
-                            - week_numbers_with_dates.each do |week,date|
-                              - options = {:value => date}
-                              - options.merge!(:selected => 'selected') if week == Date.today.cweek
-                              %option{options}= week.to_s + " týždeň - " + date.strftime(TIME_FORMAT)
+                      -#%div.control-group
+                        -#%label{:for => 'control_for_week', :class => 'control-label'}
+                          -#Týždeň
+                          -#%abbr *
+                        -#%div.controls
+                          -#%select{:name => 'control[for_week]', :id => 'control_for_week', :class => 'combobox' }
+                            -#%option
+                            -#- week_numbers_with_dates.each do |week,date|
+                              -#- options = {:value => date}
+                              -#- options.merge!(:selected => 'selected') if week == Date.today.cweek
+                              -#%option{options}= week.to_s + " týždeň - " + date.strftime(TIME_FORMAT)
 
                       %div.control-group
                         %label{:for => 'contact_city', :class => 'control-label'}
@@ -201,6 +216,12 @@
                             %abbr *
                           %div.controls
                             %input{:type => 'text', :name => 'contact[phone]', :id => 'contact_phone'}
+
+                        %div.control-group
+                          %label{:for => 'control_for_email', :class => 'control-label'}
+                            Email
+                          %div.controls
+                            %input{:type => 'text', :name => 'control[email]', :id => 'control_for_email'}
 
 
 
