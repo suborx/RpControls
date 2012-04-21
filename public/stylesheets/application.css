@@ -186,8 +186,8 @@ ul.stats span{
 /* remove label borders in IE6 because IE6 does not support transparency */
 /* html .ui-multiselect-checkboxes label { border:none }*/
 
-div.control_location.odd{ background:#DDD; padding:10px 0px}
-div.control_location.even{ background:#BBB; padding:10px 0px}
+div.inspiration_control_location.odd, div.control_location.odd{ background:#DDD; padding:10px 0px}
+div.inspiration_control_location.even, div.control_location.even{ background:#BBB; padding:10px 0px}
 div.inspiration_personal_info{
   background:#DDD;
   padding: 15px 0px;
@@ -197,7 +197,7 @@ div.inspiration_personal_info h6{
   padding-bottom: 15px;
 }
 
-a.brand{ font-family: Typofile}
+/*a.brand{ font-family: Typofile}*/
 
 /*Multistep form*/
 #steps { list-style:none; width:100%; overflow:hidden; margin:0px; padding:0px;}

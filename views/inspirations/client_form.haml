@@ -1,0 +1,85 @@
+%form{:action => '/inspirations/from_client', :method => 'POST', :id => 'client_inspiration', :class => 'form-horizontal well'}
+  %fieldset
+    %legend Registračné údaje
+
+    %div.control-group
+      %label{:for => 'inspiration_company_name', :class => 'control-label'}
+        Nazov firmy
+        %abbr *
+      %div.controls
+        %input{:type => 'text', :name => 'inspiration[client][name]', :id => 'inspiration_company_name'}
+
+    %div.control-group
+      %label{:for => 'inspiration_ico', :class => 'control-label'}
+        IČO
+        %abbr *
+      %div.controls
+        %input{:type => 'text', :name => 'inspiration[client][ico]', :id => 'inspiration_ico'}
+
+    %div.control-group
+      %label{:for => 'inspiration_contact_person', :class => 'control-label'}
+        Kontaktná osoba
+        %abbr *
+      %div.controls
+        %input{:type => 'text', :name => 'inspiration[client][contact_person]', :id => 'inspiration_contact_person'}
+
+    %div.control-group
+      %label{:for => 'inspiration_phone', :class => 'control-label'}
+        Telefón
+        %abbr *
+      %div.controls
+        %input{:type => 'text', :name => 'inspiration[client][phone]', :id => 'inspiration_phone'}
+
+    %div.control-group
+      %label{:for => 'inspiration_email', :class => 'control-label'}
+        Email
+      %div.controls
+        %input{:type => 'text', :name => 'inspiration[client][email]', :id => 'inspiration_email'}
+
+  %fieldset
+    %legend Zadanie kontroly
+    %div.form-inputs
+      %div.control-group
+        %label{:for => 'inspiration_description', :class => 'control-label'} Popis
+        %div.controls
+          %textarea{:name => 'inspiration[description]', :id => 'inspiration_description'}
+
+      %div.control-group
+        %label{:for => 'inspiratons_week', :class => 'control-label'}
+          Týždeň
+          %abbr *
+        %div.controls
+          %select{:name => 'inspiration[week][week_date]', :id => 'inspiratons_week', :class => 'combobox' }
+            %option
+            - week_numbers_with_dates.each do |week,date|
+              - options = {:value => date}
+              - options.merge!(:selected => 'selected') if week == Date.today.cweek
+              %option{options}= week.to_s + " týždeň - " + date.strftime(TIME_FORMAT)
+
+      %div.inspiration_control_location.odd
+        %div.control-group
+          %label{:for => 'inspiratons_control_type', :class => 'control-label'} Typ kontroly
+          %div.controls
+            %label{:for => 'inspiration_control_type_phone', :class => 'checkbox inline' }
+              %input{:type => 'radio', :name => 'inspiration[inspiration_addresses][location0][control_type]', :value => 'Telefonická', :checked => 'checked', :id => 'inspirations_control_type_phone'}
+              Telefonická
+            %label{:for => 'inspirations_control_type_terain', :class => 'checkbox inline' }
+              %input{:type => 'radio', :name => 'inspiration[inspiration_addresses][location0][control_type]', :value => 'Terénna', :checked => '', :id => 'inspirations_control_type_terain'}
+              Terénna
+
+        %div.control-group
+          %label{:for => 'inspiration_address', :class => 'control-label'}
+            Mesto a Adresa
+            %abbr *
+          %div.controls
+            %input{:type => 'text', :name => 'inspiration[inspiration_addresses]][location0][address]', :id => 'inspiration_address'}
+
+
+    -#%div.inspiration_personal_info
+    %div.actions
+      %div.step_command
+      %div.form-actions
+        %input{:type => 'submit', :value => 'Odoslať', :class => 'btn btn-success'}
+          - #%button{:type => 'reset', :class => 'btn'} Zrušiť
+          %a{:href => '/login', :class => 'btn'} Zrušiť
+          %button{:type => '', :class => 'btn', :id => 'add_more_locations'} ₊ Pridať lokalitu

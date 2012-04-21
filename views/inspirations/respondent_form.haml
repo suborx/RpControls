@@ -1,0 +1,72 @@
+%form{:action => '/inspirations/from_respondent', :method => 'POST', :class => 'well form-horizontal'}
+  %fieldset
+    %div.control-group
+      %label{:for => 'inspiration_branch', :class => 'control-label'}
+        Názov novín
+        %abbr *
+      %div.controls
+        %select{:name => 'inspiration[week][branch_id]', :id => 'inspiration_branch', :class => 'combobox' }
+          %option
+          - Branch.all.each do |b|
+            - options = {:value => b.id}
+            %option{options}= b.name
+
+    %div.control-group
+      %label{:for => 'inspiration_city', :class => 'control-label'}
+        Mesto
+        %abbr *
+      %div.controls
+        %input{:type => 'text', :name => 'inspiration[contact][city]', :id => 'inspiration_city'}
+
+    %div.control-group
+      %label{:for => 'inspiration_address', :class => 'control-label'}
+        Ulica
+        %abbr *
+      %div.controls
+        %input{:type => 'text', :name => 'inspiration[contact][street]', :id => 'inspiration_address'}
+
+    %div.control-group
+      %label{:for => 'inspiration_number', :class => 'control-label'}
+        Číslo domu
+        %abbr *
+      %div.controls
+        %input{:type => 'text', :name => 'inspiration[contact][number]', :id => 'inspiration_number'}
+
+    %div.control-group
+      %label{:for => 'inspiration_description', :class => 'control-label'} Poznámka
+      %div.controls
+        %textarea{:name => 'inspiration[description]', :id => 'inspiration_description'}
+
+    %div.inspiration_personal_info
+      %h6 Vaše osobné údaje
+      %div.control-group
+        %label{:for => 'inspiration_first_name', :class => 'control-label'}
+          Krstné meno
+          %abbr *
+        %div.controls
+          %input{:type => 'text', :name => 'inspiration[contact][first_name]', :id => 'inspiration_first_name'}
+
+      %div.control-group
+        %label{:for => 'inspiration_last_name', :class => 'control-label'}
+          Priezvisko
+          %abbr *
+        %div.controls
+          %input{:type => 'text', :name => 'inspiration[contact][last_name]', :id => 'inspiration_last_name'}
+
+      %div.control-group
+        %label{:for => 'inspiration_phone', :class => 'control-label'}
+          Telefón
+          %abbr *
+        %div.controls
+          %input{:type => 'text', :name => 'inspiration[contact][phone]', :id => 'inspiration_phone'}
+
+      %div.control-group
+        %label{:for => 'inspiration_email', :class => 'control-label'}
+          Email
+        %div.controls
+          %input{:type => 'text', :name => 'inspiration[contact][email]', :id => 'inspiration_email'}
+
+    %div.form-actions
+      %input{:type => 'submit', :value => 'Odoslať', :class => 'btn btn-success'}
+        %button{:type => 'reset', :class => 'btn'} Zrušiť
+        -#%a{:href => '/', :class => 'btn'} Zrušiť

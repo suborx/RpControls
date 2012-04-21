@@ -29,7 +29,7 @@ $('document').ready(function(){
     minWidth:400,
   });
 
-  $("#SignupForm").formToWizard({ submitButton: 'SaveAccount' })
+  $("form#client_inspiration").formToWizard();
 
   $(getRespondent);
   $(getQuestionsForControl);
@@ -40,12 +40,9 @@ $('document').ready(function(){
 
 
   function getRespondent(){
-    $('ul.ui-autocomplete li').live('click', function(){
-      current_contact =  $(this).text();
-      if ($("select#control_contact option:contains("+current_contact+")")){
-        contact_id = $("select#control_contact option:contains("+current_contact+")").val();
-      }
-      $('#contact').show().load("/contacts_for_control/"+contact_id);
+    $('form#controls #control_contact').next().bind('autocompleteselect', function(event, ui) {
+      current_contact_id =  ui.item.option.value;
+      $('#contact').show().load("/contacts_for_control/"+current_contact_id);
     });
   };
 
@@ -150,31 +147,31 @@ $('document').ready(function(){
       odd_or_even = count%2 == 1 ? 'even' : 'odd'
       new_location_id = count.toString()
       locality_html =["<hr/>",
-                      "<div class='control_location "+ odd_or_even +"'>",
+                      "<div class='inspiration_control_location "+ odd_or_even +"'>",
                         "<div class='control-group'>",
-                          "<label for='control_type' class='control-label'> Typ kontroly </label>",
+                          "<label for='inspirations_control_type"+new_location_id+"' class='control-label'> Typ kontroly </label>",
                           "<div class='controls'>",
-                            "<label for='control_type_phone' class='checkbox inline'>",
-                               "<input type='radio' value='Telefonická' name='control[locations][location"+new_location_id+"][control_type]' id='control_type_phone' checked='checked'>",
+                            "<label for='inspiration_control_type_phone"+new_location_id+"' class='checkbox inline'>",
+                               "<input type='radio' value='Telefonická' name='inspiration[inspiration_addresses][location"+new_location_id+"][control_type]' id='inspiration_control_type_phone"+new_location_id+"' checked='checked'>",
                                   "Telefonická",
                             "</label>",
-                            "<label for='control_type_phone' class='checkbox inline'>",
-                               "<input type='radio' value='Terénna' name='control[locations][location"+new_location_id+"][control_type]' id='control_type_terain' checked=''>",
+                            "<label for='inpiration_control_type_terain"+new_location_id+"' class='checkbox inline'>",
+                               "<input type='radio' value='Terénna' name='inspiration[inspiration_addresses][location"+new_location_id+"][control_type]' id='control_type_terain"+new_location_id+"' checked=''>",
                                   "Terénna",
                             "</label>",
                           "</div>",
                         "</div>",
 
                        "<div class='control-group'>",
-                         "<label class='control-label' for='control_for_address'>",
+                         "<label class='control-label' for='inspiration_address"+new_location_id+"'>",
                            "Mesto a Adresa",
                          "</label>",
                          "<div class='controls'>",
-                            "<input id='control_for_address' type='text' name='control[locations][location"+new_location_id+"][for_address]'>",
+                            "<input id='inspiration_address"+new_location_id+"' type='text' name='inspiration[inspiration_addresses][location"+new_location_id+"][address]'>",
                          "</div>",
                        "</div>",
                      "</div>"].join("")
-      $('form#SignupForm div.form-inputs').append(locality_html);
+      $('form#client_inspiration div.form-inputs').append(locality_html);
       return false;
     });
   };

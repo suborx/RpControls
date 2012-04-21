@@ -15,15 +15,28 @@
     haml :'inspirations/new'
   end
 
-  post '/inspirations' do
-    @inspiration = Inspiration.new(params[:inspiration])
-    if @inspiration.save
-      flash.next[:success] = 'Váš podnet na kontrolu bol úspešne pridaný.'
-      redirect to '/inspirations'
-    else
-      flash.now[:error] = 'Ľutujeme váš podnet nebol pridaný.'
-      haml :'inspirations/new'
-    end
+  post '/inspirations/from_respondent' do
+    params.inspect
+    #@inspiration = Inspiration.new(params[:inspiration])
+    #if @inspiration.save
+      #flash.next[:success] = 'Váš podnet na kontrolu bol úspešne pridaný.'
+      #redirect to '/inspirations'
+    #else
+      #flash.now[:error] = 'Ľutujeme váš podnet nebol pridaný.'
+      #haml :'inspirations/new'
+    #end
+  end
+
+  post '/inspirations/from_client' do
+    params.inspect
+    #@inspiration = Inspiration.new(params[:inspiration])
+    #if @inspiration.save
+      #flash.next[:success] = 'Váš podnet na kontrolu bol úspešne pridaný.'
+      #redirect to '/inspirations'
+    #else
+      #flash.now[:error] = 'Ľutujeme váš podnet nebol pridaný.'
+      #haml :'inspirations/new'
+    #end
   end
 
   get '/edit/inspirations/:id' do
