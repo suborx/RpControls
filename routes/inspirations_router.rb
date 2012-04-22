@@ -5,38 +5,41 @@
     haml :'inspirations/index'
   end
 
-  get '/users/:id' do
+  get '/inspirations/:id' do
     @inspiration = Inspiration.find(params[:id])
-    haml :'inspirations/show'
+    haml :'inspirations/show', :layout => :login
   end
 
-  get '/new/user' do
+  get '/new/inspiration/for_respondent' do
     @inspiration = Inspiration.new
-    haml :'inspirations/new'
+    haml :'inspirations/new_for_respondent', :layout => :login
+  end
+
+  get '/new/inspiration/for_client' do
+    @inspiration = Inspiration.new
+    haml :'inspirations/new_for_client', :layout => :login
   end
 
   post '/inspirations/from_respondent' do
-    params.inspect
-    #@inspiration = Inspiration.new(params[:inspiration])
-    #if @inspiration.save
-      #flash.next[:success] = 'Váš podnet na kontrolu bol úspešne pridaný.'
-      #redirect to '/inspirations'
-    #else
-      #flash.now[:error] = 'Ľutujeme váš podnet nebol pridaný.'
-      #haml :'inspirations/new'
-    #end
+    @inspiration = Inspiration.new(params[:inspiration])
+   if @inspiration.save
+      flash.next[:success] = 'Váš podnet na kontrolu bol úspešne pridaný.'
+      redirect to "/inspirations/#{@inspiration.id}"
+    else
+      flash.now[:error] = 'Ľutujeme váš podnet nebol pridaný.'
+      haml :'inspirations/new_for_respondent', :layout => false
+    end
   end
 
   post '/inspirations/from_client' do
-    params.inspect
-    #@inspiration = Inspiration.new(params[:inspiration])
-    #if @inspiration.save
-      #flash.next[:success] = 'Váš podnet na kontrolu bol úspešne pridaný.'
-      #redirect to '/inspirations'
-    #else
-      #flash.now[:error] = 'Ľutujeme váš podnet nebol pridaný.'
-      #haml :'inspirations/new'
-    #end
+    @inspiration = Inspiration.new(params[:inspiration])
+    if @inspiration.save
+      flash.next[:success] = 'Váš podnet na kontrolu bol úspešne pridaný.'
+      redirect to "/inspirations/#{@inspiration.id}"
+    else
+      flash.now[:error] = 'Ľutujeme váš podnet nebol pridaný.'
+      haml :'inspirations/new'
+    end
   end
 
   get '/edit/inspirations/:id' do

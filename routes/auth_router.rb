@@ -11,7 +11,7 @@
   end
 
   get '/login' do
-    haml :login, :layout => false
+    haml :'inspirations/new_for_respondent', :layout => :login
   end
 
   post '/login' do

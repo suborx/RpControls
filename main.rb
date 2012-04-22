@@ -72,7 +72,12 @@ include WillPaginate::Sinatra::Helpers
   before do
     if session[:current_user]
       @current_user = session[:current_user]
-    elsif !["/login", "/inspirations/from_client","/inspirations/from_respondent"].include?(request.path)
+    elsif !["/login",
+      "/new/inspiration/for_respondent",
+      "/new/inspiration/for_client",
+      "/inspirations/from_client",
+      "/inspirations/from_respondent"].include?(request.path) && request.path[/^\/inspirations\/\d/].nil?
+
       redirect to '/login'
     end
   end

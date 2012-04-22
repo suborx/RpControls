@@ -5,7 +5,7 @@
         Názov novín
         %abbr *
       %div.controls
-        %select{:name => 'inspiration[week][branch_id]', :id => 'inspiration_branch', :class => 'combobox' }
+        %select{:name => 'inspiration[contact_attributes][branch_id]', :id => 'inspiration_branch', :class => 'combobox' }
           %option
           - Branch.all.each do |b|
             - options = {:value => b.id}
@@ -16,21 +16,21 @@
         Mesto
         %abbr *
       %div.controls
-        %input{:type => 'text', :name => 'inspiration[contact][city]', :id => 'inspiration_city'}
+        %input{:type => 'text', :name => 'inspiration[contact_attributes][city]', :id => 'inspiration_city'}
 
     %div.control-group
       %label{:for => 'inspiration_address', :class => 'control-label'}
         Ulica
         %abbr *
       %div.controls
-        %input{:type => 'text', :name => 'inspiration[contact][street]', :id => 'inspiration_address'}
+        %input{:type => 'text', :name => 'inspiration[contact_attributes][street]', :id => 'inspiration_address'}
 
     %div.control-group
       %label{:for => 'inspiration_number', :class => 'control-label'}
         Číslo domu
         %abbr *
       %div.controls
-        %input{:type => 'text', :name => 'inspiration[contact][number]', :id => 'inspiration_number'}
+        %input{:type => 'text', :name => 'inspiration[contact_attributes][number]', :id => 'inspiration_number'}
 
     %div.control-group
       %label{:for => 'inspiration_description', :class => 'control-label'} Poznámka
@@ -44,27 +44,27 @@
           Krstné meno
           %abbr *
         %div.controls
-          %input{:type => 'text', :name => 'inspiration[contact][first_name]', :id => 'inspiration_first_name'}
+          %input{:type => 'text', :name => 'inspiration[contact_attributes][first_name]', :id => 'inspiration_first_name'}
 
       %div.control-group
         %label{:for => 'inspiration_last_name', :class => 'control-label'}
           Priezvisko
           %abbr *
         %div.controls
-          %input{:type => 'text', :name => 'inspiration[contact][last_name]', :id => 'inspiration_last_name'}
+          %input{:type => 'text', :name => 'inspiration[contact_attributes][last_name]', :id => 'inspiration_last_name'}
 
       %div.control-group
         %label{:for => 'inspiration_phone', :class => 'control-label'}
           Telefón
           %abbr *
         %div.controls
-          %input{:type => 'text', :name => 'inspiration[contact][phone]', :id => 'inspiration_phone'}
+          %input{:type => 'text', :name => 'inspiration[contact_attributes][phone]', :id => 'inspiration_phone'}
 
       %div.control-group
         %label{:for => 'inspiration_email', :class => 'control-label'}
           Email
         %div.controls
-          %input{:type => 'text', :name => 'inspiration[contact][email]', :id => 'inspiration_email'}
+          %input{:type => 'text', :name => 'inspiration[contact_attributes][email]', :id => 'inspiration_email'}
 
     %div.form-actions
       %input{:type => 'submit', :value => 'Odoslať', :class => 'btn btn-success'}

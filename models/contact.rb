@@ -18,6 +18,7 @@ class Contact < ActiveRecord::Base
   validates_presence_of :first_name, :last_name, :phone, :branch_id, :street, :number, :city, :message => "povinná položka"
 
   delegate :name, :to => :branch, :prefix => true
+  delegate :complete_address, :to => :address
 
   def full_name
     last_name + ' ' + first_name

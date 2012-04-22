@@ -15,107 +15,14 @@
           %th Popis
           %th.center Nástroje
       %tbody
-        %tr
-          %td 1
-          %td.center= Date.today.cweek
-          %td.center BA
-          %td.center Klient
-          %td Bratislava, Blatnicka
-          %td Potrebujem skontrolovat tieto adresy ci bol na nich roznesený letak Opel.
-          %td.center
-            %a.btn.btn-small.btn-success Zadať
-            %a.btn.btn-small
-              %i.icon-edit
-              Upraviť
-            %a.btn.btn-danger.btn-small Zmazať
-        %tr
-          %td 1
-          %td.center= Date.today.cweek
-          %td.center BA
-          %td.center Klient
-          %td Bratislava, Na Revine
-          %td Potrebujem skontrolovat tieto adresy ci bol na nich roznesený letak Opel.
-          %td.center
-            %a.btn.btn-small.btn-success Zadať
-            %a.btn.btn-small
-              %i.icon-edit
-              Upraviť
-            %a.btn.btn-danger.btn-small Zmazať
-        %tr
-          %td 1
-          %td.center= Date.today.cweek
-          %td.center BA
-          %td.center Klient
-          %td Bratislava, Sancova
-          %td Potrebujem skontrolovat tieto adresy ci bol na nich roznesený letak Opel.
-          %td.center
-            %a.btn.btn-small.btn-success Zadať
-            %a.btn.btn-small
-              %i.icon-edit
-              Upraviť
-            %a.btn.btn-danger.btn-small Zmazať
-        %tr
-          %td 1
-          %td.center= Date.today.cweek
-          %td.center BA
-          %td.center Klient
-          %td Bratislava, Radcianska
-          %td Potrebujem skontrolovat tieto adresy ci bol na nich roznesený letak Opel.
-          %td.center
-            %a.btn.btn-small.btn-success Zadať
-            %a.btn.btn-small
-              %i.icon-edit
-              Upraviť
-            %a.btn.btn-danger.btn-small Zmazať
-        %tr
-          %td 1
-          %td.center= Date.today.cweek
-          %td.center BA
-          %td.center Klient
-          %td Bratislava, Dolnozemska
-          %td Potrebujem skontrolovat tieto adresy ci bol na nich roznesený letak Opel.
-          %td.center
-            %a.btn.btn-small.btn-success Zadať
-            %a.btn.btn-small
-              %i.icon-edit
-              Upraviť
-            %a.btn.btn-danger.btn-small Zmazať
-        %tr
-          %td 1
-          %td.center= Date.today.cweek
-          %td.center BA
-          %td.center Odberateľ
-          %td Prievidza, Makovickeho
-          %td Už asi pol roka nedostavam Prievidzko
-          %td.center
-            %a.btn.btn-small.btn-success Zadať
-            %a.btn.btn-small
-              %i.icon-edit
-              Upraviť
-            %a.btn.btn-danger.btn-small Zmazať
-        %tr
-          %td 1
-          %td.center= Date.today.cweek + 1
-          %td.center PP
-          %td.center Klient
-          %td Poprad, Blatnicka
-          %td Potrebujem skontrolovat letak Tesco.
-          %td.center
-            %a.btn.btn-small.btn-success Zadať
-            %a.btn.btn-small
-              %i.icon-edit
-              Upraviť
-            %a.btn.btn-danger.btn-small Zmazať
-        %tr
-          %td 1
-          %td.center= Date.today.cweek + 1
-          %td.center PP
-          %td.center Klient
-          %td Poprad, Sportova
-          %td Potrebujem skontrolovat letak Tesco.
-          %td.center
-            %a.btn.btn-small.btn-success Zadať
-            %a.btn.btn-small
-              %i.icon-edit
-              Upraviť
-            %a.btn.btn-danger.btn-small Zmazať
+        - @inspirations.each do |i|
+          %tr
+            %td= i.id
+            %td.center= i.week.week_date.strftime(TIME_FORMAT)
+            %td.center= i.week.branch_id.nil? ? "?" : i.week.branch.mark
+            %td.center= i.contact.present? ? 'Respondent' : 'Klient'
+            %td= i.contact.present? ? i.contact.complete_address : "#{i.inspiration_addresses.count} adries"
+            %td= i.description
+            %td.center
+              %a.btn.btn-small.btn-success Pripraviť zadanie
+              %a.btn.btn-danger.btn-small Zmazať

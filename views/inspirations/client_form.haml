@@ -7,34 +7,34 @@
         Nazov firmy
         %abbr *
       %div.controls
-        %input{:type => 'text', :name => 'inspiration[client][name]', :id => 'inspiration_company_name'}
+        %input{:type => 'text', :name => 'inspiration[inspiration_client_attributes][name]', :id => 'inspiration_company_name'}
 
     %div.control-group
       %label{:for => 'inspiration_ico', :class => 'control-label'}
         IČO
         %abbr *
       %div.controls
-        %input{:type => 'text', :name => 'inspiration[client][ico]', :id => 'inspiration_ico'}
+        %input{:type => 'text', :name => 'inspiration[inspiration_client_attributes][ico]', :id => 'inspiration_ico'}
 
     %div.control-group
       %label{:for => 'inspiration_contact_person', :class => 'control-label'}
         Kontaktná osoba
         %abbr *
       %div.controls
-        %input{:type => 'text', :name => 'inspiration[client][contact_person]', :id => 'inspiration_contact_person'}
+        %input{:type => 'text', :name => 'inspiration[inspiration_client_attributes][contact_person]', :id => 'inspiration_contact_person'}
 
     %div.control-group
       %label{:for => 'inspiration_phone', :class => 'control-label'}
         Telefón
         %abbr *
       %div.controls
-        %input{:type => 'text', :name => 'inspiration[client][phone]', :id => 'inspiration_phone'}
+        %input{:type => 'text', :name => 'inspiration[inspiration_client_attributes][phone]', :id => 'inspiration_phone'}
 
     %div.control-group
       %label{:for => 'inspiration_email', :class => 'control-label'}
         Email
       %div.controls
-        %input{:type => 'text', :name => 'inspiration[client][email]', :id => 'inspiration_email'}
+        %input{:type => 'text', :name => 'inspiration[inspiration_client_attributes][email]', :id => 'inspiration_email'}
 
   %fieldset
     %legend Zadanie kontroly
@@ -49,7 +49,7 @@
           Týždeň
           %abbr *
         %div.controls
-          %select{:name => 'inspiration[week][week_date]', :id => 'inspiratons_week', :class => 'combobox' }
+          %select{:name => 'inspiration[week_attributes][week_date]', :id => 'inspiratons_week', :class => 'combobox' }
             %option
             - week_numbers_with_dates.each do |week,date|
               - options = {:value => date}
@@ -61,10 +61,10 @@
           %label{:for => 'inspiratons_control_type', :class => 'control-label'} Typ kontroly
           %div.controls
             %label{:for => 'inspiration_control_type_phone', :class => 'checkbox inline' }
-              %input{:type => 'radio', :name => 'inspiration[inspiration_addresses][location0][control_type]', :value => 'Telefonická', :checked => 'checked', :id => 'inspirations_control_type_phone'}
+              %input{:type => 'radio', :name => 'inspiration[inspiration_address_attributes][location0][control_type]', :value => 'Telefonická', :checked => 'checked', :id => 'inspiration_control_type_phone'}
               Telefonická
-            %label{:for => 'inspirations_control_type_terain', :class => 'checkbox inline' }
-              %input{:type => 'radio', :name => 'inspiration[inspiration_addresses][location0][control_type]', :value => 'Terénna', :checked => '', :id => 'inspirations_control_type_terain'}
+            %label{:for => 'inspiration_control_type_terain', :class => 'checkbox inline' }
+              %input{:type => 'radio', :name => 'inspiration[inspiration_address_attributes][location0][control_type]', :value => 'Terénna', :checked => '', :id => 'inspiration_control_type_terain'}
               Terénna
 
         %div.control-group
@@ -72,7 +72,7 @@
             Mesto a Adresa
             %abbr *
           %div.controls
-            %input{:type => 'text', :name => 'inspiration[inspiration_addresses]][location0][address]', :id => 'inspiration_address'}
+            %input{:type => 'text', :name => 'inspiration[inspiration_address_attributes]][location0][address]', :id => 'inspiration_address'}
 
 
     -#%div.inspiration_personal_info
