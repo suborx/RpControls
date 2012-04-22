@@ -167,7 +167,7 @@ $('document').ready(function(){
                            "Mesto a Adresa",
                          "</label>",
                          "<div class='controls'>",
-                            "<input id='inspiration_address"+new_location_id+"' type='text' name='inspiration[inspiration_address_attributes][location"+new_location_id+"][address]'>",
+                            "<input id='inspiration_address"+new_location_id+"' placeholder='napr: Bratislava, Blatnicka' type='text' name='inspiration[inspiration_address_attributes][location"+new_location_id+"][address]'>",
                          "</div>",
                        "</div>",
                      "</div>"].join("")

@@ -2,45 +2,52 @@
   %fieldset
     %legend Registračné údaje
 
-    %div.control-group
+    %div.control-group{ :class => @inspiration.has_error_on?('inspiration_client.name')}
       %label{:for => 'inspiration_company_name', :class => 'control-label'}
         Nazov firmy
         %abbr *
       %div.controls
-        %input{:type => 'text', :name => 'inspiration[inspiration_client_attributes][name]', :id => 'inspiration_company_name'}
+        %input{:type => 'text', :name => 'inspiration[inspiration_client_attributes][name]', :id => 'inspiration_company_name', :value => @inspiration.inspiration_client_attributes[:name]}
+        %span.help-inline= @inspiration.flash_error_for('inspiration_client.name')
 
-    %div.control-group
+    %div.control-group{ :class => @inspiration.has_error_on?('inspiration_client.ico')}
       %label{:for => 'inspiration_ico', :class => 'control-label'}
         IČO
         %abbr *
       %div.controls
-        %input{:type => 'text', :name => 'inspiration[inspiration_client_attributes][ico]', :id => 'inspiration_ico'}
+        %input{:type => 'text', :name => 'inspiration[inspiration_client_attributes][ico]', :id => 'inspiration_ico', :value => @inspiration.inspiration_client_attributes[:ico]}
+        %span.help-inline= @inspiration.flash_error_for('inspiration_client.ico')
 
-    %div.control-group
+    %div.control-group{ :class => @inspiration.has_error_on?('inspiration_client.contact_person')}
       %label{:for => 'inspiration_contact_person', :class => 'control-label'}
         Kontaktná osoba
         %abbr *
       %div.controls
-        %input{:type => 'text', :name => 'inspiration[inspiration_client_attributes][contact_person]', :id => 'inspiration_contact_person'}
+        %input{:type => 'text', :name => 'inspiration[inspiration_client_attributes][contact_person]', :id => 'inspiration_contact_person', :value => @inspiration.inspiration_client_attributes[:contact_person]}
+        %span.help-inline= @inspiration.flash_error_for('inspiration_client.contact_person')
 
-    %div.control-group
+    %div.control-group{ :class => @inspiration.has_error_on?('inspiration_client.phone')}
       %label{:for => 'inspiration_phone', :class => 'control-label'}
         Telefón
         %abbr *
       %div.controls
-        %input{:type => 'text', :name => 'inspiration[inspiration_client_attributes][phone]', :id => 'inspiration_phone'}
+        %input{:type => 'text', :name => 'inspiration[inspiration_client_attributes][phone]', :id => 'inspiration_phone', :value => @inspiration.inspiration_client_attributes[:phone]}
+        %span.help-inline= @inspiration.flash_error_for('inspiration_client.phone')
 
-    %div.control-group
+    %div.control-group{ :class => @inspiration.has_error_on?('inspiration_client.email')}
       %label{:for => 'inspiration_email', :class => 'control-label'}
         Email
       %div.controls
-        %input{:type => 'text', :name => 'inspiration[inspiration_client_attributes][email]', :id => 'inspiration_email'}
+        %input{:type => 'text', :name => 'inspiration[inspiration_client_attributes][email]', :id => 'inspiration_email', :value => @inspiration.inspiration_client_attributes[:email]}
+        %span.help-inline= @inspiration.flash_error_for('inspiration_client.email')
 
   %fieldset
     %legend Zadanie kontroly
     %div.form-inputs
       %div.control-group
-        %label{:for => 'inspiration_description', :class => 'control-label'} Popis
+        %label{:for => 'inspiration_description', :class => 'control-label'}
+          Popis
+          %abbr *
         %div.controls
           %textarea{:name => 'inspiration[description]', :id => 'inspiration_description'}
 
@@ -72,7 +79,8 @@
             Mesto a Adresa
             %abbr *
           %div.controls
-            %input{:type => 'text', :name => 'inspiration[inspiration_address_attributes]][location0][address]', :id => 'inspiration_address'}
+            %input{:type => 'text', :name => 'inspiration[inspiration_address_attributes]][location0][address]', :id => 'inspiration_address', :placeholder =>'napr: Bratislava, Blatnicka'}
+
 
 
     -#%div.inspiration_personal_info

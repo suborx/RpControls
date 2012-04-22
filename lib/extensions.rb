@@ -8,7 +8,13 @@ module FormErrorHelper
     !errors[attr].empty? ? 'error' : ''
   end
 
+  def assign_associated_errors(associated_errors,opts={})
+    associated_errors.messages.each do |key,value|
+      errors["#{opts[:prefix]}#{key.to_s}"] = value.first
+    end
+  end
 end
+
 
 module PhoneNumberFormater
 

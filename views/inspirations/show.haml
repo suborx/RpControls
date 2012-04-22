@@ -1,0 +1,38 @@
+= @inspiration.attributes.inspect
+%br
+%hr
+%br
+KONTACT
+- if @inspiration.contact
+  %br
+  = @inspiration.contact.attributes
+  %br
+  %br
+  ADRESA
+  %br
+  = @inspiration.contact.address.attributes
+- else
+  nil
+%br
+%hr
+%br
+KLIENT
+- if @inspiration.inspiration_client
+  %br
+  = @inspiration.inspiration_client.attributes
+- else
+  nil
+%br
+%hr
+%br
+ADRESY
+- unless @inspiration.inspiration_addresses.empty?
+  %br
+  - @inspiration.inspiration_addresses.each do |a|
+    = a.attributes
+    %br
+%br
+%hr
+%br
+TYZDEN
+= @inspiration.week.attributes

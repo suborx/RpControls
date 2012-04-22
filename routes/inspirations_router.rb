@@ -17,6 +17,7 @@
 
   get '/new/inspiration/for_client' do
     @inspiration = Inspiration.new
+    @inspiration.inspiration_client_attributes = {}
     haml :'inspirations/new_for_client', :layout => :login
   end
 
@@ -27,7 +28,7 @@
       redirect to "/inspirations/#{@inspiration.id}"
     else
       flash.now[:error] = 'Ľutujeme váš podnet nebol pridaný.'
-      haml :'inspirations/new_for_respondent', :layout => false
+      haml :'inspirations/new_for_respondent', :layout => :login
     end
   end
 
@@ -37,8 +38,9 @@
       flash.next[:success] = 'Váš podnet na kontrolu bol úspešne pridaný.'
       redirect to "/inspirations/#{@inspiration.id}"
     else
+      debugger
       flash.now[:error] = 'Ľutujeme váš podnet nebol pridaný.'
-      haml :'inspirations/new'
+      haml :'inspirations/new_for_client', :layout => :login
     end
   end
 

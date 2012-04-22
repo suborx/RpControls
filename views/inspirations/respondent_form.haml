@@ -1,6 +1,6 @@
 %form{:action => '/inspirations/from_respondent', :method => 'POST', :class => 'well form-horizontal'}
   %fieldset
-    %div.control-group
+    %div.control-group{ :class => @inspiration.has_error_on?('contact.branch_id')}
       %label{:for => 'inspiration_branch', :class => 'control-label'}
         Názov novín
         %abbr *
@@ -9,62 +9,76 @@
           %option
           - Branch.all.each do |b|
             - options = {:value => b.id}
+            - options.merge!(:selected => 'selected') if b.id == @inspiration.contact.try(:branch_id)
             %option{options}= b.name
+        %span.help-inline= @inspiration.flash_error_for('contact.branch_id')
 
-    %div.control-group
+    %div.control-group{ :class => @inspiration.has_error_on?('contact.city')}
       %label{:for => 'inspiration_city', :class => 'control-label'}
         Mesto
         %abbr *
       %div.controls
-        %input{:type => 'text', :name => 'inspiration[contact_attributes][city]', :id => 'inspiration_city'}
+        %input{:type => 'text', :name => 'inspiration[contact_attributes][city]', :id => 'inspiration_city', :value => @inspiration.contact.try(:city)}
+        %span.help-inline= @inspiration.flash_error_for('contact.city')
 
-    %div.control-group
+    %div.control-group{ :class => @inspiration.has_error_on?('contact.street')}
       %label{:for => 'inspiration_address', :class => 'control-label'}
         Ulica
         %abbr *
       %div.controls
-        %input{:type => 'text', :name => 'inspiration[contact_attributes][street]', :id => 'inspiration_address'}
+        %input{:type => 'text', :name => 'inspiration[contact_attributes][street]', :id => 'inspiration_address', :value => @inspiration.contact.try(:street)}
+        %span.help-inline= @inspiration.flash_error_for('contact.street')
 
-    %div.control-group
+    %div.control-group{ :class => @inspiration.has_error_on?('contact.number')}
       %label{:for => 'inspiration_number', :class => 'control-label'}
         Číslo domu
         %abbr *
       %div.controls
-        %input{:type => 'text', :name => 'inspiration[contact_attributes][number]', :id => 'inspiration_number'}
+        %input{:type => 'text', :name => 'inspiration[contact_attributes][number]', :id => 'inspiration_number', :value => @inspiration.contact.try(:number)}
+        %span.help-inline= @inspiration.flash_error_for('contact.number')
 
-    %div.control-group
-      %label{:for => 'inspiration_description', :class => 'control-label'} Poznámka
+    %div.control-group{ :class => @inspiration.has_error_on?('description')}
+      %label{:for => 'inspiration_description', :class => 'control-label'}
+        Poznámka
+        %abbr *
       %div.controls
-        %textarea{:name => 'inspiration[description]', :id => 'inspiration_description'}
+        %textarea{:name => 'inspiration[description]', :id => 'inspiration_description'}= @inspiration.description
+        %span.help-inline= @inspiration.flash_error_for('description')
 
     %div.inspiration_personal_info
       %h6 Vaše osobné údaje
-      %div.control-group
+
+      %div.control-group{ :class => @inspiration.has_error_on?('contact.first_name')}
         %label{:for => 'inspiration_first_name', :class => 'control-label'}
           Krstné meno
           %abbr *
         %div.controls
-          %input{:type => 'text', :name => 'inspiration[contact_attributes][first_name]', :id => 'inspiration_first_name'}
+          %input{:type => 'text', :name => 'inspiration[contact_attributes][first_name]', :id => 'inspiration_first_name', :value => @inspiration.contact.try(:first_name)}
+          %span.help-inline= @inspiration.flash_error_for('contact.first_name')
 
-      %div.control-group
+      %div.control-group{ :class => @inspiration.has_error_on?('contact.last_name')}
         %label{:for => 'inspiration_last_name', :class => 'control-label'}
           Priezvisko
           %abbr *
         %div.controls
-          %input{:type => 'text', :name => 'inspiration[contact_attributes][last_name]', :id => 'inspiration_last_name'}
+          %input{:type => 'text', :name => 'inspiration[contact_attributes][last_name]', :id => 'inspiration_last_name', :value => @inspiration.contact.try(:last_name)}
+          %span.help-inline= @inspiration.flash_error_for('contact.last_name')
 
-      %div.control-group
+
+      %div.control-group{ :class => @inspiration.has_error_on?('contact.phone')}
         %label{:for => 'inspiration_phone', :class => 'control-label'}
           Telefón
           %abbr *
         %div.controls
-          %input{:type => 'text', :name => 'inspiration[contact_attributes][phone]', :id => 'inspiration_phone'}
+          %input{:type => 'text', :name => 'inspiration[contact_attributes][phone]', :id => 'inspiration_phone', :value => @inspiration.contact.try(:phone)}
+          %span.help-inline= @inspiration.flash_error_for('contact.phone')
 
-      %div.control-group
+      %div.control-group{ :class => @inspiration.has_error_on?('contact.email')}
         %label{:for => 'inspiration_email', :class => 'control-label'}
           Email
         %div.controls
-          %input{:type => 'text', :name => 'inspiration[contact_attributes][email]', :id => 'inspiration_email'}
+          %input{:type => 'text', :name => 'inspiration[contact_attributes][email]', :id => 'inspiration_email', :value => @inspiration.contact.try(:email)}
+          %span.help-inline= @inspiration.flash_error_for('contact.email')
 
     %div.form-actions
       %input{:type => 'submit', :value => 'Odoslať', :class => 'btn btn-success'}

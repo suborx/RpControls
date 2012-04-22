@@ -2,6 +2,9 @@
 
 class Inspiration < ActiveRecord::Base
 
+  require_relative '../lib/extensions'
+  include FormErrorHelper
+
   attr_accessor :week_attributes, :contact_attributes, :inspiration_client_attributes, :inspiration_address_attributes
 
   belongs_to :week
@@ -25,20 +28,38 @@ class Inspiration < ActiveRecord::Base
 
   def assign_client
     return if inspiration_client_attributes.nil?
-    if client = InspirationClient.find_by_ico(inspiration_client_attributes[:ico])
-      client.update_attributes(inspiration_client_attributes)
+    if client = prepare_client_for_assign
       self.inspiration_client = client
-    else
-      client = InspirationClient.create(inspiration_client_attributes)
     end
+  end
+
+
+  def prepare_client_for_assign
+    if client = InspirationClient.find_by_ico(inspiration_client_attributes[:ico])
+      client.update_attributes(inspiration_client_attributes) ? client : nil
+    else
+      create_new_inspiration_client
+    end
+  end
+
+  def create_new_inspiration_client
+    client = InspirationClient.new(inspiration_client_attributes)
+    unless client.save
+      assign_associated_errors(client.errors, :prefix => 'inspiration_client.')
+      return nil
+    end
+    client
   end
 
   def assign_addresses
     return if inspiration_address_attributes.nil?
-    inspiration_address_attributes.each do |key, value|
+    saved_records = inspiration_address_attributes.inject(0) do |result,key, value|
       next if value[:address].blank? || value[:control_type].blank?
       self.inspiration_addresses << InspirationAddress.create(value)
+      result =+ 1
     end
+    debugger
+    return false if saved_records.zero?
   end
 end
 
