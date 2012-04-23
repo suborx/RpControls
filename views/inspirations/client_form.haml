@@ -44,12 +44,13 @@
   %fieldset
     %legend Zadanie kontroly
     %div.form-inputs
-      %div.control-group
+      %div.control-group{ :class => @inspiration.has_error_on?('description')}
         %label{:for => 'inspiration_description', :class => 'control-label'}
           Popis
           %abbr *
         %div.controls
-          %textarea{:name => 'inspiration[description]', :id => 'inspiration_description'}
+          %textarea{:name => 'inspiration[description]', :id => 'inspiration_description'}= @inspiration.description
+          %span.help-inline= @inspiration.flash_error_for('description')
 
       %div.control-group
         %label{:for => 'inspiratons_week', :class => 'control-label'}

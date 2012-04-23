@@ -36,9 +36,18 @@ class Inspiration < ActiveRecord::Base
 
   def prepare_client_for_assign
     if client = InspirationClient.find_by_ico(inspiration_client_attributes[:ico])
-      client.update_attributes(inspiration_client_attributes) ? client : nil
+      update_existing_inspiration_client(client)
     else
       create_new_inspiration_client
+    end
+  end
+
+  def update_existing_inspiration_client(client)
+    if client.has_valid_attributes?(inspiration_client_attributes)
+      client.update_attributes(inspiration_client_attributes)
+    else
+      assign_associated_errors(client.errors, :prefix => 'inspiration_client.')
+      return nil
     end
   end
 

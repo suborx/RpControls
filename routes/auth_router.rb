@@ -3,7 +3,9 @@
 #class RpControl < Sinatra::Base
 
   get '/' do
-    if @current_user.is_admin?
+    if @current_user.nil?
+      redirect to '/new/inspiration/for_respondent'
+    elsif @current_user.is_admin?
       redirect to '/users'
     else
       redirect to '/contacts'
@@ -11,7 +13,7 @@
   end
 
   get '/login' do
-    haml :'inspirations/new_for_respondent', :layout => :login
+    redirect to '/new/inspiration/for_respondent'
   end
 
   post '/login' do
