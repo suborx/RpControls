@@ -141,7 +141,7 @@ $('document').ready(function(){
   };
 
   function addMoreLocalitiesHtmlForInspirations(){
-    var count = 0
+    var count = $('input.location').size()
     $('#add_more_locations').bind('click', function(){
       count = count + 1
       odd_or_even = count%2 == 1 ? 'even' : 'odd'

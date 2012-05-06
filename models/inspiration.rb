@@ -12,18 +12,26 @@ class Inspiration < ActiveRecord::Base
   belongs_to :inspiration_client
   has_many :inspiration_addresses, :dependent => :destroy
 
-  before_validation :assign_week, :assign_client
+  before_validation :assign_week, :assign_client, :validate_addresses
+  after_validation :check_errors
   after_save :assign_addresses
 
-  validates_presence_of :description, :week
+  validates_presence_of :description
 
   accepts_nested_attributes_for :contact, :reject_if => proc{ |attributes| attributes.blank? }
+
+  def valid_inspiration_address_attributes
+    inspiration_address_attributes.reject{|key,value| value[:address].blank?}
+  end
 
   private
 
   def assign_week
     attrs = { :branch_id => contact.try(:branch_id), :week => (week_attributes.present? ? week_attributes[:week_date] : Week.current_week_date{ |week_number| week_number - 1})}
     self.week = Week.find_or_create_week(attrs)
+    if week.errors.any?
+      assign_associated_errors(week.errors, :prefix => 'week.')
+    end
   end
 
   def assign_client
@@ -45,30 +53,39 @@ class Inspiration < ActiveRecord::Base
   def update_existing_inspiration_client(client)
     if client.has_valid_attributes?(inspiration_client_attributes)
       client.update_attributes(inspiration_client_attributes)
+      client
     else
       assign_associated_errors(client.errors, :prefix => 'inspiration_client.')
-      return nil
     end
   end
 
   def create_new_inspiration_client
     client = InspirationClient.new(inspiration_client_attributes)
-    unless client.save
-      assign_associated_errors(client.errors, :prefix => 'inspiration_client.')
-      return nil
-    end
+    assign_associated_errors(client.errors, :prefix => 'inspiration_client.') unless client.save
     client
   end
 
-  def assign_addresses
-    return if inspiration_address_attributes.nil?
-    saved_records = inspiration_address_attributes.inject(0) do |result,key, value|
-      next if value[:address].blank? || value[:control_type].blank?
-      self.inspiration_addresses << InspirationAddress.create(value)
-      result =+ 1
+  def validate_addresses
+    saved_records = inspiration_address_attributes.inject(0) do |result,pair|
+      key, value = pair
+      if value[:address].blank? || value[:control_type].blank?
+        inspiration_address_attributes.delete( :key )
+      else
+        result =+ 1
+      end
+      result
     end
-    debugger
-    return false if saved_records.zero?
+    errors[:'inspiration_address.address'] << 'povinná položka' if saved_records.zero?
+  end
+
+  def check_errors
+    return false if errors.any?
+  end
+
+  def assign_addresses
+    inspiration_address_attributes.each do |key,value|
+      self.inspiration_addresses << InspirationAddress.create(value)
+    end
   end
 end
 

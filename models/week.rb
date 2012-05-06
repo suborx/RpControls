@@ -12,7 +12,13 @@ class Week < ActiveRecord::Base
   validates_presence_of :week_date, :message => "povinná položka"
 
   def self.find_or_create_week(params)
-    Week.find_or_create_by_week_date_and_branch_id(:week_date => params[:week], :branch_id => params[:branch_id])
+    if params[:week]
+      week = Week.find_or_create_by_week_date_and_branch_id(:week_date => params[:week], :branch_id => params[:branch_id])
+    else
+      week = Week.new(:week_date => params[:week], :branch_id => params[:branch_id])
+      week.valid?
+    end
+    week
   end
 
   def self.current_week_date

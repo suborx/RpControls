@@ -52,35 +52,54 @@
           %textarea{:name => 'inspiration[description]', :id => 'inspiration_description'}= @inspiration.description
           %span.help-inline= @inspiration.flash_error_for('description')
 
-      %div.control-group
+      %div.control-group{ :class => @inspiration.has_error_on?('week.week_date')}
         %label{:for => 'inspiratons_week', :class => 'control-label'}
           Týždeň
           %abbr *
         %div.controls
           %select{:name => 'inspiration[week_attributes][week_date]', :id => 'inspiratons_week', :class => 'combobox' }
-            %option
+            %option{ :selected => (@inspiration.errors.any? ? 'selected' : '')}
             - week_numbers_with_dates.each do |week,date|
               - options = {:value => date}
-              - options.merge!(:selected => 'selected') if week == Date.today.cweek
+              - options.merge!(:selected => 'selected') if @inspiration.errors.empty? && (week == Date.today.cweek)
               %option{options}= week.to_s + " týždeň - " + date.strftime(TIME_FORMAT)
+          %span.help-inline= @inspiration.flash_error_for('week.week_date')
 
       %div.inspiration_control_location.odd
-        %div.control-group
-          %label{:for => 'inspiratons_control_type', :class => 'control-label'} Typ kontroly
-          %div.controls
-            %label{:for => 'inspiration_control_type_phone', :class => 'checkbox inline' }
-              %input{:type => 'radio', :name => 'inspiration[inspiration_address_attributes][location0][control_type]', :value => 'Telefonická', :checked => 'checked', :id => 'inspiration_control_type_phone'}
-              Telefonická
-            %label{:for => 'inspiration_control_type_terain', :class => 'checkbox inline' }
-              %input{:type => 'radio', :name => 'inspiration[inspiration_address_attributes][location0][control_type]', :value => 'Terénna', :checked => '', :id => 'inspiration_control_type_terain'}
-              Terénna
-
-        %div.control-group
-          %label{:for => 'inspiration_address', :class => 'control-label'}
-            Mesto a Adresa
-            %abbr *
-          %div.controls
-            %input{:type => 'text', :name => 'inspiration[inspiration_address_attributes]][location0][address]', :id => 'inspiration_address', :placeholder =>'napr: Bratislava, Blatnicka'}
+        - if !@inspiration.inspiration_address_attributes || @inspiration.inspiration_address_attributes.empty?
+          %div.control-group
+            %label{:for => 'inspiratons_control_type', :class => 'control-label'} Typ kontroly
+            %div.controls
+              %label{:for => 'inspiration_control_type_phone', :class => 'checkbox inline' }
+                %input{:type => 'radio', :name => 'inspiration[inspiration_address_attributes][location0][control_type]', :value => 'Telefonická', :checked => 'checked', :id => 'inspiration_control_type_phone'}
+                Telefonická
+              %label{:for => 'inspiration_control_type_terain', :class => 'checkbox inline' }
+                %input{:type => 'radio', :name => 'inspiration[inspiration_address_attributes][location0][control_type]', :value => 'Terénna', :checked => '', :id => 'inspiration_control_type_terain'}
+                Terénna
+          %div.control-group{ :class => @inspiration.has_error_on?('inspiration_address.address')}
+            %label{:for => 'inspiration_address', :class => 'control-label'}
+              Mesto a Adresa
+              %abbr *
+            %div.controls
+              %input{:type => 'text', :name => 'inspiration[inspiration_address_attributes]][location0][address]', :id => 'inspiration_address', :placeholder =>'napr: Bratislava, Blatnicka'}
+              %span.help-inline= @inspiration.flash_error_for('inspiration_address.address')
+        - else
+          - @inspiration.valid_inspiration_address_attributes.each do |key,value|
+            %div.control-group
+              %label{:for => 'inspiratons_control_type', :class => 'control-label'} Typ kontroly
+              %div.controls
+                %label{:for => "inspiration_control_type_phone_for_#{key}", :class => 'checkbox inline' }
+                  %input{:type => 'radio', :name => "inspiration[inspiration_address_attributes][#{key}][control_type]", :value => 'Telefonická', :checked => ( 'checked' if value[:control_type] == 'Telefonická'), :id => "inspiration_control_type_phone_for_#{key}"}
+                  Telefonická
+                %label{:for => "inspiration_control_type_terain_for_#{key}", :class => 'checkbox inline' }
+                  %input{:type => 'radio', :name => "inspiration[inspiration_address_attributes][#{key}][control_type]", :value => 'Terénna', :checked =>( 'checked' if value[:control_type] == 'Terénna'), :id => "inspiration_control_type_terain_for_#{key}"}
+                  Terénna
+            %div.control-group
+              %label{:for => "inspiration_address_for_#{key}", :class => 'control-label'}
+                Mesto a Adresa
+                %abbr *
+              %div.controls
+                %input{:type => 'text', :name => "inspiration[inspiration_address_attributes]][#{key}][address]", :id => "inspiration_address_for_#{key}", :value => value[:address], :class => 'location'}
 
 
 
