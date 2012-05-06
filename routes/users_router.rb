@@ -1,8 +1,7 @@
 # -*- encoding : utf-8 -*-
 
-#class RpControl < Sinatra::Base
-
   get '/users' do
+    debugger
     @users = User.search(params[:search]).paginate(:page =>params[:page], :per_page => 10).includes([:controls, :branch => :contacts])
     haml :'users/index'
   end
@@ -45,4 +44,3 @@
     end
   end
 
-#end

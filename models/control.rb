@@ -40,6 +40,13 @@ class Control < ActiveRecord::Base
     where(:group_id => group_id)
   end
 
+  def self.initialize_from_inspiration(inspiration_id)
+    inspiration = Inspiration.find(inspiration_id)
+    if inspiration
+      Control.new(:week_id => inspiration.week_id, :user_id => inspiration.branch.actual_controlor.id, :notice => inspiration.description, :for_address => inspiration.contact.address.complete_address )
+    end
+  end
+
   def current_week
     d = DateTime.parse(created_at.to_s)
     d.cweek

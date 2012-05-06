@@ -4,8 +4,9 @@
   .row
     .span12
       = flash_messages
-      %form{:action => "/jobs/#{@control.id}", :method => 'POST', :id => 'jobs', :class => 'form-horizontal well'}
-        %input{:type => 'hidden', :name => '_method', :value => 'PUT'}
+      %form{:action => (@control.id ? "/jobs/#{@control.id}" : "/jobs"), :method => 'POST', :id => 'jobs', :class => 'form-horizontal well'}
+        - if @control.id
+          %input{:type => 'hidden', :name => '_method', :value => 'PUT'}
         %fieldset
           %div.control-group{ :class => @control.has_error_on?(:user_id)}
             %label{:for => 'control_user', :class => 'control-label'}
@@ -37,13 +38,6 @@
                   %option{options}= week.to_s + " týždeň - " + date.strftime(TIME_FORMAT)
               %span.help-inline= @control.flash_error_for(:week_id)
 
-          -#%div.control-group{ :class => @control.has_error_on?(:for_client)}
-            -#%label{:for => 'control_for_client', :class => 'control-label'}
-              -#Klient
-            -#%div.controls
-              -#%input{:type => 'text', :name => 'control[for_client]', :id => 'control_for_client', :value => @control.for_client}
-              -#%span.help-inline= @control.flash_error_for(:for_client)
-
           %div#questions{:class => (@control.week.questions.empty? ? "hide" : "")}
             - unless @control.week.questions.empty?
               %div.control-group
@@ -63,7 +57,7 @@
                 %input{:type => 'radio', :name => 'control[control_type]', :value => 'Telefonická', :checked => ('checked' if @control.control_type == 'Telefonická'), :id => 'control_type_phone'}
                 Telefonická
               %label{:for => 'control_type_terain', :class => 'checkbox inline' }
-                %input{:type => 'radio', :name => 'control[control_type]', :value => 'Terénna', :checked => ('checked' if @control.control_type == 'Terénna'), :id => 'control_type_terain'}
+                %input{:type => 'radio', :name => 'control[control_type]', :value => 'Terénna', :checked => ('checked' unless @control.control_type == 'Telefonická'), :id => 'control_type_terain'}
                 Terénna
 
           %div.control-group{ :class => @control.has_error_on?(:for_address)}
@@ -77,7 +71,7 @@
           %div.control-group
             %label{:for => 'control_notice', :class => 'control-label'} Poznámka
             %div.controls
-              %textarea{:name => 'control[notice]', :id => 'control_notice', :value => @control.notice}
+              %textarea{:name => 'control[notice]', :id => 'control_notice'}= @control.notice
 
           %div.form-actions
             %input{:type => 'submit', :value => 'Uložiť', :class => 'btn btn-primary'}

@@ -24,5 +24,5 @@
             %td= i.contact.present? ? i.contact.complete_address : "#{i.inspiration_addresses.count} adries"
             %td= i.description
             %td.center
-              %a.btn.btn-small.btn-success Pripraviť zadanie
-              %a.btn.btn-danger.btn-small Zmazať
+              %a.btn.btn-small.btn-success{:href => "/inspirations/#{i.id}/prepare_job_for_respondent"} Pripraviť zadanie
+              %a.btn.btn-danger.btn-small{:href => "/inspirations/#{i.id}/destroy"} Zmazať

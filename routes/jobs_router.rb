@@ -16,15 +16,22 @@
     locations = params[:control].delete('locations')
     common_attributes = params[:control]
     @create_result = true
-    locations.each do |key,location|
-      @control = Control.new
-      @control.attributes = common_attributes.merge({
-        :control_type => location[:control_type],
-        :for_address => location[:for_address],
-        :notice => location[:notice]
-      })
-      @create_result = @control.create_default_number_of_controls unless @create_result == false
+    if locations
+      locations.each do |key,location|
+        @control = Control.new
+        @control.attributes = common_attributes.merge({
+          :control_type => location[:control_type],
+          :for_address => location[:for_address],
+          :notice => location[:notice]
+        })
+        @create_result = @control.create_default_number_of_controls unless @create_result == false
+      end
+    else
+      @control = Control.new(params[:control])
+      @create_result = @control.create_default_number_of_controls
     end
+
+
     if @create_result
       flash.next[:success] = 'Pridanie kontroly prebehlo úspešne.'
       redirect to '/jobs'

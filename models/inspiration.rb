@@ -20,6 +20,8 @@ class Inspiration < ActiveRecord::Base
 
   accepts_nested_attributes_for :contact, :reject_if => proc{ |attributes| attributes.blank? }
 
+  delegate :branch, :to => :week
+
   def valid_inspiration_address_attributes
     inspiration_address_attributes.reject{|key,value| value[:address].blank?}
   end
@@ -66,6 +68,7 @@ class Inspiration < ActiveRecord::Base
   end
 
   def validate_addresses
+    return if inspiration_address_attributes.nil?
     saved_records = inspiration_address_attributes.inject(0) do |result,pair|
       key, value = pair
       if value[:address].blank? || value[:control_type].blank?
@@ -83,6 +86,7 @@ class Inspiration < ActiveRecord::Base
   end
 
   def assign_addresses
+    return if inspiration_address_attributes.nil?
     inspiration_address_attributes.each do |key,value|
       self.inspiration_addresses << InspirationAddress.create(value)
     end
