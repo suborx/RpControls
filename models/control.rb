@@ -10,6 +10,7 @@ class Control < ActiveRecord::Base
   belongs_to :user
   belongs_to :contact
   belongs_to :week
+  belongs_to :inspiration
   has_many :assigned_answers, :class_name => 'Answer', :dependent => :destroy
   has_many :assigned_questions, :through => :assigned_answers, :source => :question, :class_name => "Question"
 
@@ -18,7 +19,7 @@ class Control < ActiveRecord::Base
 
   validates_presence_of :contact_id, :if => 'was_controlled', :message => "povinná položka"
   validates_presence_of :control_date, :if => 'was_controlled', :message => "povinná položka"
-  validates_presence_of :for_week, :unless => 'was_controlled', :message => "povinná položka"
+  validates_presence_of :for_week, :unless => ('was_controlled' && 'week_id'), :message => "povinná položka"
   validates_presence_of :user_id, :for_address, :control_type
 
   default_scope(order('created_at DESC'))
@@ -42,8 +43,36 @@ class Control < ActiveRecord::Base
 
   def self.initialize_from_inspiration(inspiration_id)
     inspiration = Inspiration.find(inspiration_id)
-    if inspiration
-      Control.new(:week_id => inspiration.week_id, :user_id => inspiration.branch.actual_controlor.id, :notice => inspiration.description, :for_address => inspiration.contact.address.complete_address )
+    if inspiration && inspiration.contact
+      Control.new({
+        :inspiration_id => inspiration.id,
+        :week_id => inspiration.week_id,
+        :user_id => inspiration.branch.actual_controlor.id,
+        :notice => inspiration.description,
+        :for_address => inspiration.contact.address.complete_address
+      })
+    end
+  end
+
+  def self.create_job_from_client_inspiration(inspiration_params)
+    inspiration = Inspiration.find(inspiration_params[:id])
+    week_attrs = {:week => inspiration_params[:week][:week_date], :branch_id => inspiration_params[:week][:branch_id]}
+    week = Week.find_or_create_week(week_attrs)
+    branch = Branch.find(inspiration_params[:week][:branch_id])
+    question = week.questions.find_or_create_by_question(inspiration_params[:question])
+    if inspiration && week && branch && question
+      inspiration.inspiration_addresses.where(:id => inspiration_params[:inspiration_address_ids]).each do |address|
+        control = Control.new({
+          :inspiration_id => inspiration.id,
+          :week_id => week.id,
+          :user_id => branch.actual_controlor.id,
+          :notice => inspiration_params[:loaclity_notice],
+          :for_address => address.address,
+          :control_type => address.control_type
+        })
+        control.assigned_questions << question
+        control.create_default_number_of_controls
+      end
     end
   end
 
@@ -57,6 +86,7 @@ class Control < ActiveRecord::Base
     update_attributes(:group_id => id)
     (Sinatra::Application::DEFAULT_NUMBER_OF_CONTROLS - 1).times do
       control_dup = self.dup
+      control_dup.assigned_questions = assigned_questions
       control_dup.save
     end
   end
@@ -91,4 +121,3 @@ class Control < ActiveRecord::Base
     end
   end
 end
-

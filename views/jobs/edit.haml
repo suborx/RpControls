@@ -7,6 +7,8 @@
       %form{:action => (@control.id ? "/jobs/#{@control.id}" : "/jobs"), :method => 'POST', :id => 'jobs', :class => 'form-horizontal well'}
         - if @control.id
           %input{:type => 'hidden', :name => '_method', :value => 'PUT'}
+        - elsif @control.inspiration_id
+          %input{:type => 'hidden', :name => 'control[inspiration_id]', :value => @control.inspiration_id}
         %fieldset
           %div.control-group{ :class => @control.has_error_on?(:user_id)}
             %label{:for => 'control_user', :class => 'control-label'}

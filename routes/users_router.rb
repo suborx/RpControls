@@ -1,7 +1,6 @@
 # -*- encoding : utf-8 -*-
 
   get '/users' do
-    debugger
     @users = User.search(params[:search]).paginate(:page =>params[:page], :per_page => 10).includes([:controls, :branch => :contacts])
     haml :'users/index'
   end

@@ -1,0 +1,66 @@
+.content
+  .hero-unit
+    %h2 Pridať zadanie kontroly
+  .row
+    .span6
+      = flash_messages
+      %form{:action => '/inspirations/create_job_for_client', :method => 'POST', :id => 'jobs', :class => 'form-horizontal well'}
+        %input{:type => 'hidden', :name => 'inspiration[id]', :value => @inspiration.id}
+        %fieldset
+          %div.form-inputs
+
+            %div.control-group{ :class => @inspiration.has_error_on?(:branch)}
+              %label{:for => 'inspiration_branch', :class => 'control-label'}
+                Redakcia
+                %abbr *
+              %div.controls
+                %select{:name => 'inspiration[week][branch_id]', :id => 'control_user', :class => 'combobox' }
+                  %option
+                  - Branch.with_active_users.each do |b|
+                    - options = {:value => b.id}
+                    %option{options}= b.name
+                %span.help-inline= @inspiration.flash_error_for(:branch)
+
+            %div.control-group{ :class => @inspiration.has_error_on?(:week)}
+              %label{:for => 'inspiration_for_week', :class => 'control-label'}
+                Týždeň
+                %abbr *
+              %div.controls
+                %select{:name => 'inspiration[week][week_date]', :id => 'control_for_week', :class => 'combobox' }
+                  %option
+                  - week_numbers_with_dates.each do |week,date|
+                    - options = {:value => date}
+                    - options.merge!(:selected => 'selected') if week == @inspiration.week.week_date.cweek
+                    %option{options}= week.to_s + " týždeň - " + date.strftime(TIME_FORMAT)
+                %span.help-inline= @inspiration.flash_error_for(:week)
+
+            %div#questions
+
+              %div.control-group{ :class => @inspiration.has_error_on?(:question)}
+                %label{:for => 'inspiration_question', :class => 'control-label'}
+                  Otázka
+                  %abbr *
+                %div.controls
+                  %input{:type => 'text', :name => 'inspiration[question]', :id => 'control_for_address'}
+                  %span.help-inline= @inspiration.flash_error_for(:question)
+
+
+            %div.control_location.odd
+              %div.control-group
+                %label{:for => 'inspiration_locality', :class => 'control-label'} Adresy | Typ kontroly
+                %div.controls
+                  - @inspiration.inspiration_addresses.each_with_index do |address,n|
+                    %label{:for => "inspiration_locality_#{n}"}
+                      %input{:type => 'checkbox', :name => 'inspiration[inspiration_address_ids][]', :value => address.id , :id => 'control_type_phone'}
+                      = address.address + " | " + address.control_type
+
+              %div.control-group
+                %label{:for => 'inspiration_locality_notice', :class => 'control-label'} Poznámka
+                %div.controls
+                  %textarea{:name => 'inspiration[loaclity_notice]', :id => 'inspiration_locality_notice'}
+
+          %div.form-actions
+            %input{:type => 'submit', :value => 'Uložiť', :class => 'btn btn-primary'}
+            %button{:type => 'reset', :class => 'btn'} Zrušiť
+            %button{:type => '', :class => 'btn', :id => 'add_more_locations'} ₊ Pridať lokalitu
+    .span6

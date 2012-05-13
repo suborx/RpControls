@@ -2,6 +2,11 @@
 
 #class RpControl < Sinatra::Base
 
+  get '/debugger' do
+    debugger
+    p
+  end
+
   get '/' do
     if @current_user.nil?
       redirect to '/new/inspiration/for_respondent'

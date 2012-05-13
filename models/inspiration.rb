@@ -11,18 +11,22 @@ class Inspiration < ActiveRecord::Base
   belongs_to :contact
   belongs_to :inspiration_client
   has_many :inspiration_addresses, :dependent => :destroy
+  has_many :controls
 
   before_validation :assign_week, :assign_client, :validate_addresses
   after_validation :check_errors
   after_save :assign_addresses
 
-  validates_presence_of :description
+  validates_presence_of :description, :message => "povinná položka"
 
   accepts_nested_attributes_for :contact, :reject_if => proc{ |attributes| attributes.blank? }
 
   delegate :branch, :to => :week
 
+  default_scope( where(:is_posted => false) )
+
   def valid_inspiration_address_attributes
+    return false if inspiration_address_attributes.nil?
     inspiration_address_attributes.reject{|key,value| value[:address].blank?}
   end
 

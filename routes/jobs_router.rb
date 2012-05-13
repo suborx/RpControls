@@ -29,6 +29,7 @@
     else
       @control = Control.new(params[:control])
       @create_result = @control.create_default_number_of_controls
+      @control.inspiration.update_attribute(:is_posted,true) if @create_result
     end
 
 

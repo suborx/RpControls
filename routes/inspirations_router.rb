@@ -25,7 +25,7 @@
     @inspiration = Inspiration.new(params[:inspiration])
    if @inspiration.save
       flash.next[:success] = 'Váš podnet na kontrolu bol úspešne pridaný.'
-      redirect to "/inspirations/#{@inspiration.id}"
+      redirect to "/new/inspiration/for_respondent"
     else
       flash.now[:error] = 'Ľutujeme váš podnet nebol pridaný.'
       haml :'inspirations/new_for_respondent', :layout => :login
@@ -36,7 +36,7 @@
     @inspiration = Inspiration.new(params[:inspiration])
     if @inspiration.save
       flash.next[:success] = 'Váš podnet na kontrolu bol úspešne pridaný.'
-      redirect to "/inspirations/#{@inspiration.id}"
+      redirect to "/new/inspiration/for_client"
     else
       flash.now[:error] = 'Ľutujeme váš podnet nebol pridaný.'
       haml :'inspirations/new_for_client', :layout => :login
@@ -54,14 +54,25 @@
     end
   end
 
-  get '/inspirations/prepare_job_for_client'do
+  get '/inspirations/:id/prepare_job_for_client'do
+    @inspiration = Inspiration.find params[:id]
+    haml :'inspirations/prepare_job_for_client'
   end
 
-  get '/inspirations/create_job_for_respondent'do
+  post '/inspirations/create_job_for_client'do
+    @inspiration = Inspiration.find(params[:inspiration][:id])
+    @control = Control.create_job_from_client_inspiration(params[:inspiration])
+    if @control
+      @inspiration.inspiration_addresses.where(:id => params[:inspiration][:inspiration_address_ids]).each do |address|
+        address.update_attribute(:is_assigned,true)
+      end
+      @inspiration.update_attribute(:is_posted,true) if @inspiration.inspiration_addresses.empty?
+      redirect to :'/jobs'
+    else
+      haml :'inspirations/prepare_job_for_client'
+    end
   end
 
-  get '/inspirations/create_job_for_client'do
-  end
 
   #get '/edit/inspirations/:id' do
     #@inspiration = Inspiration.find(params[:id])
